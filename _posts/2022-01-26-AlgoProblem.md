@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 입국심사(프로그래머스 LV.2)
+title: 입국 심사(프로그래머스 LV.2)
 author: Yoo Chang Heon
 tags: [Algorithm, Problem-Solving]
 ---
