@@ -5,8 +5,6 @@ author: Yoo Chang Heon
 tags: [React, JavaScript]
 ---
 
-# I Love Coffee 커피 트럭 만들기
-
 ## 결과물 링크
 
 [React App](https://i-love-coffee-coffeetruck.vercel.app/)
