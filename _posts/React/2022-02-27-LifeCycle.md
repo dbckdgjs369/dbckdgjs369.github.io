@@ -23,9 +23,10 @@ Lifecycle마다 메소드를 가지고 있어 이를 이용해 특정 시점에 
 
 컴포넌트의 인스턴스가 생성되어 DOM 상에 삽입되는 단계. 이는 Lifecycle이 종료된 때까지 한번만 일어난다.
 
-- constructor: 컴포넌트의 인스턴스를 새로 만들 때 마다 생성자 메소드가 호출됨
-- render: 화면에 표현될 JSX를 반환하고 화면에 그림
-- componentDidMount: 컴포넌트가 화면에 모두 그려진 이후 호출됨(첫 렌더링 이후 실행, API 호출을 하기 좋은 위치, 데이터를 받아 올 때 setState메서드를 이용하여 컴포넌트를 업데이트 할 수 있다.)
+1. constructor: 컴포넌트의 인스턴스를 새로 만들 때 마다 생성자 메소드가 호출됨
+2. static getDerivedStateFromProps(nextProps, prevState)
+3. render: 화면에 표현될 JSX를 반환하고 화면에 그림
+4. componentDidMount: 컴포넌트가 화면에 모두 그려진 이후 호출됨(첫 렌더링 이후 실행, API 호출을 하기 좋은 위치, 데이터를 받아 올 때 setState메서드를 이용하여 컴포넌트를 업데이트 할 수 있다.)
 
 ### Updating
 
@@ -33,7 +34,7 @@ props 또는 state가 변경되어 컴포넌트가 업데이트 되는 단계
 
 1.  static getDerivedStateFromProps
 2.  shouldComponentUpdate
-3.  render: 데이터가 변경되면 자동으로 호출, 호면을 다시 그림
+3.  render: 데이터가 변경되면 자동으로 호출, 화면을 다시 그림
 4.  getSnapshotBeforeUpdate
 5.  componentDidUpdate: 화면이 다시 그려진 이후 호출됨
 
