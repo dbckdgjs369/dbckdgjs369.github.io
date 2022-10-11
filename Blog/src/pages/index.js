@@ -1,7 +1,7 @@
 import * as React from "react"
 import { Link } from "gatsby"
 import { StaticImage } from "gatsby-plugin-image"
-
+import styled from "@emotion/styled"
 import Layout from "../components/layout"
 import Seo from "../components/seo"
 import * as styles from "../components/index.module.css"
@@ -68,10 +68,14 @@ const moreLinks = [
 ]
 
 const utmParameters = `?utm_source=starter&utm_medium=start-page&utm_campaign=default-starter`
+const Test = styled.div`
+  background-color: red;
+`
 
 const IndexPage = () => (
   <Layout>
     <Seo title="Home" />
+    <Test>Test</Test>
     <div className={styles.textCenter}>
       <StaticImage
         src="../images/example.png"
