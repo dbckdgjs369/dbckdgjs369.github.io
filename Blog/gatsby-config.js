@@ -1,9 +1,9 @@
 module.exports = {
   siteMetadata: {
-    title: `Gatsby Default Starter`,
-    description: `Kick off your next, great Gatsby project with this default starter. This barebones starter ships with the main Gatsby configuration files you might need.`,
-    author: `@gatsbyjs`,
-    siteUrl: `https://gatsbystarterdefaultsource.gatsbyjs.io/`,
+    title: `Groot's Tech Blog`,
+    description: `Welcome to Groot's Tech Blog`,
+    author: `ChangHeonYoo`,
+    siteUrl: `https://dbckdgjs369.github.io/`,
   },
   plugins: [
     `gatsby-plugin-emotion`,
