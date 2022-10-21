@@ -6,7 +6,7 @@ export default ({ data }) => {
   const post = data.markdownRemark
   console.log(post)
   return (
-    <Layout>
+    <Layout category={data.allMarkdownRemark.group}>
       <h1>{post.frontmatter.title}</h1>
       <div dangerouslySetInnerHTML={{ __html: post.html }} />
     </Layout>
@@ -19,6 +19,12 @@ export const query = graphql`
       html
       frontmatter {
         title
+      }
+    }
+    allMarkdownRemark {
+      group(field: frontmatter___category) {
+        category: fieldValue
+        totalCount
       }
     }
   }
