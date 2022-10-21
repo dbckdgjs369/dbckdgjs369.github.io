@@ -2,6 +2,7 @@
 slug: "/blog/panda-post"
 title: "Sweet Pandas Eating Sweets"
 date: "2017-08-10"
+category: ["category"]
 ---
 
 Pandas are really sweet.

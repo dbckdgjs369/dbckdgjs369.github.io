@@ -2,6 +2,7 @@
 slug: "/blog/hello"
 title: "Hello"
 date: "2017-08-14"
+category: ["js"]
 ---
 
 Hello!!
