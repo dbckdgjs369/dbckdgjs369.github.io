@@ -12,6 +12,7 @@ import Header from "./header"
 import "./layout.css"
 import styled from "@emotion/styled"
 import UpperArrow from "../images/arrow.png"
+import Nav from "./nav"
 
 const Wrapper = styled.div`
   margin: 0 auto;
@@ -57,6 +58,11 @@ const Arrow = styled.img`
   margin: 0;
 `
 
+const MainDiv = styled.div`
+  display: flex;
+  flex-direction: row;
+`
+
 const Layout = ({ children }) => {
   const data = useStaticQuery(graphql`
     query SiteTitleQuery {
@@ -72,11 +78,17 @@ const Layout = ({ children }) => {
     <>
       <Header siteTitle={data.site.siteMetadata?.title || `Title`} />
       <Wrapper>
-        <TopBtn>
-          <Arrow src={UpperArrow} />
-          Top
-        </TopBtn>
-        <Main>{children}</Main>
+        {/* <MainDiv> */}
+        {/* <Nav data={category} /> */}
+        <Main>
+          {children}
+          <TopBtn>
+            <Arrow src={UpperArrow} />
+            Top
+          </TopBtn>
+        </Main>
+        {/* </MainDiv> */}
+
         <Footer>
           © {new Date().getFullYear()} &middot; Groot Inc. All rights reserved.
         </Footer>
