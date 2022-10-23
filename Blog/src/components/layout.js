@@ -15,12 +15,15 @@ import UpperArrow from "../images/arrow.png"
 import Nav from "./nav"
 
 const Wrapper = styled.div`
-  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
   font-size: 1rem;
   max-width: 54rem;
-  padding: 32px;
+  padding: 2rem;
+  margin: 3rem;
 `
 const Footer = styled.footer`
+  margin: 0 auto;
   margin-top: 32px;
   font-size: 14px;
   bottom: 0;
@@ -29,10 +32,11 @@ const Footer = styled.footer`
 
 const Main = styled.main`
   line-height: 2.4rem;
+  justify-content: space-around;
   //여기에서 본문 markdown 스타일 수정
   font-size: 1.2rem;
   color: black;
-
+  display: flex;
   a {
     color: gray !important;
     text-decoration: none !important;
@@ -65,30 +69,38 @@ const MainDiv = styled.div`
 
 const Layout = ({ children }) => {
   const data = useStaticQuery(graphql`
-    query SiteTitleQuery {
+    query {
       site {
         siteMetadata {
           title
         }
       }
+
+      allMarkdownRemark {
+        totalCount
+        group(field: frontmatter___category) {
+          category: fieldValue
+          totalCount
+        }
+      }
     }
   `)
+  console.log(data)
 
   return (
     <>
       <Header siteTitle={data.site.siteMetadata?.title || `Title`} />
+      {/* <Header siteTitle={title ? title : `Title`} /> */}
       <Wrapper>
         {/* <MainDiv> */}
-        {/* <Nav data={category} /> */}
         <Main>
-          {children}
+          <Nav data={data.allMarkdownRemark.group} />
+          <content>{children}</content>
           <TopBtn>
             <Arrow src={UpperArrow} />
             Top
           </TopBtn>
         </Main>
-        {/* </MainDiv> */}
-
         <Footer>
           © {new Date().getFullYear()} &middot; Groot Inc. All rights reserved.
         </Footer>
@@ -96,6 +108,23 @@ const Layout = ({ children }) => {
     </>
   )
 }
+
+// export const query = graphql`
+//   query LayoutQuery {
+//     metadata: site {
+//       siteMetadata {
+//         title
+//       }
+//     }
+//     categorydata: allMarkdownRemark {
+//       totalCount
+//       group(field: frontmatter___category) {
+//         category: fieldValue
+//         totalCount
+//       }
+//     }
+//   }
+// `
 
 Layout.propTypes = {
   children: PropTypes.node.isRequired,
