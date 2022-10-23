@@ -6,9 +6,6 @@ import { Link } from "gatsby"
 const StyledNav = styled.nav`
   display: flex;
   flex-direction: column;
-  position: fixed;
-  left: 10rem;
-  top: 20rem;
 `
 
 const Nav = ({ data }) => {

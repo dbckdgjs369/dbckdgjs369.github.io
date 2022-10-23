@@ -18,18 +18,17 @@ export default ({ data }) => {
   console.log(data)
   return (
     <Layout category={data.allMarkdownRemark.group}>
-      {/* <MainDiv> */}
-      <Nav data={data.allMarkdownRemark.group} />
-      {/* <ContentDiv> */}
-      <h1>Home</h1>
-      <h4>{data.allMarkdownRemark.totalCount} Posts</h4>
-      {data.allMarkdownRemark.edges.map(({ node }) => (
-        <div key={node.id}>
-          <Link to={node.fields.slug}>{node.frontmatter.title}</Link>
-        </div>
-      ))}
-      {/* </ContentDiv> */}
-      {/* </MainDiv> */}
+      <MainDiv>
+        <ContentDiv>
+          <h1>Home</h1>
+          <h4>{data.allMarkdownRemark.totalCount} Posts</h4>
+          {data.allMarkdownRemark.edges.map(({ node }) => (
+            <div key={node.id}>
+              <Link to={node.fields.slug}>{node.frontmatter.title}</Link>
+            </div>
+          ))}
+        </ContentDiv>
+      </MainDiv>
     </Layout>
   )
 }
