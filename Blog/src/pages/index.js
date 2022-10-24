@@ -2,7 +2,6 @@ import React from "react"
 import { graphql, Link } from "gatsby"
 import Layout from "../components/layout"
 import styled from "@emotion/styled"
-import Nav from "../components/nav"
 
 const MainDiv = styled.div`
   display: flex;

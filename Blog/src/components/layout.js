@@ -14,28 +14,34 @@ import styled from "@emotion/styled"
 import UpperArrow from "../images/arrow.png"
 import Nav from "./nav"
 
+const Article = styled.article`
+  //여기에서 본문 markdown 스타일 수정
+  width: 70%;
+`
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   font-size: 1rem;
-  max-width: 54rem;
-  padding: 2rem;
+  max-width: 80rem;
   margin: 3rem;
 `
 const Footer = styled.footer`
-  margin: 0 auto;
-  margin-top: 32px;
-  font-size: 14px;
+  text-align: center;
+  font-size: 1rem;
   bottom: 0;
-  margin-top: 5rem;
+  margin: 2rem 0;
 `
 
 const Main = styled.main`
+  display: flex;
+  flex-wrap: wrap;
+  padding: 3rem;
   line-height: 2.4rem;
   justify-content: space-around;
-  //여기에서 본문 markdown 스타일 수정
   font-size: 1.2rem;
   color: black;
+  gap: 3rem;
+
   display: flex;
   a {
     color: gray !important;
@@ -62,11 +68,6 @@ const Arrow = styled.img`
   margin: 0;
 `
 
-const MainDiv = styled.div`
-  display: flex;
-  flex-direction: row;
-`
-
 const Layout = ({ children }) => {
   const data = useStaticQuery(graphql`
     query {
@@ -90,41 +91,22 @@ const Layout = ({ children }) => {
   return (
     <>
       <Header siteTitle={data.site.siteMetadata?.title || `Title`} />
-      {/* <Header siteTitle={title ? title : `Title`} /> */}
       <Wrapper>
-        {/* <MainDiv> */}
         <Main>
           <Nav data={data.allMarkdownRemark.group} />
-          <content>{children}</content>
+          <Article>{children}</Article>
           <TopBtn>
             <Arrow src={UpperArrow} />
             Top
           </TopBtn>
         </Main>
-        <Footer>
-          © {new Date().getFullYear()} &middot; Groot Inc. All rights reserved.
-        </Footer>
       </Wrapper>
+      <Footer>
+        © {new Date().getFullYear()} &middot; Groot Inc. All rights reserved.
+      </Footer>
     </>
   )
 }
-
-// export const query = graphql`
-//   query LayoutQuery {
-//     metadata: site {
-//       siteMetadata {
-//         title
-//       }
-//     }
-//     categorydata: allMarkdownRemark {
-//       totalCount
-//       group(field: frontmatter___category) {
-//         category: fieldValue
-//         totalCount
-//       }
-//     }
-//   }
-// `
 
 Layout.propTypes = {
   children: PropTypes.node.isRequired,
