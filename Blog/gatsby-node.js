@@ -23,6 +23,9 @@ exports.createPages = async ({ graphql, actions }) => {
             fields {
               slug
             }
+            frontmatter {
+              category
+            }
           }
         }
       }
@@ -37,6 +40,17 @@ exports.createPages = async ({ graphql, actions }) => {
         // Data passed to context is available
         // in page queries as GraphQL variables.
         slug: node.fields.slug,
+      },
+    })
+  })
+  result.data.allMarkdownRemark.edges.forEach(({ node }) => {
+    createPage({
+      path: `/category/${node.frontmatter.category}`,
+      component: path.resolve(`./src/templates/category.js`),
+      context: {
+        // Data passed to context is available
+        // in page queries as GraphQL variables.
+        category: category.fieldValue,
       },
     })
   })
