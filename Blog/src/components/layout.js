@@ -25,7 +25,7 @@ const Wrapper = styled.div`
   max-width: 80rem;
   margin: 3rem;
 `
-const Footer = styled.footer`
+const StyledFooter = styled.footer`
   text-align: center;
   font-size: 1rem;
   bottom: 0;
@@ -101,9 +101,9 @@ const Layout = ({ children }) => {
           </TopBtn>
         </Main>
       </Wrapper>
-      <Footer>
+      <StyledFooter>
         © {new Date().getFullYear()} &middot; Groot Inc. All rights reserved.
-      </Footer>
+      </StyledFooter>
     </>
   )
 }
