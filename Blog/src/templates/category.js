@@ -1,6 +1,6 @@
 import { graphql, Link } from "gatsby"
 import React from "react"
-import Layout from "../components/Layout"
+import Layout from "../components/layout"
 import SEO from "../components/seo"
 
 // SitePageContext로부터 context를 이용해 전달한 값들의 type을 얻을 수 있다.
