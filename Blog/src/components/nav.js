@@ -14,7 +14,7 @@ const Nav = ({ data }) => {
       <div>
         {data.map((group, index) => (
           <div key={index}>
-            <Link to={group.category}>
+            <Link to={`category/${group.category}`}>
               {group.category}({group.totalCount})
             </Link>
           </div>
