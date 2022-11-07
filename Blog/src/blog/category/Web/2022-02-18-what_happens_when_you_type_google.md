@@ -1,12 +1,13 @@
 ---
-slug: "/blog/What Happens When You Type Google?"
-date: "2022-02-18"
+layout: post
 title: "What Happens When You Type Google?"
 author: Yoo Chang Heon
 tags: [Web]
+date: 2022-02-18 16:38:07 +0900
+category: [Web]
 ---
 
-## 브라우저에 <k>www.google.com 을 검색했을 때 일어나는 일
+## 브라우저에 www.google.com을 검색했을 때 일어나는 일
 
 [본문](https://medium.com/@maneesha.wijesinghe1/what-happens-when-you-type-an-url-in-the-browser-and-press-enter-bb0aa2449c1a)
 
