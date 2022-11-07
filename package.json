@@ -3,6 +3,6 @@
     "gh-pages": "^4.0.0"
   },
   "scripts": {
-    "deploy": "gatsby build && gh-pages -d public -b master"
+    "deploy": "cd Blog && gatsby build && gh-pages -d public -b main"
   }
 }
