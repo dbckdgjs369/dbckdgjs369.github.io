@@ -1,8 +1,6 @@
 ---
 layout: post
 title: "What Happens When You Type Google?"
-
-tags: [Web]
 date: 2022-02-18 16:38:07 +0900
 category: [Web]
 ---

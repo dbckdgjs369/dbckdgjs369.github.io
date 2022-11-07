@@ -3,7 +3,6 @@ slug: "/blog/web/cookie_session_storage"
 date: "2019-05-04"
 title: "cookie_session_storage"
 category: [Web]
-tags: ["cookie", "session", "storage"]
 ---
 
 ## 쿠키 세션 로컬

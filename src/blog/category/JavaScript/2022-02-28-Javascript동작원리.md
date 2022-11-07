@@ -1,8 +1,6 @@
 ---
 layout: post
 title: "Javascript 동작 원리"
-
-tags: [Javascript]
 category: [JavaScript]
 ---
 
