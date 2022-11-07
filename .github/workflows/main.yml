@@ -1,8 +1,8 @@
 name: Auto Deploy Project When Push Main Branch
-  on:
-    push:
-      branches:
-        - gh-pages
+on:
+  push:
+    branches:
+      - gh-pages
 ​
 jobs:
   build:
