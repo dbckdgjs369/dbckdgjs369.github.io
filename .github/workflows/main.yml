@@ -10,8 +10,8 @@ jobs:
     steps:
       - uses: actions/checkout@v1
 
-      - name: yarn install
-        run: yarn install
+      - name: npm install
+        run: npm install
 
       - name: gatsby build
         env:

@@ -36,7 +36,7 @@ exports.createPages = async ({ graphql, actions }) => {
       }
     }
   `)
-  console.log(result.data)
+
   result.data.allMarkdownRemark.group.forEach(category => {
     createPage({
       // 생성할 페이지들의 slug는 카테고리 이름을 kebab base로 변환한 것이다.
