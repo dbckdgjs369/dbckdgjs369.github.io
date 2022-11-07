@@ -1,8 +1,6 @@
 ---
 layout: post
 title: Restful Api
-
-tags: [Web]
 category: [Web]
 ---
 
