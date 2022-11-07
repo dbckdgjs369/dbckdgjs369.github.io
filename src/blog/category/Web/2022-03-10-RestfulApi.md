@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Restful Api
-author: Yoo Chang Heon
+
 tags: [Web]
 category: [Web]
 ---

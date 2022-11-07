@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 웹 브라우저 동작원리
-author: Yoo Chang Heon
+
 tags: [Web]
 category: [Web]
 ---

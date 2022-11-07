@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Javascript 동작 원리"
-author: Yoo Chang Heon
+
 tags: [Javascript]
 category: [JavaScript]
 ---

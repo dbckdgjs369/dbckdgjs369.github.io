@@ -1,7 +1,7 @@
 ---
 layout: post
 title: I Love Coffee 커피트럭 만들기
-author: Yoo Chang Heon
+
 tags: [React, JavaScript]
 category: [React]
 ---

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 리액트 컴포넌트 라이프 사이클
-author: Yoo Chang Heon
+
 tags: [React]
 category: [React]
 ---
