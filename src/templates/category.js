@@ -2,6 +2,7 @@ import { graphql, Link } from "gatsby"
 import React from "react"
 import Layout from "../components/layout"
 import SEO from "../components/seo"
+import styled from "@emotion/styled"
 
 // SitePageContext로부터 context를 이용해 전달한 값들의 type을 얻을 수 있다.
 const Category = ({ data, location, pageContext }) => {
@@ -12,11 +13,16 @@ const Category = ({ data, location, pageContext }) => {
     totalCount === 1 ? "" : "s"
   } categorized with "${category}"`
 
+  const StyledUl = styled.ul`
+    list-style: none;
+    margin: 0;
+  `
+
   return (
     <Layout location={location} title={title}>
       <SEO title={title} />
       <h1>{tagHeader}</h1>
-      <ul>
+      <StyledUl>
         {/* 각 카테고리에 해당하는 포스트의 목록을 출력한다. */}
         {edges.map(({ node }) => {
           const { slug } = node.fields
@@ -27,7 +33,7 @@ const Category = ({ data, location, pageContext }) => {
             </li>
           )
         })}
-      </ul>
+      </StyledUl>
       <Link to="/">Go back to the homepage</Link>
     </Layout>
   )
