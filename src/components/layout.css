@@ -222,3 +222,22 @@ pre tt:before,
 pre tt:after {
   content: none;
 }
+
+table,
+tr,
+thead,
+th,
+td {
+  border: 1px solid #333;
+  border-collapse: collapse;
+  border-radius: 3px;
+}
+tr:nth-child(even) {
+  background-color: lightblue;
+}
+tr:nth-child(odd) {
+  background-color: white;
+}
+th {
+  background-color: lightblue;
+}
