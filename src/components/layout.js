@@ -13,6 +13,8 @@ import "./layout.css"
 import styled from "@emotion/styled"
 import UpperArrow from "../images/arrow.png"
 import Nav from "./nav"
+import Pagination from "./pagination"
+import { usePostData } from "../hooks/use-post-data"
 
 const Article = styled.article`
   //여기에서 본문 markdown 스타일 수정
@@ -44,11 +46,11 @@ const Main = styled.main`
 
   display: flex;
   a {
-    color: gray !important;
-    text-decoration: none !important;
+    color: gray;
+    text-decoration: none;
   }
   a:hover {
-    color: rgb(75, 74, 74) !important;
+    color: rgb(75, 74, 74);
   }
 `
 const TopBtn = styled.button`
@@ -69,23 +71,7 @@ const Arrow = styled.img`
 `
 
 const Layout = ({ children }) => {
-  const data = useStaticQuery(graphql`
-    query {
-      site {
-        siteMetadata {
-          title
-        }
-      }
-
-      allMarkdownRemark {
-        totalCount
-        group(field: frontmatter___category) {
-          category: fieldValue
-          totalCount
-        }
-      }
-    }
-  `)
+  const data = usePostData()
   console.log(data)
 
   return (
@@ -95,10 +81,10 @@ const Layout = ({ children }) => {
         <Main>
           <Nav data={data.allMarkdownRemark.group} />
           <Article>{children}</Article>
-          <TopBtn>
+          {/* <TopBtn>
             <Arrow src={UpperArrow} />
             Top
-          </TopBtn>
+          </TopBtn> */}
         </Main>
       </Wrapper>
       <StyledFooter>

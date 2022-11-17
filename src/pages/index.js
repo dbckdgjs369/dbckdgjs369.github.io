@@ -2,6 +2,7 @@ import React from "react"
 import { graphql, Link } from "gatsby"
 import Layout from "../components/layout"
 import styled from "@emotion/styled"
+import Pagination from "../components/pagination"
 
 const MainDiv = styled.div`
   display: flex;
@@ -21,13 +22,16 @@ export default ({ data }) => {
         <ContentDiv>
           <h1>Home</h1>
           <h4>{data.allMarkdownRemark.totalCount} Posts</h4>
-          {data.allMarkdownRemark.edges.map(({ node }) => (
-            <div key={node.id}>
-              <Link to={node.fields.slug}>{node.frontmatter.title}</Link>
-            </div>
-          ))}
+          {data.allMarkdownRemark.edges.map(({ node }, index) =>
+            index < 10 ? (
+              <div key={node.id}>
+                <Link to={node.fields.slug}>{node.frontmatter.title}</Link>
+              </div>
+            ) : null
+          )}
         </ContentDiv>
       </MainDiv>
+      <Pagination />
     </Layout>
   )
 }
