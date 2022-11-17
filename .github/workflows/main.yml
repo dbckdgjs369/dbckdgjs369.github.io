@@ -13,6 +13,11 @@ jobs:
       - name: npm install
         run: npm install
 
+      - name: setup git config
+        run: |
+          git config user.name "Yoo Chang Heon"
+          git config user.email "dbckdgjs1130@naver.com"
+
       - name: gatsby build
         env:
           GH_API_KEY: ${{ secrets.GITHUB }}
