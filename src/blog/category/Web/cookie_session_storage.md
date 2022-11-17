@@ -1,11 +1,9 @@
 ---
 slug: "/blog/web/cookie_session_storage"
 date: "2019-05-04"
-title: "cookie_session_storage"
+title: "쿠키, 스토리지 차이점"
 category: [Web]
 ---
-
-## 쿠키 세션 로컬
 
 ## 쿠키
 
