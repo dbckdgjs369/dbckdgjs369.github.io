@@ -1,29 +1,16 @@
+name: Auto Deploy Project When Push Main Branch
 on:
   push:
     branches:
       - gh-pages
-name: Groot's blog auto deploy
 jobs:
-  build_gatsby:
-    name: build
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: npm install
-        run: npm install
-
-      - name: setup git config
-        run: |
-          git config user.name "dbckdgjs369"
-          git config user.email "dbckdgjs1130@naver.com"
-
-      - name: gatsby build
-        run: npm run deploy
-
-      - name: deploy
-        uses: maxheld83/ghpages@v0.2.1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GH_PAT: ${{ secrets.GITHUB }}
-          BUILD_DIR: "public/"
+build:
+  runs-on: ubuntu-latest
+  steps:
+    - name: Checkout
+      uses: actions/checkout@v1
+    - name: Deploy
+      uses: enriikke/gatsby-gh-pages-action@v2
+      with:
+        access-token: ${{ secrets.GITHUB_TOKEN }}
+        deploy-branch: main
