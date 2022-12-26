@@ -138,11 +138,13 @@ pre {
   margin-top: 0;
   margin-bottom: var(--space-4);
   font-size: 0.875rem;
+  width: fit-content;
+  white-space: pre-wrap;
+  word-break: break-word;
+  max-width: 40rem;
   line-height: var(--line-height-normal);
   background: hsla(0, 0%, 0%, 0.04);
   border-radius: var(--border-radius);
-  overflow: auto;
-  word-wrap: normal;
   padding: var(--space-4);
 }
 b,
