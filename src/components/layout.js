@@ -18,15 +18,10 @@ import { usePostData } from "../hooks/use-post-data"
 
 const Article = styled.article`
   //여기에서 본문 markdown 스타일 수정
-  width: 70%;
 `
 const Wrapper = styled.div`
   display: flex;
-  flex-direction: column;
-  font-size: 1rem;
   justify-content: center;
-  align-items: center;
-  margin: 3rem;
 `
 const StyledFooter = styled.footer`
   text-align: center;
@@ -37,9 +32,10 @@ const StyledFooter = styled.footer`
 
 const Main = styled.main`
   display: flex;
-  white-space: nowrap;
   line-height: 2.4rem;
+  width: 70rem;
   font-size: 1.2rem;
+  justify-content: center;
   color: black;
   a {
     color: gray;
