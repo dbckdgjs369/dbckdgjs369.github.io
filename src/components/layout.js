@@ -24,7 +24,8 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   font-size: 1rem;
-  max-width: 80rem;
+  justify-content: center;
+  align-items: center;
   margin: 3rem;
 `
 const StyledFooter = styled.footer`
@@ -36,15 +37,10 @@ const StyledFooter = styled.footer`
 
 const Main = styled.main`
   display: flex;
-  flex-wrap: wrap;
-  padding: 3rem;
+  white-space: nowrap;
   line-height: 2.4rem;
-  justify-content: space-around;
   font-size: 1.2rem;
   color: black;
-  gap: 3rem;
-
-  display: flex;
   a {
     color: gray;
     text-decoration: none;
@@ -65,32 +61,23 @@ const TopBtn = styled.button`
   box-shadow: 1px 1px 1px 1px gray;
 `
 
-const Arrow = styled.img`
-  height: 2.2rem;
-  margin: 0;
-`
-
 const Layout = ({ children }) => {
   const data = usePostData()
   console.log(data)
 
   return (
-    <>
+    <div>
       <Header siteTitle={data.site.siteMetadata?.title || `Title`} />
       <Wrapper>
         <Main>
           <Nav data={data.allMarkdownRemark.group} />
           <Article>{children}</Article>
-          {/* <TopBtn>
-            <Arrow src={UpperArrow} />
-            Top
-          </TopBtn> */}
         </Main>
       </Wrapper>
       <StyledFooter>
         © {new Date().getFullYear()} &middot; Groot Inc. All rights reserved.
       </StyledFooter>
-    </>
+    </div>
   )
 }
 
