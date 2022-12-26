@@ -18,3 +18,8 @@ category: [Algorithm] // 카테고리 분류
 date: 2022-01-27 20:08 +0900 // 생성 시간으로 sort
 ---
 ```
+
+### Skills
+- Gatsby
+- Emotion
+- Github Action
