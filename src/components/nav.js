@@ -6,6 +6,11 @@ import { Link } from "gatsby"
 const StyledNav = styled.nav`
   display: flex;
   flex-direction: column;
+  position: fixed;
+  left: 8rem;
+  @media screen and (max-width: 1270px) {
+    display: none;
+  }
 `
 
 const Nav = ({ data }) => {
