@@ -18,6 +18,7 @@ import { usePostData } from "../hooks/use-post-data"
 
 const Article = styled.article`
   //여기에서 본문 markdown 스타일 수정
+  width: 45rem;
 `
 const Wrapper = styled.div`
   display: flex;
