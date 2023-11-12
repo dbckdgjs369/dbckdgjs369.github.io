@@ -1,0 +1,1 @@
+{"version":3,"file":"component---src-pages-about-js-024803a7f3b0100e3919.js","mappings":"oJAMA,UAJc,WACZ,OAAO,2BACR,C","sources":["webpack://groot-tech-blog/./src/pages/about.js"],"sourcesContent":["import React from \"react\"\n\nconst about = () => {\n  return <div>about</div>\n}\n\nexport default about\n"],"names":[],"sourceRoot":""}
