@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunkgroot_tech_blog=self.webpackChunkgroot_tech_blog||[]).push([[617],{6034:function(t,e,o){o.r(e),o.d(e,{Head:function(){return r}});o(7294);var n=o(1082),u=o(5427),l=o(9357),c=o(3431),r=function(){return(0,c.tZ)(l.Z,{title:"Page two"})};e.default=function(){return(0,c.tZ)(u.Z,null,(0,c.tZ)("h1",null,"Hi from the second page"),(0,c.tZ)("p",null,"Welcome to page 2"),(0,c.tZ)(n.Link,{to:"/"},"Go back to the homepage"))}}}]);
+//# sourceMappingURL=component---src-pages-page-2-js-7e7512490f94bb21f068.js.map
