@@ -1,67 +1,77 @@
-import { graphql, Link } from "gatsby"
+import { graphql } from "gatsby"
 import React from "react"
-import Layout from "../components/layout"
-import SEO from "../components/seo"
 import styled from "@emotion/styled"
+import Layout from "../components/layout"
+import Seo from "../components/seo"
+import PostCard, { CardGrid } from "../components/post-card"
+import { getCategoryMeta } from "../utils/category-meta"
 
-// SitePageContext로부터 context를 이용해 전달한 값들의 type을 얻을 수 있다.
+const PageHeader = styled.header`
+  margin-bottom: 2.5rem;
+`
+
+const Title = styled.h1`
+  font-size: clamp(1.8rem, 4vw, 2.4rem);
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+`
+
+const Count = styled.p`
+  color: var(--text-muted);
+  margin-top: 0.75rem;
+`
+
 const Category = ({ data, location, pageContext }) => {
-  const { title } = data.site.siteMetadata
-  const { category } = pageContext // gatsby-node.js의 createPage에서 넣어준 카테고리 이름.
+  const { category } = pageContext
   const { edges, totalCount } = data.allMarkdownRemark
-  const tagHeader = `${totalCount} post${
-    totalCount === 1 ? "" : "s"
-  } categorized with "${category}"`
-
-  const StyledUl = styled.ul`
-    list-style: none;
-    margin: 0;
-  `
+  const meta = getCategoryMeta(category)
 
   return (
-    <Layout location={location} title={title}>
-      <SEO title={title} />
-      <h1>{tagHeader}</h1>
-      <StyledUl>
-        {/* 각 카테고리에 해당하는 포스트의 목록을 출력한다. */}
-        {edges.map(({ node }) => {
-          const { slug } = node.fields
-          const { title } = node.frontmatter
-          return (
-            <li key={slug}>
-              <Link to={`${slug}`}>{title}</Link>
-            </li>
-          )
-        })}
-      </StyledUl>
-      <Link to="/">Go back to the homepage</Link>
+    <Layout wide location={location}>
+      <Seo title={category} />
+      <PageHeader>
+        <Title>
+          <span>{meta.emoji}</span>
+          {category}
+        </Title>
+        <Count>
+          "{category}" 카테고리의 글 {totalCount}개
+        </Count>
+      </PageHeader>
+      <CardGrid>
+        {edges.map(({ node }) => (
+          <PostCard key={node.id} node={node} />
+        ))}
+      </CardGrid>
     </Layout>
   )
 }
 
 export default Category
 
-// 쿼리의 argument인 $category는 page context로 전달 받는다.
 export const pageQuery = graphql`
   query Category($category: String) {
-    site {
-      siteMetadata {
-        title
-      }
-    }
     allMarkdownRemark(
       limit: 2000
-      sort: { fields: [frontmatter___date], order: DESC }
-      filter: { frontmatter: { category: { in: [$category] } } }
+      sort: { fields: [fields___date], order: DESC }
+      filter: {
+        frontmatter: { category: { in: [$category] }, published: { ne: false } }
+      }
     ) {
       totalCount
       edges {
         node {
+          id
+          excerpt(pruneLength: 100)
+          timeToRead
           fields {
             slug
+            date
           }
           frontmatter {
             title
+            category
           }
         }
       }

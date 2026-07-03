@@ -1,6 +1,4 @@
 html {
-  background-color: #ffffff;
-}
-body {
-  font-size: 62.5%;
+  background-color: var(--bg);
+  transition: background 0.25s ease;
 }

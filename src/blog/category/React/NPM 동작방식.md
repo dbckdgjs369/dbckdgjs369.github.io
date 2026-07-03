@@ -1,3 +1,10 @@
+---
+published: false
+layout: post
+title: NPM은 어떻게 동작하는가
+category: [React]
+---
+
 ## NPM run ~ 할 때 무슨 일이 일어나는가?
 
 1. package.json파일에 가서 script를 찾고, 그곳에 있는 커맨드를 실행한다.

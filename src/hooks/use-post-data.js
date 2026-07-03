@@ -9,7 +9,9 @@ export const usePostData = () => {
             title
           }
         }
-        allMarkdownRemark {
+        allMarkdownRemark(
+          filter: { frontmatter: { published: { ne: false } } }
+        ) {
           totalCount
           group(field: frontmatter___category) {
             category: fieldValue

@@ -1,4 +1,5 @@
 ---
+published: false
 layout: post
 slug: "/category/Algorithm/binary_search"
 title: Javascript로 이진탐색 만들기

@@ -1,4 +1,5 @@
 ---
+published: false
 layout: post
 title: 웹 브라우저 동작원리
 category: [Web]

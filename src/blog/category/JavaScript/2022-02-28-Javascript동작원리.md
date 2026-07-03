@@ -1,4 +1,5 @@
 ---
+published: false
 layout: post
 title: "Javascript 동작 원리"
 category: [JavaScript]

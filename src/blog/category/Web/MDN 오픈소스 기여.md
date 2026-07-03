@@ -1,4 +1,5 @@
 ---
+published: false
 slug: "/blog/MDN 오픈소스 기여"
 date: "2023-02-11"
 title: "MDN 오픈소스 기여 후기"

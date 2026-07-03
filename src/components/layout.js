@@ -7,79 +7,88 @@
 
 import * as React from "react"
 import PropTypes from "prop-types"
-import { useStaticQuery, graphql } from "gatsby"
 import Header from "./header"
 import "./layout.css"
 import styled from "@emotion/styled"
-import UpperArrow from "../images/arrow.png"
-import Nav from "./nav"
-import Pagination from "./pagination"
-import { usePostData } from "../hooks/use-post-data"
 
-const Article = styled.article`
-  //여기에서 본문 markdown 스타일 수정
-  width: 45rem;
-`
-const Wrapper = styled.div`
+const Page = styled.div`
   display: flex;
-  justify-content: center;
-`
-const StyledFooter = styled.footer`
-  text-align: center;
-  font-size: 1rem;
-  bottom: 0;
-  margin: 2rem 0;
+  flex-direction: column;
+  min-height: 100vh;
 `
 
 const Main = styled.main`
-  display: flex;
-  line-height: 2.4rem;
-  width: 70rem;
-  font-size: 1.2rem;
-  justify-content: center;
-  color: black;
-  a {
-    color: gray;
-    text-decoration: none;
-  }
-  a:hover {
-    color: rgb(75, 74, 74);
-  }
+  flex: 1;
+  width: 100%;
+  max-width: ${p => (p.wide ? "var(--max-wide)" : "var(--max-content)")};
+  margin: 0 auto;
+  padding: 3rem 1.5rem 4rem;
+  line-height: var(--line-height-normal);
 `
+
+const StyledFooter = styled.footer`
+  border-top: 1px solid var(--border);
+  text-align: center;
+  font-size: 0.9rem;
+  color: var(--text-faint);
+  padding: 2rem 1.5rem;
+`
+
 const TopBtn = styled.button`
   position: fixed;
-  bottom: 5rem;
-  right: 5rem;
-  width: 5rem;
-  height: 5rem;
-  border-radius: 100%;
-  font-size: 1.3rem;
+  bottom: 2rem;
+  right: 2rem;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  font-size: 1.2rem;
+  color: #fff;
+  background: var(--accent);
   border: none;
-  box-shadow: 1px 1px 1px 1px gray;
+  cursor: pointer;
+  box-shadow: var(--shadow-hover);
+  opacity: ${p => (p.visible ? 1 : 0)};
+  pointer-events: ${p => (p.visible ? "auto" : "none")};
+  transition: opacity var(--transition), transform var(--transition),
+    background var(--transition);
+
+  &:hover {
+    background: var(--accent-strong);
+    transform: translateY(-2px);
+  }
 `
 
-const Layout = ({ children }) => {
-  const data = usePostData()
-  console.log(data)
+const Layout = ({ children, wide = false }) => {
+  const [showTop, setShowTop] = React.useState(false)
+
+  React.useEffect(() => {
+    const onScroll = () => setShowTop(window.scrollY > 400)
+    window.addEventListener("scroll", onScroll)
+    onScroll()
+    return () => window.removeEventListener("scroll", onScroll)
+  }, [])
 
   return (
-    <div>
-      <Header siteTitle={data.site.siteMetadata?.title || `Title`} />
-      <Wrapper>
-        <Main>
-          <Nav data={data.allMarkdownRemark.group} />
-          <Article>{children}</Article>
-        </Main>
-      </Wrapper>
+    <Page>
+      <Header />
+      <Main wide={wide}>{children}</Main>
       <StyledFooter>
-        © {new Date().getFullYear()} &middot; Groot Inc. All rights reserved.
+        © {new Date().getFullYear()} · Groot's Tech Blog. Built with Gatsby 🌱
       </StyledFooter>
-    </div>
+      <TopBtn
+        visible={showTop}
+        onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+        aria-label="맨 위로"
+      >
+        ↑
+      </TopBtn>
+    </Page>
   )
 }
 
 Layout.propTypes = {
   children: PropTypes.node.isRequired,
+  wide: PropTypes.bool,
 }
 
 export default Layout

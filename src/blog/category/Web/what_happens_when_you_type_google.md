@@ -1,4 +1,5 @@
 ---
+published: false
 slug: "/blog/What Happens When You Type Google?"
 date: "2022-02-18"
 title: "What Happens When You Type Google?"

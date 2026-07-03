@@ -1,4 +1,5 @@
 ---
+published: false
 slug: "/blog/web/cookie_session_storage"
 date: "2019-05-04"
 title: "쿠키, 스토리지 차이점"

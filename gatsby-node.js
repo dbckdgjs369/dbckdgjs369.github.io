@@ -1,5 +1,19 @@
 const path = require(`path`)
 const { createFilePath } = require(`gatsby-source-filesystem`)
+const projects = require(`./src/data/projects`)
+
+// `project` 는 아직 어떤 글에도 없을 수 있는 선택 필드라, 명시적으로 스키마에 등록해
+// 쿼리 시 "Cannot query field project" 로 빌드가 깨지지 않게 한다. @infer 로 나머지 필드는 유지.
+exports.createSchemaCustomization = ({ actions }) => {
+  actions.createTypes(`
+    type MarkdownRemarkFrontmatter @infer {
+      project: String
+    }
+    type MarkdownRemark implements Node @infer {
+      frontmatter: MarkdownRemarkFrontmatter
+    }
+  `)
+}
 
 exports.onCreateNode = ({ node, getNode, actions }) => {
   const { createNodeField } = actions
@@ -10,6 +24,19 @@ exports.onCreateNode = ({ node, getNode, actions }) => {
       name: `slug`,
       value: slug,
     })
+
+    // 날짜: frontmatter.date가 있으면 우선, 없으면 파일명(YYYY-MM-DD-...)에서 추출
+    let date = node.frontmatter && node.frontmatter.date
+    if (!date) {
+      const parent = getNode(node.parent)
+      const match = parent && /(\d{4}-\d{2}-\d{2})/.exec(parent.name || "")
+      if (match) date = match[1]
+    }
+    createNodeField({
+      node,
+      name: `date`,
+      value: date ? new Date(date).toISOString() : null,
+    })
   }
 }
 
@@ -18,7 +45,9 @@ exports.createPages = async ({ graphql, actions }) => {
   const categoriesTemplate = path.resolve("src/templates/category.js")
   const result = await graphql(`
     query {
-      allMarkdownRemark {
+      allMarkdownRemark(
+        filter: { frontmatter: { published: { ne: false } } }
+      ) {
         edges {
           node {
             fields {
@@ -61,9 +90,22 @@ exports.createPages = async ({ graphql, actions }) => {
     })
   })
 
+  // 프로젝트별 "관련 글 모음" 페이지 (/projects/<slug>)
+  const projectDetailTemplate = path.resolve("src/templates/project-detail.js")
+  projects.forEach(project => {
+    createPage({
+      path: `/projects/${project.slug}`,
+      component: projectDetailTemplate,
+      context: {
+        slug: project.slug,
+      },
+    })
+  })
+
   const posts = result.data.allMarkdownRemark.edges
   const postsPerPage = 10
-  const numPages = Math.ceil(posts.length / postsPerPage)
+  // 공개 글이 없어도 /page=1 은 항상 생성 (Posts 링크가 살아있도록)
+  const numPages = Math.max(1, Math.ceil(posts.length / postsPerPage))
   Array.from({ length: numPages }).forEach((_, i) => {
     createPage({
       path: i === 0 ? `/page=${i + 1}` : `/page=${i + 1}`,
