@@ -293,8 +293,8 @@
         </summary>
         <div class="p-body">
           <div class="step problem">
-            <div class="lbl">문제</div>
-            <div class="txt">증권사·거래소 API의 키와 인증을 클라이언트(확장)에 그대로 두면 <b>그대로 노출</b>된다. 또 불특정 웹페이지 위에 얹히다 보니 사이트마다 스타일이 깨지고 안 보이는 문제가 있었다.</div>
+            <div class="lbl">불편했던 점</div>
+            <div class="txt">주식·코인 시세가 수시로 궁금한데, 확인하려면 그때마다 보던 화면을 벗어나 증권사 앱이나 거래소 탭을 따로 열어야 했다. <b>“지금 보고 있는 이 페이지 위에 시세가 그냥 떠 있으면 좋겠다”</b>는 생각에서 시작했다.</div>
           </div>
           <div class="step">
             <div class="lbl">해결</div>
@@ -333,13 +333,13 @@
         </summary>
         <div class="p-body">
           <div class="step problem">
-            <div class="lbl">문제</div>
-            <div class="txt">기존 도구들은 <b>fiber._debugSource</b>에 의존했는데, 이게 <b>React 19에서 제거</b>되어 더 이상 동작하지 않았다. Babel·DevTools·브라우저 확장을 요구하는 방식도 무거웠다.</div>
+            <div class="lbl">불편했던 점</div>
+            <div class="txt">화면에서 고칠 부분은 눈에 보이는데, 그게 <b>어느 컴포넌트·어느 파일에서 그려지는지</b> 찾는 게 매번 번거로웠다. 규모가 큰 프로젝트나 남이 짠 코드에서는 텍스트로 검색해가며 한참 헤맸다. <b>화면을 클릭하면 바로 그 소스로 갔으면</b> 했다.</div>
           </div>
           <div class="step">
             <div class="lbl">해결</div>
             <div class="txt"><ul>
-              <li><b>빌드타임 AST 변환(Acorn)</b>으로 소스 위치 메타데이터를 주입 → React 버전과 무관하게 동작</li>
+              <li>기존 도구가 의존하던 <b>fiber._debugSource가 React 19에서 사라진</b> 뒤에도 동작하도록, <b>빌드타임 AST 변환(Acorn)</b>으로 소스 위치를 직접 주입 → React 버전과 무관하게 동작</li>
               <li><b>unplugin</b> 기반으로 Vite·Webpack·Rollup·esbuild·Rspack <b>5종 빌드 툴</b>을 단일 코드베이스로 지원</li>
               <li>Zero dependencies, dev 전용 — 프로덕션 번들에는 전혀 영향이 없도록 설계</li>
             </ul></div>
@@ -374,8 +374,8 @@
         </summary>
         <div class="p-body">
           <div class="step problem">
-            <div class="lbl">문제</div>
-            <div class="txt">로컬 변경을 실기기(모바일)에서 확인하려면 <b>매번 빌드·배포(약 120초)</b>를 거쳐야 했다. 피드백 루프가 너무 길었다.</div>
+            <div class="lbl">불편했던 점</div>
+            <div class="txt">로컬에서 만든 화면을 실제 폰에서 확인하고 싶은데, 그때마다 빌드하고 배포 서버에 올려(<b>약 120초</b>) 폰으로 접속해야 했다. 작은 수정 하나 보려고 2분씩 기다리는 게 반복되니 개발 흐름이 자꾸 끊겼다.</div>
           </div>
           <div class="step">
             <div class="lbl">해결</div>
