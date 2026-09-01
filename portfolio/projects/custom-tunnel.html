@@ -1,0 +1,316 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Custom Tunnel — 로컬 개발 서버를 공개 URL로 즉시 여는 VSCode 확장. WebSocket 리버스 프록시 릴레이 서버 직접 구현.">
+<meta name="color-scheme" content="light dark">
+<meta property="og:title" content="Custom Tunnel · 유창헌">
+<meta property="og:description" content="빌드·배포 120초를 없앤 VSCode 터널링 확장">
+<meta property="og:type" content="article">
+<title>Custom Tunnel · 유창헌</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<link rel="stylesheet" href="../type.css">
+<link rel="stylesheet" href="proj.css">
+</head>
+<body>
+
+<nav class="top">
+  <div class="bar">
+    <a class="back" href="../index.html">← 포트폴리오</a>
+    <span class="right">
+      <a href="#usage">사용법</a>
+      <a href="#features">기능</a>
+      <a href="#how" class="hide-sm">만든 방법</a>
+      <button class="tg" id="tg" aria-label="테마 전환" title="테마 전환"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg></button>
+    </span>
+  </div>
+</nav>
+
+<header class="phero">
+  <div class="wrap">
+    <div class="cat">VSCode Extension + Node.js 릴레이 서버 · 2025.12 · v2.1.0</div>
+    <h1>Custom Tunnel</h1>
+    <p class="lede">로컬 개발 서버를 <b>공개 URL로 즉시</b> 열어, 모바일 등 외부 기기에서 빌드·배포 없이 확인하는 VSCode 확장입니다. 터널 생성부터 QR 접속, 모바일 브라우저의 콘솔 로그 확인까지 <b>에디터 사이드바 안에서</b> 끝납니다.</p>
+    <div class="p-badges">
+      <span class="kpi good">빌드·배포 120초 → 0</span>
+      <span class="kpi good">실무 적용</span>
+      <span class="kpi">VSCode 확장 v2.1.0</span>
+    </div>
+    <div class="p-links">
+      <a class="primary" href="https://github.com/dbckdgjs369/debug_tool" target="_blank" rel="noopener">GitHub ↗</a>
+    </div>
+  </div>
+</header>
+
+<section id="why">
+  <div class="wrap">
+    <div class="sec-title">
+      <span class="eb">Why</span>
+      <h2>왜 만들었나</h2>
+    </div>
+    <div class="prose">
+      <p>로컬에서 만든 화면을 <b>실제 폰에서</b> 확인하고 싶은데, 그때마다 빌드하고 배포 서버에 올려(<b>약 120초</b>) 폰으로 접속해야 했습니다. 여백 몇 픽셀, 터치 영역 하나 확인하려고 2분씩 기다리는 게 반복되니 개발 흐름이 자꾸 끊겼습니다.</p>
+      <p>더 곤란한 건 <b>모바일 브라우저에는 콘솔이 없다는 점</b>이었습니다. 폰에서만 재현되는 버그를 만나면 원인을 볼 방법이 없어, <code>alert()</code>를 심고 다시 2분을 기다리는 식으로 디버깅했습니다.</p>
+      <p>기존 터널링 서비스도 있었지만, 매번 별도 CLI를 띄우고 URL을 복사해 폰에 옮기는 과정이 번거로웠고 원격 콘솔은 어차피 해결되지 않았습니다. <b>에디터를 벗어나지 않고, 콘솔까지 같이 보이는</b> 도구가 필요했습니다.</p>
+    </div>
+  </div>
+</section>
+
+<section id="usage" class="alt">
+  <div class="wrap">
+    <div class="sec-title">
+      <span class="eb">How to use</span>
+      <h2>어떻게 쓰나</h2>
+      <p class="sub">포트 번호 하나만 입력하면 공개 URL이 나옵니다.</p>
+    </div>
+
+    <ol class="steps">
+      <li>
+        <h3>사이드바 열기</h3>
+        <div class="body">
+          <p>Activity Bar의 Custom Tunnel 아이콘을 누르면 <b>TUNNEL DASHBOARD</b> 패널이 열립니다. 빠른 시작 폼과 활성 터널 목록이 한 화면에 있습니다.</p>
+          <figure class="shot">
+            <img class="narrow" src="../images/custom-tunnel/dashboard.png" alt="VSCode 사이드바에 열린 TUNNEL DASHBOARD 패널. 상단에 포트 입력창과 HTTPS 사용 체크박스, 터널 시작 버튼이 있는 빠른 시작 영역, 그 아래 활성 터널 0개인 빈 목록이 보인다.">
+            <figcaption><b>대시보드 초기 화면</b> 포트 입력 → HTTPS 여부 체크 → 터널 시작, 세 단계가 전부입니다.</figcaption>
+          </figure>
+        </div>
+      </li>
+
+      <li>
+        <h3>터널 시작</h3>
+        <div class="body">
+          <p>포트 입력창에 로컬 개발 서버 포트(예: <code>3000</code>)를 넣고 <b>터널 시작</b>을 누릅니다. 로컬 서버가 HTTPS로 뜬다면 체크박스를 함께 켭니다.</p>
+          <p>무료 호스팅 특성상 릴레이 서버가 Sleep 상태였다면, 깨우는 동안 <b>Wake-up 진행률</b>이 단계별로 표시됩니다. 아무 반응 없이 기다리게 두지 않으려고 넣은 장치입니다.</p>
+          <figure class="shot">
+            <img class="narrow" src="../images/custom-tunnel/wake-up.png" alt="VSCode 사이드바에 뜬 터널 연결 중 로딩 패널. 원형 스피너 아래 '터널 연결 중...' 제목과 '터널 클라이언트 초기화 완료' 단계 문구가 있고, 그 아래 4분의 1쯤 찬 진행률 막대, '무료 서버는 최대 50초 정도 소요될 수 있습니다' 안내 박스, '경과 시간: 3초' 표시가 차례로 놓여 있다. 우측 상단에 닫기 버튼이 있다.">
+            <figcaption><b>Wake-up 진행률</b> 지금 어느 단계인지(<code>터널 클라이언트 초기화 완료</code>), 얼마나 걸릴 수 있는지(<code>최대 50초</code>), 얼마나 지났는지(<code>경과 시간</code>)를 한 화면에 뒀습니다. <b>세 가지가 다 있어야 기다릴 수 있습니다</b> — 진행률만 있으면 멈춘 건지 알 수 없고, 예상 시간이 없으면 50초를 고장으로 오해합니다.</figcaption>
+          </figure>
+        </div>
+      </li>
+
+      <li>
+        <h3>공개 URL 확인과 제어</h3>
+        <div class="body">
+          <p>터널이 열리면 활성 터널 목록에 항목이 생기고, <b>터널 ID·공개 URL·포트·HTTPS 여부·시작 시각</b>이 함께 표시됩니다.</p>
+          <figure class="shot">
+            <img class="narrow" src="../images/custom-tunnel/active-tunnel.png" alt="활성 터널 1개가 등록된 대시보드. 터널 ID 57725512와 공개 URL, 포트 3001·HTTPS·시작 시각 정보가 표시되고 그 아래 QR·복사·열기·중지 네 개의 버튼과 접힌 원격 콘솔 영역이 보인다.">
+            <figcaption><b>활성 터널 항목</b> QR·복사·열기·중지 네 버튼으로 제어하고, 아래 원격 콘솔은 접었다 펼 수 있습니다.</figcaption>
+          </figure>
+        </div>
+      </li>
+
+      <li>
+        <h3>QR로 폰에서 바로 열기</h3>
+        <div class="body">
+          <p><b>QR</b> 버튼을 누르면 접속 URL이 QR 코드로 뜹니다. 폰 카메라로 찍으면 그대로 열립니다 — URL을 메신저로 보내 옮기던 과정을 없앤 부분입니다.</p>
+          <figure class="shot">
+            <img class="narrow" src="../images/custom-tunnel/qr-modal.png" alt="모바일로 접속하기 제목의 QR 코드 팝업. 큰 QR 코드 아래에 공개 URL 텍스트와 닫기 버튼이 있다.">
+            <figcaption><b>QR 팝업</b> 코드 아래에 URL도 같이 띄워, 카메라가 안 되는 상황이면 직접 입력할 수 있게 했습니다.</figcaption>
+          </figure>
+        </div>
+      </li>
+
+      <li>
+        <h3>콘솔 로그 보기</h3>
+        <div class="body">
+          <p>터널 항목의 <b>원격 콘솔</b>을 펼치면, 터널로 접속한 페이지의 <code>console</code> 출력이 에디터로 실시간 전달됩니다. 콘솔을 열기 어려운 기기에서 특히 쓸모가 큽니다.</p>
+          <ul>
+            <li>레벨 드롭다운으로 <b>ALL / LOG / INFO / WARN / ERROR</b> 필터링</li>
+            <li>검색창에 키워드를 넣어 원하는 로그만 표시</li>
+            <li>휴지통 아이콘으로 전체 지우기</li>
+          </ul>
+          <figure class="shot">
+            <img class="narrow" src="../images/custom-tunnel/remote-console.png" alt="펼쳐진 원격 콘솔 패널. 로그 레벨 드롭다운이 열려 ALL·LOG·INFO·WARN·ERROR 다섯 항목이 색상 점과 함께 나열되고, 우측에 필터 검색창과 지우기 아이콘이 있다.">
+            <figcaption><b>원격 콘솔</b> 레벨별 색 구분과 키워드 필터로, 폰에서만 재현되는 버그의 로그를 좁혀 봅니다.</figcaption>
+          </figure>
+        </div>
+      </li>
+
+      <li>
+        <h3>중지</h3>
+        <div class="body">
+          <p><b>중지</b> 버튼을 누르면 해당 터널이 닫히고 목록에서 사라집니다. 명령 팔레트의 <code>Tunnel: Stop Tunnel</code>로도 같은 동작을 합니다.</p>
+        </div>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<section id="features">
+  <div class="wrap">
+    <div class="sec-title">
+      <span class="eb">Features</span>
+      <h2>기능</h2>
+    </div>
+    <div class="fgroups">
+      <div class="fgroup">
+        <h3>터널링</h3>
+        <ul>
+          <li>로컬 포트를 <b>공개 URL로 즉시 공유</b></li>
+          <li><b>HTTPS 로컬 서버</b>도 터널링 지원</li>
+          <li>텍스트·바이너리 응답 모두 중계 (Base64 처리)</li>
+          <li>Wake-up 진행 상황 단계별 표시</li>
+        </ul>
+      </div>
+      <div class="fgroup">
+        <h3>모바일 디버깅</h3>
+        <ul>
+          <li><b>원격 콘솔</b> 실시간 수집</li>
+          <li>로그 레벨 필터 (LOG·INFO·WARN·ERROR)</li>
+          <li>키워드 검색 및 초기화</li>
+          <li><b>QR 코드</b>로 모바일 즉시 접속</li>
+        </ul>
+      </div>
+      <div class="fgroup">
+        <h3>에디터 통합</h3>
+        <ul>
+          <li>사이드바 <b>대시보드</b>에서 터널 상태를 한눈에 확인</li>
+          <li>URL 클립보드 복사 · 브라우저 열기</li>
+          <li>여러 터널 동시 관리</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="how" class="alt">
+  <div class="wrap">
+    <div class="sec-title">
+      <span class="eb">How it works</span>
+      <h2>어떻게 만들었나</h2>
+      <p class="sub">공개 서버가 로컬을 향해 연결할 수는 없으니, 로컬이 먼저 나가서 연결을 붙잡고 있는 구조로 뒤집었습니다.</p>
+    </div>
+
+    <div class="prose">
+      <pre class="code"><code>모바일 브라우저
+     │  ① https://debug-tool.onrender.com/57725512 요청
+     ▼
+<span class="hl">릴레이 서버</span> (Render · WebSocket + HTTP)
+     │  ② 터널 ID로 짝지어진 WS 연결에 요청을 실어 보냄
+     ▼
+<span class="hl">로컬 클라이언트</span> (확장이 띄우는 프로세스)
+     │  ③ localhost:3000 으로 그대로 전달
+     ▼
+  내 개발 서버
+     │  ④ 응답 → 같은 경로로 역주행
+     └─ HTML이면 <span class="cm">콘솔 캡처 스크립트를 주입</span>해서 반환</code></pre>
+
+      <div class="dec">
+        <h3>1. 방화벽 뒤의 로컬 서버를 어떻게 외부에 노출하나</h3>
+        <div class="row problem">
+          <div class="lbl">문제</div>
+          <div class="txt">공개 인터넷에서 내 노트북의 <code>localhost:3000</code>으로 직접 들어올 방법이 없습니다. 공유기·방화벽이 인바운드 연결을 막고, 포트포워딩은 매번 설정할 것도 많고 보안상 내키지 않았습니다.</div>
+        </div>
+        <div class="row">
+          <div class="lbl">선택</div>
+          <div class="txt"><b>WebSocket 기반 리버스 프록시</b>로 방향을 뒤집었습니다. 로컬 클라이언트가 <b>바깥으로 나가서</b> 릴레이 서버에 WS 연결을 걸어두면, 서버는 외부 요청이 들어올 때 그 연결에 요청을 실어 보냅니다. 아웃바운드 연결은 방화벽이 막지 않으므로 설정이 필요 없습니다.</div>
+        </div>
+        <div class="row result">
+          <div class="lbl">결과</div>
+          <div class="txt">사용자는 <b>포트 번호만</b> 입력하면 됩니다. 네트워크 설정은 건드릴 게 없습니다.</div>
+        </div>
+      </div>
+
+      <div class="dec">
+        <h3>2. 콘솔이 없는 모바일 브라우저를 어떻게 디버깅하나</h3>
+        <div class="row problem">
+          <div class="lbl">문제</div>
+          <div class="txt">폰에서만 재현되는 버그가 있어도 <code>console.log</code>를 볼 수 없습니다. USB 원격 디버깅은 케이블·드라이버·기기별 설정이 제각각이라 매번 손이 많이 갔습니다.</div>
+        </div>
+        <div class="row">
+          <div class="lbl">선택</div>
+          <div class="txt">터널을 지나는 <b>HTML 응답에 콘솔 캡처 스크립트를 주입</b>했습니다. 주입된 스크립트가 <code>console</code> 메서드를 감싸 호출을 가로채고, 같은 WS 채널로 릴레이 서버에 흘려보내면 확장이 받아 사이드바에 그립니다. <b>앱 코드는 한 줄도 고치지 않습니다.</b></div>
+        </div>
+        <div class="row result">
+          <div class="lbl">결과</div>
+          <div class="txt">케이블 없이, 폰에서 뜬 로그가 <b>에디터 사이드바에 실시간으로</b> 쌓입니다. 레벨·키워드 필터까지 붙였습니다.</div>
+        </div>
+      </div>
+
+      <div class="dec">
+        <h3>3. 응답이 이미지·폰트면 어떻게 되나</h3>
+        <div class="row problem">
+          <div class="lbl">문제</div>
+          <div class="txt">터널은 WebSocket 메시지로 응답을 실어 나릅니다. HTML·JS·CSS는 문자열로 다뤄도 되지만, 이미지·폰트 같은 <b>바이너리를 문자열로 취급하면 내용이 손상</b>됩니다. Content-Type도 함께 보존해야 브라우저가 제대로 해석합니다.</div>
+        </div>
+        <div class="row">
+          <div class="lbl">선택</div>
+          <div class="txt">Content-Type을 보고 텍스트와 바이너리를 갈라, 바이너리와 SVG는 <b>Base64로 인코딩</b>해 중계하고 <code>isBase64</code> 플래그를 함께 실어 반대편에서 원본으로 복원하도록 했습니다.</div>
+        </div>
+        <div class="row result">
+          <div class="lbl">결과</div>
+          <div class="txt">이미지·폰트·아이콘이 포함된 실제 페이지가 <b>그대로</b> 렌더링됩니다.</div>
+        </div>
+      </div>
+    </div>
+
+    <h3 class="subhead">구성</h3>
+    <div class="fgroups">
+      <div class="fgroup">
+        <h3>VSCode 확장 (<code>src/</code>)</h3>
+        <ul>
+          <li><b>extension.ts</b> — 진입점, 명령어 등록</li>
+          <li><b>tunnelManager.ts</b> — 터널 수명주기, 서버 WS 통신, 로그 수집</li>
+          <li><b>tunnelViewProvider.ts</b> — 사이드바 Webview, 실시간 이벤트 중계</li>
+          <li><b>webview/</b> — 대시보드 UI</li>
+        </ul>
+      </div>
+      <div class="fgroup">
+        <h3>터널 시스템 (<code>custom-tunnel/</code>)</h3>
+        <ul>
+          <li><b>server/</b> — Render 배포, 터널 ID 발급·프록시 (Docker)</li>
+          <li><b>client/</b> — 로컬 프록시, 콘솔 스크립트 주입</li>
+        </ul>
+      </div>
+    </div>
+
+    <div style="margin-top:22px;">
+      <div class="p-tech">
+        <span class="tech">TypeScript</span><span class="tech">Node.js</span><span class="tech">WebSocket</span><span class="tech">VSCode Extension API</span><span class="tech">Webview</span><span class="tech">리버스 프록시</span><span class="tech">Docker</span><span class="tech">Render</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="result">
+  <div class="wrap">
+    <div class="sec-title">
+      <span class="eb">Result</span>
+      <h2>결과</h2>
+    </div>
+    <div class="prose">
+      <ul>
+        <li>실무에 직접 적용해 <b>빌드·배포 120초 과정을 제거</b>. 저장하고 폰을 새로고침하면 끝입니다.</li>
+        <li>모바일 전용 버그를 <code>alert()</code> 없이 <b>로그를 보면서</b> 잡게 됐습니다.</li>
+        <li>VSCode 확장 <b>v2.1.0</b>까지 배포. 2.0에서 사이드바 대시보드 UI로 전면 개편했습니다.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="fnav">
+      <a href="../index.html">← 포트폴리오로 돌아가기</a>
+      <a href="react-code-locator.html">react-code-locator →</a>
+    </div>
+    <div class="fn">유창헌 · Frontend Developer</div>
+  </div>
+</footer>
+
+<script>
+  (function () {
+    var root = document.documentElement;
+    document.getElementById('tg').addEventListener('click', function () {
+      var cur = root.getAttribute('data-theme');
+      if (!cur) cur = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      root.setAttribute('data-theme', cur === 'dark' ? 'light' : 'dark');
+    });
+  })();
+</script>
+</body>
+</html>
