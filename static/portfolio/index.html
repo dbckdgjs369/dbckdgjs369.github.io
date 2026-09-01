@@ -9,391 +9,182 @@
 <meta property="og:description" content="직접 만들어 배포한 개인 프로젝트 3선">
 <meta property="og:type" content="website">
 <title>유창헌 · Frontend Developer</title>
-<style>
-  :root {
-    --bg: #ffffff;
-    --bg-alt: #f7f8fa;
-    --card: #ffffff;
-    --ink: #17191d;
-    --ink-2: #454b54;
-    --ink-3: #7a828d;
-    --line: #e7eaef;
-    --line-2: #eef1f5;
-    --accent: #1f5fd6;
-    --accent-soft: #eaf1fd;
-    --good: #17805a;
-    --good-soft: #e6f4ee;
-    --radius: 12px;
-  }
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --bg: #0f1115;
-      --bg-alt: #14171c;
-      --card: #171a20;
-      --ink: #eef1f5;
-      --ink-2: #b6bdc7;
-      --ink-3: #828b96;
-      --line: #262b33;
-      --line-2: #20242b;
-      --accent: #6ba4ff;
-      --accent-soft: #182436;
-      --good: #4cc38a;
-      --good-soft: #16281f;
-    }
-  }
-  :root[data-theme="light"] {
-    --bg:#fff; --bg-alt:#f7f8fa; --card:#fff; --ink:#17191d; --ink-2:#454b54; --ink-3:#7a828d;
-    --line:#e7eaef; --line-2:#eef1f5; --accent:#1f5fd6; --accent-soft:#eaf1fd;
-    --good:#17805a; --good-soft:#e6f4ee;
-  }
-  :root[data-theme="dark"] {
-    --bg:#0f1115; --bg-alt:#14171c; --card:#171a20; --ink:#eef1f5; --ink-2:#b6bdc7; --ink-3:#828b96;
-    --line:#262b33; --line-2:#20242b; --accent:#6ba4ff; --accent-soft:#182436;
-    --good:#4cc38a; --good-soft:#16281f;
-  }
-
-  * { box-sizing: border-box; }
-  html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
-  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } * { transition: none !important; } }
-
-  body {
-    margin: 0;
-    background: var(--bg);
-    color: var(--ink);
-    font-family: "Pretendard", -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", "Segoe UI", sans-serif;
-    line-height: 1.72;
-    -webkit-font-smoothing: antialiased;
-    letter-spacing: -0.005em;
-  }
-  .mono { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; }
-
-  a { color: var(--accent); text-decoration: none; }
-  a:hover { text-decoration: underline; text-underline-offset: 3px; }
-  :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 3px; }
-
-  .wrap { max-width: 760px; margin: 0 auto; padding: 0 22px; }
-
-  /* ---------- top nav ---------- */
-  nav.top {
-    position: sticky; top: 0; z-index: 30;
-    background: color-mix(in srgb, var(--bg) 88%, transparent);
-    backdrop-filter: saturate(180%) blur(10px);
-    border-bottom: 1px solid var(--line);
-  }
-  nav.top .row {
-    max-width: 760px; margin: 0 auto; padding: 0 22px;
-    height: 54px; display: flex; align-items: center; justify-content: space-between;
-  }
-  nav.top .brand { font-weight: 700; font-size: 15px; letter-spacing: -0.01em; color: var(--ink); }
-  nav.top .brand .en { color: var(--ink-3); font-weight: 500; margin-left: 6px; font-size: 13px; }
-  nav.top .links { display: flex; gap: 4px; align-items: center; }
-  nav.top .links a {
-    color: var(--ink-2); font-size: 13.5px; padding: 6px 10px; border-radius: 7px;
-  }
-  nav.top .links a:hover { color: var(--ink); background: var(--bg-alt); text-decoration: none; }
-  nav.top .tg {
-    background: none; border: 1px solid var(--line); color: var(--ink-2);
-    width: 30px; height: 30px; border-radius: 7px; cursor: pointer; margin-left: 6px; font-size: 13px;
-  }
-  nav.top .tg:hover { color: var(--accent); border-color: var(--accent); }
-  @media (max-width: 620px) { nav.top .links a:not(.hide-sm) { display: none; } }
-
-  /* ---------- hero ---------- */
-  header.hero { padding: 72px 0 48px; }
-  .hero .kicker {
-    font-size: 13px; color: var(--accent); font-weight: 600; letter-spacing: 0.02em;
-    margin-bottom: 16px;
-  }
-  .hero h1 {
-    font-size: clamp(30px, 5.6vw, 46px); line-height: 1.22; letter-spacing: -0.03em;
-    font-weight: 800; margin: 0 0 20px; text-wrap: balance;
-  }
-  .hero h1 .accent { color: var(--accent); }
-  .hero .intro { font-size: 17px; color: var(--ink-2); max-width: 60ch; margin: 0 0 14px; }
-  .hero .intro b { color: var(--ink); font-weight: 650; }
-  .hero .meta {
-    font-size: 14px; color: var(--ink-3); margin: 22px 0 26px; display: flex; flex-wrap: wrap; gap: 6px 18px;
-  }
-  .hero .meta b { color: var(--ink-2); font-weight: 600; }
-  .quick { display: flex; flex-wrap: wrap; gap: 9px; }
-  .quick a, .quick span {
-    display: inline-flex; align-items: center; gap: 7px;
-    font-size: 13.5px; color: var(--ink-2);
-    border: 1px solid var(--line); background: var(--card);
-    padding: 8px 13px; border-radius: 9px;
-  }
-  .quick a:hover { color: var(--accent); border-color: var(--accent); text-decoration: none; }
-  .quick .ic { color: var(--ink-3); }
-
-  /* ---------- sections ---------- */
-  section { padding: 54px 0; }
-  section.alt { background: var(--bg-alt); border-top: 1px solid var(--line-2); border-bottom: 1px solid var(--line-2); }
-  .sec-title { scroll-margin-top: 70px; }
-  .sec-title .eb {
-    font-size: 12.5px; letter-spacing: 0.08em; text-transform: uppercase;
-    color: var(--ink-3); font-weight: 600; margin-bottom: 8px;
-  }
-  .sec-title h2 {
-    font-size: clamp(21px, 3.4vw, 27px); font-weight: 750; letter-spacing: -0.025em;
-    margin: 0 0 8px; text-wrap: balance;
-  }
-  .sec-title p.sub { color: var(--ink-2); font-size: 15.5px; margin: 0 0 26px; max-width: 58ch; }
-
-  /* ---------- project cards (expandable) ---------- */
-  .plist { display: flex; flex-direction: column; gap: 14px; }
-  details.proj {
-    border: 1px solid var(--line); border-radius: var(--radius);
-    background: var(--card); overflow: hidden;
-    transition: border-color .18s, box-shadow .18s;
-  }
-  details.proj[open] { border-color: color-mix(in srgb, var(--accent) 40%, var(--line)); box-shadow: 0 10px 30px -22px rgba(20,40,80,.4); }
-  details.proj > summary {
-    list-style: none; cursor: pointer; padding: 20px 22px;
-    display: block; position: relative;
-  }
-  details.proj > summary::-webkit-details-marker { display: none; }
-  .p-cat {
-    font-size: 12.5px; color: var(--ink-3); letter-spacing: 0.01em; margin-bottom: 7px;
-    display: flex; flex-wrap: wrap; gap: 5px 10px; align-items: baseline;
-  }
-  .p-cat .yr { color: var(--accent); font-weight: 600; }
-  .p-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
-  .p-head h3 { font-size: 18.5px; font-weight: 750; letter-spacing: -0.02em; margin: 0; }
-  .p-head .chev { color: var(--ink-3); font-size: 13px; flex: none; transition: transform .2s; margin-top: 3px; }
-  details.proj[open] .p-head .chev { transform: rotate(180deg); }
-  .p-line { color: var(--ink-2); font-size: 14.5px; margin: 8px 0 0; }
-  .p-badges { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 13px; }
-  .kpi {
-    font-size: 12.5px; font-weight: 600; padding: 4px 9px; border-radius: 999px;
-    background: var(--accent-soft); color: var(--accent);
-    display: inline-flex; align-items: center; gap: 5px;
-  }
-  .kpi.good { background: var(--good-soft); color: var(--good); }
-
-  .p-body { padding: 4px 22px 22px; border-top: 1px solid var(--line-2); margin-top: 4px; }
-  .p-body .step { padding: 16px 0; border-bottom: 1px solid var(--line-2); }
-  .p-body .step:last-of-type { border-bottom: none; }
-  .p-body .step .lbl {
-    font-size: 11.5px; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 700;
-    color: var(--ink-3); margin-bottom: 7px;
-  }
-  .p-body .step.problem .lbl { color: #c2691a; }
-  @media (prefers-color-scheme: dark){ .p-body .step.problem .lbl { color:#e0a15a; } }
-  :root[data-theme="dark"] .p-body .step.problem .lbl { color:#e0a15a; }
-  .p-body .step.result .lbl { color: var(--good); }
-  .p-body .step .txt { color: var(--ink-2); font-size: 15px; }
-  .p-body .step .txt b { color: var(--ink); font-weight: 650; }
-  .p-body ul { margin: 0; padding-left: 19px; }
-  .p-body li { margin: 5px 0; color: var(--ink-2); font-size: 15px; }
-  .p-body li b { color: var(--ink); font-weight: 650; }
-
-  .p-tech { display: flex; flex-wrap: wrap; gap: 6px; margin: 16px 0 4px; }
-  .tech {
-    font-size: 12px; padding: 3px 9px; border-radius: 6px;
-    background: var(--bg-alt); border: 1px solid var(--line); color: var(--ink-2);
-  }
-  .p-links { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
-  .p-links a {
-    font-size: 13.5px; font-weight: 600; padding: 8px 14px; border-radius: 9px;
-    border: 1px solid var(--line); color: var(--ink-2);
-    display: inline-flex; align-items: center; gap: 6px;
-  }
-  .p-links a:hover { color: var(--accent); border-color: var(--accent); text-decoration: none; }
-  .p-links a.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
-  .p-links a.primary:hover { color: #fff; filter: brightness(1.06); }
-
-  /* ---------- work style ---------- */
-  .ways { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-  @media (max-width: 620px) { .ways { grid-template-columns: 1fr; } }
-  .way {
-    border: 1px solid var(--line); border-radius: var(--radius); padding: 20px 20px 18px; background: var(--card);
-  }
-  .way .n { font-size: 13px; font-weight: 700; color: var(--accent); margin-bottom: 9px; }
-  .way h4 { font-size: 16px; font-weight: 700; letter-spacing: -0.015em; margin: 0 0 7px; }
-  .way p { color: var(--ink-2); font-size: 14px; margin: 0; }
-
-  /* ---------- skills ---------- */
-  .skills { display: flex; flex-direction: column; gap: 2px; }
-  .srow {
-    display: grid; grid-template-columns: 132px 1fr; gap: 6px 18px;
-    padding: 13px 0; border-bottom: 1px solid var(--line-2); align-items: start;
-  }
-  .srow:last-child { border-bottom: none; }
-  .srow .cat { font-size: 13px; font-weight: 700; color: var(--ink); padding-top: 2px; }
-  .srow .items { display: flex; flex-wrap: wrap; gap: 7px; }
-  .srow .items span { font-size: 13.5px; color: var(--ink-2); }
-  .srow .items span::after { content: "·"; color: var(--line); margin-left: 7px; }
-  .srow .items span:last-child::after { content: ""; margin: 0; }
-  @media (max-width: 560px) { .srow { grid-template-columns: 1fr; } }
-
-  /* ---------- footer ---------- */
-  footer { padding: 60px 0 76px; text-align: center; border-top: 1px solid var(--line-2); }
-  footer h2 { font-size: clamp(22px, 3.6vw, 28px); font-weight: 780; letter-spacing: -0.025em; margin: 0 0 10px; }
-  footer p { color: var(--ink-2); font-size: 15px; margin: 0 0 24px; }
-  footer .quick { justify-content: center; }
-  footer .fn { margin-top: 36px; font-size: 12.5px; color: var(--ink-3); }
-</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<link rel="stylesheet" href="type.css">
 </head>
 <body>
 
 <nav class="top">
-  <div class="row">
-    <span class="brand">유창헌<span class="en">Frontend Developer</span></span>
-    <span class="links">
-      <a href="#projects">개인 프로젝트</a>
+  <div class="bar">
+    <a class="brand" href="#top">유창헌 <span>Frontend Developer</span></a>
+    <span class="navlinks">
+      <a href="#projects">프로젝트</a>
       <a href="#ways">일하는 방식</a>
-      <a href="#skills">스킬</a>
+      <a href="#skills" class="hide-sm">스킬</a>
       <a href="#contact" class="hide-sm">연락처</a>
-      <button class="tg" id="tg" aria-label="테마 전환" title="테마 전환">◐</button>
+      <button class="tg" id="tg" aria-label="테마 전환" title="테마 전환">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg>
+      </button>
     </span>
   </div>
 </nav>
 
-<header class="hero">
-  <div class="wrap">
-    <div class="kicker">Frontend Developer · 4년차</div>
-    <h1>불편을 발견하면,<br><span class="accent">도구로 만들어 배포</span>합니다.</h1>
-    <p class="intro"><b>실시간 통신</b>과 <b>개발자 도구</b>에 관심이 많은 프론트엔드 개발자입니다. React가 주 무대지만, 원인이 있는 곳이면 화면 아래 <b>프로토콜·서버 레이어까지</b> 내려가 해결합니다.</p>
-    <p class="intro">아래 세 개는 개발하거나 쓰다가 겪은 불편을 직접 도구로 만든 것들입니다. 셋 다 <b>실제로 배포해 운영 중</b>이고, 공통적으로 직접 설계한 Node.js·WebSocket 중계 서버가 심장에 있습니다.</p>
-    <div class="meta">
-      <span><b>배포</b> Chrome 웹스토어 · npm · VSCode 확장</span>
-      <span><b>주력</b> React · TypeScript · Node.js · WebSocket</span>
+<header id="top" class="hero">
+  <div class="wrap split">
+    <div class="rail">
+      <span class="tag">Portfolio</span>
+      <span class="tag dim">2026</span>
     </div>
-    <div class="quick">
-      <a href="https://github.com/dbckdgjs369" target="_blank" rel="noopener"><span class="ic">↗</span>GitHub</a>
-      <a href="mailto:dbckdgjs1130@naver.com"><span class="ic">✉</span>dbckdgjs1130@naver.com</a>
-      <span><span class="ic">☎</span>010-2809-6995</span>
+    <div class="col">
+      <p class="kicker">Frontend Developer · 4년차</p>
+      <h1>불편을 발견하면,<br>도구로 만들어 <em>배포</em>합니다.</h1>
+      <div class="lede">
+        <p><b>실시간 통신</b>과 <b>개발자 도구</b>에 관심이 많은 프론트엔드 개발자입니다. React가 주 무대지만, 원인이 있는 곳이면 화면 아래 <b>프로토콜·서버 레이어까지</b> 내려가 해결합니다.</p>
+        <p>아래 세 개는 개발하거나 쓰다가 겪은 불편을 직접 도구로 만든 것들입니다. 셋 다 <b>실제로 배포해 운영 중</b>이며, 둘은 직접 설계한 Node.js·WebSocket 중계 서버 위에서, 하나는 빌드타임 AST 변환 위에서 돌아갑니다.</p>
+      </div>
+      <dl class="facts">
+        <div><dt>배포</dt><dd>Chrome 웹스토어 · npm · VSCode 확장</dd></div>
+        <div><dt>주력</dt><dd>React · TypeScript · Node.js · WebSocket</dd></div>
+      </dl>
+      <div class="contact">
+        <a href="https://github.com/dbckdgjs369" target="_blank" rel="noopener">
+          <span class="ic" aria-hidden="true"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg></span>github.com/dbckdgjs369</a>
+        <a href="mailto:dbckdgjs1130@naver.com">
+          <span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="1.5"/><path d="m22 7-9.4 6.3a2 2 0 0 1-2.2 0L1 7"/></svg></span>dbckdgjs1130@naver.com</a>
+        <span class="plain">010-2809-6995</span>
+      </div>
     </div>
   </div>
 </header>
 
 <section id="projects">
-  <div class="wrap">
-    <div class="sec-title">
-      <div class="eb">Personal Projects</div>
-      <h2>직접 만들어 배포한 개인 프로젝트</h2>
-      <p class="sub">카드를 누르면 문제 정의부터 결과까지 펼쳐집니다.</p>
+  <div class="wrap split">
+    <div class="rail">
+      <span class="num">01</span>
+      <h2>개인 프로젝트</h2>
+      <p class="rail-note">직접 만들어 배포하고, 지금도 고치고 있는 것들. 항목을 누르면 문제 정의부터 결과까지 펼쳐집니다.</p>
     </div>
+    <div class="col">
 
-    <div class="plist">
-
-      <!-- P1 -->
-      <details class="proj" open>
+      <details class="entry" open>
         <summary>
-          <div class="p-cat"><span>Chrome Extension + Node.js 중계 서버</span><span class="yr">2026.03 — 진행중</span></div>
-          <div class="p-head">
-            <h3>stock-price-extension</h3>
-            <span class="chev">▼</span>
+          <div class="e-meta"><span class="idx">P1</span><span>Chrome Extension + Node.js 중계 서버</span><span class="dot">·</span><span>2026.03 — 진행중 · v4.0.0</span></div>
+          <h3>stock-price-extension</h3>
+          <p class="e-line">어떤 웹페이지 위에서든 주식·암호화폐 시세를 실시간으로 띄우는 위젯 오버레이.</p>
+          <div class="e-stats">
+            <span class="stat on">실사용자 30명+</span>
+            <span class="stat on">스토어 평점 5.0</span>
+            <span class="stat">자체 캔들 차트 엔진</span>
+            <span class="stat">봉 전환 지연 0</span>
           </div>
-          <p class="p-line">어떤 웹페이지 위에서든 주식·암호화폐 시세를 실시간으로 띄우는 위젯 오버레이.</p>
-          <div class="p-badges">
-            <span class="kpi good">실사용자 30명+</span>
-            <span class="kpi good">스토어 평점 5.0</span>
-          </div>
+          <span class="e-more" aria-hidden="true"></span>
         </summary>
-        <div class="p-body">
-          <div class="step problem">
-            <div class="lbl">불편했던 점</div>
-            <div class="txt">주식·코인 시세가 수시로 궁금한데, 확인하려면 그때마다 보던 화면을 벗어나 증권사 앱이나 거래소 탭을 따로 열어야 했다. <b>“지금 보고 있는 이 페이지 위에 시세가 그냥 떠 있으면 좋겠다”</b>는 생각에서 시작했다.</div>
+        <div class="e-body">
+          <div class="beat problem">
+            <h4>불편했던 점</h4>
+            <p>주식·코인 시세가 수시로 궁금한데, 확인하려면 그때마다 보던 화면을 벗어나 증권사 앱이나 거래소 탭을 따로 열어야 했다. <b>“지금 보고 있는 이 페이지 위에 시세가 그냥 떠 있으면 좋겠다”</b>는 생각에서 시작했다.</p>
           </div>
-          <div class="step">
-            <div class="lbl">해결</div>
-            <div class="txt"><ul>
+          <div class="beat">
+            <h4>해결</h4>
+            <ul>
               <li>API를 감싸는 <b>Node.js RESTful 시세 중계 서버</b>를 직접 설계·구현해 키를 서버 뒤로 숨김</li>
               <li>WebSocket 실시간 스트리밍을 기본으로, 장애 시 <b>REST 폴링으로 자동 전환</b>하는 폴백 구성</li>
-              <li><b>Shadow DOM</b>으로 CSS를 격리하고, 배경색 대비를 자동 보정해 어느 사이트에서든 읽히게 함</li>
-            </ul></div>
+              <li><b>Shadow DOM</b>으로 CSS를 격리하고, <code>pointer-events</code>로 아래 페이지가 그대로 클릭되게 함</li>
+              <li>오버레이 환경에 맞춰 <b>캔들 차트 엔진을 직접 구현</b> — 지표(MA·볼린저밴드), 드로잉(추세선·피보나치)</li>
+              <li>차트 <b>2단 캐시(LRU+storage)·주기 프리페치</b>로 봉 전환 지연 제거, 드래그 시 과거 데이터 자동 조회</li>
+            </ul>
           </div>
-          <div class="step result">
-            <div class="lbl">결과</div>
-            <div class="txt">기획·프론트·중계 서버·배포·운영까지 혼자 끌고 가 스토어에 출시. <b>실사용자 30명+, 평점 5.0</b>을 유지하며 운영 중.</div>
+          <div class="beat result">
+            <h4>결과</h4>
+            <p>기획·프론트·중계 서버·배포·운영까지 혼자 끌고 가 스토어에 출시. <b>실사용자 30명+, 평점 5.0</b>을 유지하며 운영 중.</p>
           </div>
-          <div class="p-tech">
-            <span class="tech">JavaScript</span><span class="tech">Node.js</span><span class="tech">WebSocket</span><span class="tech">SSE</span><span class="tech">Chrome Extension (MV3)</span><span class="tech">Shadow DOM</span>
-          </div>
-          <div class="p-links">
-            <a class="primary" href="https://chromewebstore.google.com/detail/stock-price-widget/niofpnhhdeaneajeemfpnclammllkhfg" target="_blank" rel="noopener">Chrome 웹스토어 ↗</a>
+          <ul class="chips">
+            <li>JavaScript</li><li>Node.js</li><li>WebSocket</li><li>SSE</li><li>Chrome Extension (MV3)</li><li>Shadow DOM</li><li>Canvas</li>
+          </ul>
+          <div class="e-links">
+            <a class="go" href="projects/stock-price-widget.html">사용법 · 기능 자세히 보기</a>
+            <a href="https://chromewebstore.google.com/detail/stock-price-widget/niofpnhhdeaneajeemfpnclammllkhfg" target="_blank" rel="noopener">Chrome 웹스토어 ↗</a>
           </div>
         </div>
       </details>
 
-      <!-- P2 -->
-      <details class="proj">
+      <details class="entry">
         <summary>
-          <div class="p-cat"><span>npm package · 빌드 플러그인</span><span class="yr">2026.03 · v0.4.0</span></div>
-          <div class="p-head">
-            <h3>react-code-locator</h3>
-            <span class="chev">▼</span>
+          <div class="e-meta"><span class="idx">P2</span><span>npm package · 빌드 플러그인</span><span class="dot">·</span><span>2026.03 — 진행중 · v0.4.7</span></div>
+          <h3>react-code-locator</h3>
+          <p class="e-line">개발 중 React 화면의 UI를 클릭하면 그 컴포넌트의 소스 파일·라인으로 에디터가 바로 열린다.</p>
+          <div class="e-stats">
+            <span class="stat on">npm 배포 v0.4.7</span>
+            <span class="stat">빌드툴 5종 지원</span>
+            <span class="stat">Zero dependencies</span>
           </div>
-          <p class="p-line">개발 중 React 화면의 UI를 클릭하면 그 컴포넌트의 소스 파일·라인으로 에디터가 바로 열린다.</p>
-          <div class="p-badges">
-            <span class="kpi">npm 배포 v0.4.0</span>
-            <span class="kpi">빌드툴 5종 지원</span>
-          </div>
+          <span class="e-more" aria-hidden="true"></span>
         </summary>
-        <div class="p-body">
-          <div class="step problem">
-            <div class="lbl">불편했던 점</div>
-            <div class="txt">화면에서 고칠 부분은 눈에 보이는데, 그게 <b>어느 컴포넌트·어느 파일에서 그려지는지</b> 찾는 게 매번 번거로웠다. 규모가 큰 프로젝트나 남이 짠 코드에서는 텍스트로 검색해가며 한참 헤맸다. <b>화면을 클릭하면 바로 그 소스로 갔으면</b> 했다.</div>
+        <div class="e-body">
+          <div class="beat problem">
+            <h4>불편했던 점</h4>
+            <p>화면에서 고칠 부분은 눈에 보이는데, 그게 <b>어느 컴포넌트·어느 파일에서 그려지는지</b> 찾는 게 매번 번거로웠다. 규모가 큰 프로젝트나 남이 짠 코드에서는 텍스트로 검색해가며 한참 헤맸다. <b>화면을 클릭하면 바로 그 소스로 갔으면</b> 했다.</p>
           </div>
-          <div class="step">
-            <div class="lbl">해결</div>
-            <div class="txt"><ul>
-              <li>기존 도구가 의존하던 <b>fiber._debugSource가 React 19에서 사라진</b> 뒤에도 동작하도록, <b>빌드타임 AST 변환(Acorn)</b>으로 소스 위치를 직접 주입 → React 버전과 무관하게 동작</li>
+          <div class="beat">
+            <h4>해결</h4>
+            <ul>
+              <li>기존 도구가 의존하던 <b>fiber._debugSource가 React 19에서 사라진</b> 뒤에도 동작하도록, <b>빌드타임 AST 변환(@babel/parser)</b>으로 소스 위치를 직접 주입 → React 버전과 무관하게 동작</li>
               <li><b>unplugin</b> 기반으로 Vite·Webpack·Rollup·esbuild·Rspack <b>5종 빌드 툴</b>을 단일 코드베이스로 지원</li>
               <li>Zero dependencies, dev 전용 — 프로덕션 번들에는 전혀 영향이 없도록 설계</li>
-            </ul></div>
+            </ul>
           </div>
-          <div class="step result">
-            <div class="lbl">결과</div>
-            <div class="txt">빌드 플러그인 하나만 추가하면 되는 형태로 <b>npm에 배포(v0.4.0)</b>. 약 1,500줄 규모로 유지.</div>
+          <div class="beat result">
+            <h4>결과</h4>
+            <p>빌드 플러그인 하나만 추가하면 되는 형태로 <b>npm에 배포(v0.4.7)</b>. 클래스·HOC·styled·중첩 컴포넌트까지 감지 범위를 넓혔고, 동작하지 않는 조건(Turbopack)은 문서에 먼저 밝혔습니다.</p>
           </div>
-          <div class="p-tech">
-            <span class="tech">TypeScript</span><span class="tech">Acorn AST</span><span class="tech">unplugin</span><span class="tech">Vite</span><span class="tech">Webpack</span><span class="tech">npm</span>
-          </div>
-          <div class="p-links">
-            <a class="primary" href="https://www.npmjs.com/package/react-code-locator" target="_blank" rel="noopener">npm ↗</a>
+          <ul class="chips">
+            <li>TypeScript</li><li>@babel/parser AST</li><li>unplugin</li><li>Vite</li><li>Webpack</li><li>npm</li>
+          </ul>
+          <div class="e-links">
+            <a class="go" href="projects/react-code-locator.html">사용법 · 기능 자세히 보기</a>
+            <a href="https://www.npmjs.com/package/react-code-locator" target="_blank" rel="noopener">npm ↗</a>
             <a href="https://github.com/dbckdgjs369/web-element-code-locator" target="_blank" rel="noopener">GitHub ↗</a>
           </div>
         </div>
       </details>
 
-      <!-- P3 -->
-      <details class="proj">
+      <details class="entry">
         <summary>
-          <div class="p-cat"><span>VSCode Extension + Node.js 릴레이 서버</span><span class="yr">2025.12 · v2.1.0</span></div>
-          <div class="p-head">
-            <h3>custom-tunnel</h3>
-            <span class="chev">▼</span>
+          <div class="e-meta"><span class="idx">P3</span><span>VSCode Extension + Node.js 릴레이 서버</span><span class="dot">·</span><span>2025.12 · v2.1.0</span></div>
+          <h3>custom-tunnel</h3>
+          <p class="e-line">로컬 개발 서버를 공개 URL로 즉시 열어, 모바일 등 외부 기기에서 빌드·배포 없이 확인한다.</p>
+          <div class="e-stats">
+            <span class="stat on">빌드·배포 120초 → 0</span>
+            <span class="stat on">실무 적용</span>
           </div>
-          <p class="p-line">로컬 개발 서버를 공개 URL로 즉시 열어, 모바일 등 외부 기기에서 빌드·배포 없이 확인한다.</p>
-          <div class="p-badges">
-            <span class="kpi good">빌드·배포 120초 → 0</span>
-            <span class="kpi">실무 적용</span>
-          </div>
+          <span class="e-more" aria-hidden="true"></span>
         </summary>
-        <div class="p-body">
-          <div class="step problem">
-            <div class="lbl">불편했던 점</div>
-            <div class="txt">로컬에서 만든 화면을 실제 폰에서 확인하고 싶은데, 그때마다 빌드하고 배포 서버에 올려(<b>약 120초</b>) 폰으로 접속해야 했다. 작은 수정 하나 보려고 2분씩 기다리는 게 반복되니 개발 흐름이 자꾸 끊겼다.</div>
+        <div class="e-body">
+          <div class="beat problem">
+            <h4>불편했던 점</h4>
+            <p>로컬에서 만든 화면을 실제 폰에서 확인하고 싶은데, 그때마다 빌드하고 배포 서버에 올려(<b>약 120초</b>) 폰으로 접속해야 했다. 작은 수정 하나 보려고 2분씩 기다리는 게 반복되니 개발 흐름이 자꾸 끊겼다.</p>
           </div>
-          <div class="step">
-            <div class="lbl">해결</div>
-            <div class="txt"><ul>
+          <div class="beat">
+            <h4>해결</h4>
+            <ul>
               <li><b>WebSocket 기반 리버스 프록시 릴레이 서버</b>를 설계해 HTTP 요청·응답을 중계</li>
-              <li>모바일 디버깅용 <b>원격 콘솔 로그 전송</b>(레벨별 필터)과 <b>QR 접속</b>, HTTPS 터널 지원</li>
+              <li>모바일 디버깅용 <b>원격 콘솔 로그 전송</b>(로그 레벨 필터)과 <b>QR 접속</b>, HTTPS 터널 지원</li>
               <li>VSCode 사이드바 대시보드에서 터널 상태를 한눈에 관리</li>
-            </ul></div>
+            </ul>
           </div>
-          <div class="step result">
-            <div class="lbl">결과</div>
-            <div class="txt">실무에 직접 적용해 <b>빌드·배포 120초 과정을 제거</b>하고 즉시 검증 환경을 구축. VSCode 확장 v2.1.0로 배포.</div>
+          <div class="beat result">
+            <h4>결과</h4>
+            <p>실무에 직접 적용해 <b>빌드·배포 120초 과정을 제거</b>하고 즉시 검증 환경을 구축. VSCode 확장 v2.1.0로 배포.</p>
           </div>
-          <div class="p-tech">
-            <span class="tech">TypeScript</span><span class="tech">Node.js</span><span class="tech">WebSocket</span><span class="tech">VSCode Extension</span><span class="tech">Render</span>
-          </div>
-          <div class="p-links">
-            <a class="primary" href="https://github.com/dbckdgjs369/debug_tool" target="_blank" rel="noopener">GitHub ↗</a>
+          <ul class="chips">
+            <li>TypeScript</li><li>Node.js</li><li>WebSocket</li><li>VSCode Extension</li><li>Render</li>
+          </ul>
+          <div class="e-links">
+            <a class="go" href="projects/custom-tunnel.html">사용법 · 기능 자세히 보기</a>
+            <a href="https://github.com/dbckdgjs369/debug_tool" target="_blank" rel="noopener">GitHub ↗</a>
           </div>
         </div>
       </details>
@@ -402,78 +193,82 @@
   </div>
 </section>
 
-<section id="ways" class="alt">
-  <div class="wrap">
-    <div class="sec-title">
-      <div class="eb">How I work</div>
+<section id="ways">
+  <div class="wrap split">
+    <div class="rail">
+      <span class="num">02</span>
       <h2>일하는 방식</h2>
-      <p class="sub">세 프로젝트에서 반복적으로 지킨 원칙들입니다.</p>
+      <p class="rail-note">세 프로젝트에서 반복적으로 지킨 원칙들입니다.</p>
     </div>
-    <div class="ways">
-      <div class="way">
-        <div class="n">01</div>
-        <h4>원인 레이어까지 내려간다</h4>
-        <p>화면에서 시작해도 원인이 프로토콜·서버·빌드 단계에 있으면 그곳까지 내려가 고칩니다. 시세 위젯의 키 노출은 중계 서버로, 소스 탐색은 빌드타임 AST로 해결했습니다.</p>
-      </div>
-      <div class="way">
-        <div class="n">02</div>
-        <h4>재사용 가능한 구조로 남긴다</h4>
-        <p>한 번 고친 문제는 일회성 패치가 아니라 모듈로 남깁니다. react-code-locator는 하나의 코어를 5종 빌드 툴 어댑터로 확장했습니다.</p>
-      </div>
-      <div class="way">
-        <div class="n">03</div>
-        <h4>배포·운영까지 직접 끌고 간다</h4>
-        <p>프로토타입에서 멈추지 않습니다. 셋 다 스토어·npm에 실제 배포했고, 시세 위젯은 실사용자와 평점까지 관리하며 운영 중입니다.</p>
-      </div>
-      <div class="way">
-        <div class="n">04</div>
-        <h4>실시간 데이터 흐름이 공통 기반</h4>
-        <p>세 프로젝트 모두 직접 설계한 Node.js·WebSocket 중계(relay) 서버 위에서 돕니다. 시세·소스맵·터널 — 다루는 데이터만 다를 뿐 구조는 하나로 이어집니다.</p>
-      </div>
+    <div class="col">
+      <ol class="ways">
+        <li>
+          <h3>원인 레이어까지 내려간다</h3>
+          <p>화면에서 시작해도 원인이 프로토콜·서버·빌드 단계에 있으면 그곳까지 내려가 고칩니다. 시세 위젯의 키 노출은 중계 서버로, 소스 탐색은 빌드타임 AST로 해결했습니다.</p>
+        </li>
+        <li>
+          <h3>재사용 가능한 구조로 남긴다</h3>
+          <p>한 번 고친 문제는 일회성 패치가 아니라 모듈로 남깁니다. react-code-locator는 하나의 코어를 5종 빌드 툴 어댑터로 확장했습니다.</p>
+        </li>
+        <li>
+          <h3>배포·운영까지 직접 끌고 간다</h3>
+          <p>프로토타입에서 멈추지 않습니다. 셋 다 스토어·npm에 실제 배포했고, 시세 위젯은 실사용자와 평점까지 관리하며 운영 중입니다.</p>
+        </li>
+        <li>
+          <h3>도구는 쓰는 사람 자리에 둔다</h3>
+          <p>기능이 아무리 좋아도 쓰러 가야 하면 안 씁니다. 시세는 보던 페이지 위에, 소스 점프는 화면 우클릭에, 터널은 에디터 사이드바에 뒀습니다. 하던 일을 멈추지 않는 게 기준이었습니다.</p>
+        </li>
+      </ol>
     </div>
   </div>
 </section>
 
 <section id="skills">
-  <div class="wrap">
-    <div class="sec-title">
-      <div class="eb">Skills</div>
+  <div class="wrap split">
+    <div class="rail">
+      <span class="num">03</span>
       <h2>스킬</h2>
     </div>
-    <div class="skills">
-      <div class="srow">
-        <div class="cat">Frontend</div>
-        <div class="items"><span>React</span><span>TypeScript</span><span>JavaScript</span><span>Webpack</span><span>Vite</span><span>Chrome Extension (MV3)</span></div>
-      </div>
-      <div class="srow">
-        <div class="cat">실시간 · 프로토콜</div>
-        <div class="items"><span>WebSocket</span><span>SSE</span><span>리버스 프록시</span></div>
-      </div>
-      <div class="srow">
-        <div class="cat">Backend · Infra</div>
-        <div class="items"><span>Node.js</span><span>RESTful API 설계</span><span>Render</span></div>
-      </div>
-      <div class="srow">
-        <div class="cat">Tooling</div>
-        <div class="items"><span>Acorn AST</span><span>unplugin</span><span>npm 패키징</span><span>VSCode Extension API</span></div>
-      </div>
+    <div class="col">
+      <dl class="skills">
+        <div>
+          <dt>Frontend</dt>
+          <dd>React · TypeScript · JavaScript · Webpack · Vite · Chrome Extension (MV3)</dd>
+        </div>
+        <div>
+          <dt>실시간 · 프로토콜</dt>
+          <dd>WebSocket · SSE · 리버스 프록시</dd>
+        </div>
+        <div>
+          <dt>Backend · Infra</dt>
+          <dd>Node.js · RESTful API 설계 · Render</dd>
+        </div>
+        <div>
+          <dt>Tooling</dt>
+          <dd>@babel/parser AST · unplugin · npm 패키징 · VSCode Extension API</dd>
+        </div>
+      </dl>
     </div>
   </div>
 </section>
 
 <footer id="contact">
-  <div class="wrap">
-    <div class="sec-title" style="text-align:center;">
-      <div class="eb" style="text-align:center;">Contact</div>
+  <div class="wrap split">
+    <div class="rail">
+      <span class="num">04</span>
+      <h2>연락처</h2>
     </div>
-    <h2>함께 이야기 나눠요.</h2>
-    <p>스택을 가리지 않고 원인까지 내려가는 프론트엔드 개발자를 찾고 계신다면.</p>
-    <div class="quick">
-      <a href="mailto:dbckdgjs1130@naver.com"><span class="ic">✉</span>dbckdgjs1130@naver.com</a>
-      <a href="https://github.com/dbckdgjs369" target="_blank" rel="noopener"><span class="ic">↗</span>github.com/dbckdgjs369</a>
-      <span><span class="ic">☎</span>010-2809-6995</span>
+    <div class="col">
+      <p class="closing">스택을 가리지 않고<br>원인까지 내려가는 사람을<br>찾고 계신다면.</p>
+      <a class="cta" href="mailto:dbckdgjs1130@naver.com">메일 보내기</a>
+      <div class="contact">
+        <a href="https://github.com/dbckdgjs369" target="_blank" rel="noopener">
+          <span class="ic" aria-hidden="true"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg></span>github.com/dbckdgjs369</a>
+        <span class="plain">dbckdgjs1130@naver.com</span>
+        <span class="plain">010-2809-6995</span>
+      </div>
+      <p class="sig">유창헌 · Frontend Developer · Personal Projects</p>
     </div>
-    <div class="fn">유창헌 · Frontend Developer · Personal Projects</div>
   </div>
 </footer>
 

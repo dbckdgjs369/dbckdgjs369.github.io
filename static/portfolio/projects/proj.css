@@ -1,0 +1,254 @@
+/* ============================================================
+   프로젝트 상세 페이지 — type.css의 토큰·레이아웃 위에 얹는 컴포넌트
+   (토큰과 기본 골격은 ../type.css 에서 가져온다)
+   ============================================================ */
+
+/* 상세 페이지 전용 추가 토큰 */
+:root { --shot-bg: #f2ece2; --note: #8a6d1f; --note-soft: #f7efdc; }
+@media (prefers-color-scheme: dark) {
+  :root { --shot-bg: #191614; --note: #d0a94e; --note-soft: #251e12; }
+}
+:root[data-theme="light"] { --shot-bg:#f2ece2; --note:#8a6d1f; --note-soft:#f7efdc; }
+:root[data-theme="dark"]  { --shot-bg:#191614; --note:#d0a94e; --note-soft:#251e12; }
+
+/* ---------- 상단 바 (뒤로가기형) ---------- */
+nav.top .back { font-family: var(--mono); font-size: 12.5px; color: var(--ink-2); transition: color .15s; }
+nav.top .back:hover { color: var(--accent); }
+nav.top .right { display: flex; align-items: center; gap: var(--s5); }
+nav.top .right a {
+  font-family: var(--mono); font-size: 12.5px; color: var(--ink-2);
+  padding-bottom: 2px; border-bottom: 1px solid transparent; transition: color .15s, border-color .15s;
+}
+nav.top .right a:hover { color: var(--ink); border-bottom-color: var(--accent); }
+@media (max-width: 600px) { nav.top .right { gap: var(--s4); } nav.top .right a.hide-sm { display: none; } }
+
+/* ---------- 히어로 ---------- */
+header.phero { padding: var(--s9) 0 var(--s8); }
+.phero .cat {
+  font-family: var(--mono); font-size: 12px; letter-spacing: 0.1em;
+  color: var(--ink-3); margin: 0 0 var(--s5);
+}
+.phero h1 {
+  font-family: var(--mono); font-weight: 500; font-size: clamp(26px, 4vw, 42px);
+  line-height: 1.25; letter-spacing: -0.025em; margin: 0 0 var(--s5);
+}
+.phero .lede { font-size: 17.5px; color: var(--ink-2); max-width: 60ch; margin: 0 0 var(--s6); }
+.phero .lede b { color: var(--ink); font-weight: 600; }
+
+.p-badges { display: flex; flex-wrap: wrap; gap: var(--s2) var(--s5); margin-bottom: var(--s6); }
+.kpi {
+  font-family: var(--mono); font-size: 12px; color: var(--ink-3);
+  display: inline-flex; align-items: center; gap: var(--s2);
+}
+.kpi.good { color: var(--ink-2); }
+.kpi.good::before { content: ""; width: 5px; height: 5px; background: var(--accent); flex: none; }
+
+.p-links { display: flex; flex-wrap: wrap; gap: var(--s3) var(--s5); }
+.p-links a {
+  font-family: var(--mono); font-size: 12.5px; color: var(--ink-2);
+  padding-bottom: 3px; border-bottom: 1px solid var(--rule); transition: color .15s, border-color .15s;
+}
+.p-links a:hover { color: var(--accent); border-bottom-color: var(--accent); }
+.p-links a.primary { color: var(--accent); border-bottom-color: var(--accent); }
+
+/* 교차 배경 밴드 — 섹션 리듬 */
+section.alt { background: var(--paper-2); }
+section.alt pre.code,
+section.alt code { background: var(--surface); }
+
+/* ---------- 레일 구조 ----------
+   마크업을 바꾸지 않고 CSS 그리드만으로 좌측 레일을 만든다.
+   .sec-title은 1열, 나머지 형제들은 2열에 차례로 쌓인다. */
+section > .wrap {
+  display: grid;
+  grid-template-columns: var(--rail-w) minmax(0, 1fr);
+  gap: 0 var(--gap);
+  align-items: start;
+}
+section > .wrap > .sec-title { grid-column: 1; position: sticky; top: 92px; }
+/* 한 섹션에 레일 라벨이 둘 이상이면, 앞 라벨이 sticky로 행 끝까지 밀려 내려온 지점에서
+   뒤 라벨과 겹친다. 두 번째부터는 고정하지 않는다 */
+section > .wrap > .sec-title ~ .sec-title { position: static; }
+
+/* 본문 안의 소제목 — 레일이 아니라 2열에 놓인다 */
+.subhead {
+  font-family: var(--display); font-weight: 750; font-size: 17px;
+  letter-spacing: -0.025em; color: var(--ink);
+  margin: var(--s7) 0 var(--s4); padding-top: var(--s4); border-top: 1px solid var(--rule);
+}
+/* min-width:0 이 없으면 표·코드블록이 그리드 열을 밀어내 가로 스크롤이 생긴다 */
+section > .wrap > *:not(.sec-title) { grid-column: 2; min-width: 0; }
+@media (max-width: 900px) {
+  section > .wrap { grid-template-columns: minmax(0, 1fr); }
+  /* 위 규칙(0,2,1)보다 특이도가 낮으면 grid-column:2가 남아
+     1열짜리 그리드에 폭 0인 암시적 2열이 생기고 본문이 한 글자씩 접힌다 */
+  section > .wrap > *:not(.sec-title) { grid-column: 1; }
+  section > .wrap > .sec-title { position: static; margin-bottom: var(--s5); }
+}
+
+/* ---------- 섹션 제목(레일에 들어감) ---------- */
+.sec-title .eb {
+  display: block; font-family: var(--mono); font-size: 12px; font-weight: 500;
+  letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin-bottom: var(--s3);
+}
+.sec-title h2 {
+  font-family: var(--display); font-weight: 800; font-size: 18px;
+  letter-spacing: -0.03em; line-height: 1.45; color: var(--ink);
+}
+.sec-title p.sub { margin: var(--s3) 0 0; font-size: 13.5px; line-height: 1.7; color: var(--ink-3); }
+
+/* ---------- 본문 ---------- */
+.prose { color: var(--ink-2); font-size: 15.5px; }
+.prose b { color: var(--ink); font-weight: 600; }
+.prose p { margin: 0 0 var(--s4); }
+.prose ul { margin: 0 0 var(--s4); padding-left: 18px; }
+.prose li { margin: var(--s2) 0; }
+.prose > p, .prose > ul { max-width: var(--measure); }
+
+/* ---------- 스크린샷 ---------- */
+figure.shot { margin: 0 0 var(--s6); }
+figure.shot img {
+  display: block; height: auto;
+  /* 본문 글줄과 같은 폭 — 이미지가 본문보다 튀어나오지 않게 */
+  max-width: min(var(--measure), 100%);
+  border: 1px solid var(--rule); background: var(--shot-bg);
+}
+/* min() 없이 380px만 주면 100% 제한을 덮어써 좁은 화면에서 넘친다 */
+figure.shot img.narrow { max-width: min(380px, 100%); }
+figure.shot figcaption {
+  font-size: 13px; color: var(--ink-3); margin-top: var(--s3);
+  line-height: 1.65;
+  padding-left: var(--s3); border-left: 2px solid var(--rule);
+  /* 괘선과 여백을 본문 왼쪽 바깥(그리드 gap)으로 빼서
+     글자 시작 위치와 폭이 본문 문단과 정확히 일치하게 한다 */
+  margin-left: calc(-1 * (var(--s3) + 2px));
+  max-width: calc(var(--measure) + var(--s3) + 2px);
+}
+figure.shot figcaption b { color: var(--ink-2); font-weight: 600; }
+/* 앞머리 굵은 글씨는 한 줄을 차지하게 해 설명과 분리한다 */
+figure.shot figcaption b:first-child { display: block; margin-bottom: var(--s1); }
+
+.shot-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: var(--s6); align-items: start; }
+.shot-grid figure.shot { margin-bottom: 0; }
+
+/* 나란히 놓은 스크린샷은 비율이 달라 높이가 어긋난다.
+   subgrid 로 이미지 줄과 캡션 줄을 공유해, 이미지를 자르지 않고도 캡션 시작선을 맞춘다. */
+@supports (grid-template-rows: subgrid) {
+  .shot-grid { grid-template-rows: auto auto; }
+  .shot-grid > figure.shot { display: grid; grid-template-rows: subgrid; grid-row: span 2; }
+  /* 짧은 이미지를 아래로 붙여 두 이미지의 밑변을 정렬 */
+  .shot-grid > figure.shot img { align-self: end; }
+}
+
+/* 촬영 대기 자리표시자 */
+.shot-todo {
+  border: 1px dashed var(--rule); padding: var(--s7) var(--s5);
+  color: var(--ink-3); font-size: 13.5px; max-width: 520px;
+}
+.shot-todo .t {
+  display: block; font-family: var(--mono); font-size: 12px; font-weight: 500;
+  letter-spacing: 0.08em; color: var(--note); margin-bottom: var(--s2);
+}
+.shot-todo .d { display: block; line-height: 1.7; }
+
+/* ---------- 사용법 단계 ---------- */
+ol.steps { list-style: none; counter-reset: st; margin: 0; padding: 0; }
+ol.steps > li {
+  counter-increment: st; padding: var(--s6) 0; border-top: 1px solid var(--rule-2);
+  display: grid; grid-template-columns: 48px minmax(0, 1fr); gap: var(--s4);
+}
+ol.steps > li:first-child { border-top: none; padding-top: 0; }
+ol.steps > li::before {
+  content: counter(st, decimal-leading-zero);
+  font-family: var(--mono); font-size: 12px; letter-spacing: 0.1em; color: var(--ink-3); padding-top: 4px;
+}
+/* ::before가 1열을 쓰므로 나머지 자식은 2열 고정 (안 하면 48px 열로 떨어진다) */
+ol.steps > li > * { grid-column: 2; min-width: 0; }
+ol.steps h3 { font-family: var(--display); font-weight: 750; font-size: 18px; letter-spacing: -0.025em; margin-bottom: var(--s3); }
+ol.steps .body { color: var(--ink-2); font-size: 15.5px; }
+ol.steps .body b { color: var(--ink); font-weight: 600; }
+ol.steps .body p { margin: 0 0 var(--s3); max-width: var(--measure); }
+ol.steps .body ul { margin: 0 0 var(--s3); padding-left: 18px; max-width: var(--measure); }
+ol.steps .body li { margin: var(--s2) 0; }
+@media (max-width: 600px) {
+  ol.steps > li { grid-template-columns: minmax(0, 1fr); gap: var(--s2); }
+  ol.steps > li > * { grid-column: 1; }
+}
+
+/* ---------- 기능 목록 ---------- */
+.fgroups { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s6) var(--s7); }
+@media (max-width: 700px) { .fgroups { grid-template-columns: 1fr; } }
+.fgroup { border-top: 1px solid var(--rule); padding-top: var(--s4); }
+.fgroup h3 {
+  font-family: var(--mono); font-size: 12.5px; font-weight: 500;
+  letter-spacing: 0.08em; color: var(--ink-3); margin-bottom: var(--s3);
+}
+.fgroup ul { margin: 0; padding-left: 18px; }
+.fgroup li { color: var(--ink-2); font-size: 14.5px; margin: var(--s2) 0; }
+.fgroup li b { color: var(--ink); font-weight: 600; }
+
+/* ---------- 표 ---------- */
+.tbl-wrap { overflow-x: auto; }
+table.kv { border-collapse: collapse; width: 100%; max-width: 720px; font-size: 14.5px; min-width: 420px; }
+table.kv th, table.kv td { text-align: left; padding: var(--s3) var(--s4) var(--s3) 0; border-bottom: 1px solid var(--rule-2); vertical-align: top; }
+table.kv th {
+  font-family: var(--mono); font-size: 12px; font-weight: 500;
+  letter-spacing: 0.08em; color: var(--ink-3);
+}
+table.kv td:first-child { white-space: nowrap; font-family: var(--mono); font-size: 12.5px; color: var(--ink); padding-right: var(--s6); }
+table.kv td:last-child { color: var(--ink-2); }
+table.kv tr:last-child td { border-bottom: none; }
+
+/* ---------- 판단 기록 (문제 → 선택 → 결과) ---------- */
+.dec { border-top: 1px solid var(--rule); padding: var(--s6) 0; max-width: 76ch; }
+.dec h3 { font-family: var(--display); font-weight: 750; font-size: 18.5px; letter-spacing: -0.025em; margin-bottom: var(--s4); }
+.dec .row { display: grid; grid-template-columns: 104px minmax(0, 1fr); gap: var(--s5); padding: var(--s3) 0; }
+.dec .lbl {
+  font-family: var(--mono); font-size: 12.5px; font-weight: 500;
+  letter-spacing: 0.08em; color: var(--ink-3); padding-top: 3px;
+}
+.dec .row.problem .lbl { color: var(--accent); }
+.dec .txt { color: var(--ink-2); font-size: 15.5px; }
+.dec .txt b { color: var(--ink); font-weight: 600; }
+.dec .txt ul { margin: var(--s3) 0 0; padding-left: 18px; }
+.dec .txt li { margin: var(--s2) 0; }
+@media (max-width: 600px) {
+  /* 세로로 쌓일 때 라벨과 본문이 붙어 보이지 않게 간격을 준다 */
+  .dec .row { grid-template-columns: minmax(0, 1fr); gap: var(--s2); }
+  .dec .lbl { padding-top: 0; }
+}
+
+/* ---------- 코드 블록 ---------- */
+pre.code {
+  background: var(--paper-2); border-left: 2px solid var(--rule);
+  padding: var(--s5); overflow-x: auto; margin: 0 0 var(--s5);
+  font-family: var(--mono); font-size: 12.5px; line-height: 1.7; color: var(--ink-2);
+}
+pre.code code { background: none; padding: 0; font-size: inherit; color: inherit; }
+pre.code .cm { color: var(--ink-3); }
+pre.code .hl { color: var(--accent); }
+
+/* ---------- 기술 태그 ---------- */
+.p-tech { display: flex; flex-wrap: wrap; gap: var(--s2) var(--s4); margin: 0; padding: 0; }
+.tech { font-family: var(--mono); font-size: 11.5px; color: var(--ink-3); }
+.tech::before { content: "/ "; color: var(--rule); }
+
+/* ---------- 주의 문단 ---------- */
+.note {
+  border-left: 2px solid var(--note); background: var(--note-soft);
+  padding: var(--s4) var(--s5); margin: 0 0 var(--s5); max-width: 72ch;
+  font-size: 14.5px; color: var(--ink-2);
+}
+.note b { color: var(--ink); font-weight: 600; }
+
+/* ---------- 하단 ---------- */
+footer .fnav { display: flex; flex-wrap: wrap; gap: var(--s4) var(--s6); align-items: baseline; }
+footer .fnav a {
+  font-family: var(--mono); font-size: 12.5px; color: var(--ink-2);
+  padding-bottom: 3px; border-bottom: 1px solid var(--rule); transition: color .15s, border-color .15s;
+}
+footer .fnav a:hover { color: var(--accent); border-bottom-color: var(--accent); }
+footer .fn {
+  margin: var(--s7) 0 0; font-family: var(--mono); font-size: 11.5px;
+  letter-spacing: 0.08em; color: var(--ink-3);
+}

@@ -1,0 +1,340 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="react-code-locator — 개발 중 화면의 UI를 우클릭하면 그 컴포넌트의 소스 파일·라인으로 에디터가 열리는 빌드 플러그인. React 19 대응, 빌드툴 5종 지원.">
+<meta name="color-scheme" content="light dark">
+<meta property="og:title" content="react-code-locator · 유창헌">
+<meta property="og:description" content="화면을 클릭하면 소스로 점프하는 빌드 플러그인">
+<meta property="og:type" content="article">
+<title>react-code-locator · 유창헌</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<link rel="stylesheet" href="../type.css">
+<link rel="stylesheet" href="proj.css">
+</head>
+<body>
+
+<nav class="top">
+  <div class="bar">
+    <a class="back" href="../index.html">← 포트폴리오</a>
+    <span class="right">
+      <a href="#usage">사용법</a>
+      <a href="#features">기능</a>
+      <a href="#how" class="hide-sm">만든 방법</a>
+      <button class="tg" id="tg" aria-label="테마 전환" title="테마 전환"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg></button>
+    </span>
+  </div>
+</nav>
+
+<header class="phero">
+  <div class="wrap">
+    <div class="cat">npm package · 빌드 플러그인 · 2026.03 — 진행중 · v0.4.7</div>
+    <h1>react-code-locator</h1>
+    <p class="lede">개발 중 React 화면에서 UI를 <b>우클릭하면 그 컴포넌트의 소스 파일·라인으로 에디터가 바로 열립니다.</b> Babel 설정도, 브라우저 확장도, React DevTools도 필요 없이 <b>빌드 플러그인 하나만</b> 추가하면 됩니다.</p>
+    <div class="p-badges">
+      <span class="kpi">npm v0.4.7</span>
+      <span class="kpi">빌드툴 5종 지원</span>
+      <span class="kpi good">Zero dependencies</span>
+      <span class="kpi good">React 19 대응</span>
+    </div>
+    <div class="p-links">
+      <a class="primary" href="https://www.npmjs.com/package/react-code-locator" target="_blank" rel="noopener">npm ↗</a>
+      <a href="https://github.com/dbckdgjs369/web-element-code-locator" target="_blank" rel="noopener">GitHub ↗</a>
+    </div>
+  </div>
+</header>
+
+<section id="why">
+  <div class="wrap">
+    <div class="sec-title">
+      <span class="eb">Why</span>
+      <h2>왜 만들었나</h2>
+    </div>
+    <div class="prose">
+      <p>화면에서 고칠 부분은 눈에 보이는데, 그게 <b>어느 컴포넌트, 어느 파일에서 그려지는지</b> 찾는 게 매번 번거로웠습니다. 규모가 큰 프로젝트나 남이 짠 코드에서는 눈에 보이는 텍스트를 복사해 전체 검색하고, 결과가 여러 개면 하나씩 열어보며 한참 헤맸습니다.</p>
+      <p>비슷한 도구가 없진 않았지만 대부분 React 내부의 <code>fiber._debugSource</code>에 의존했습니다. 그런데 <b>React 19에서 이 필드가 제거</b>되면서 그 방식은 더 이상 쓸 수 없게 됐습니다. React 버전에 묶이지 않는 방법이 필요했습니다.</p>
+    </div>
+  </div>
+</section>
+
+<section id="usage" class="alt">
+  <div class="wrap">
+    <div class="sec-title">
+      <span class="eb">How to use</span>
+      <h2>어떻게 쓰나</h2>
+      <p class="sub">설정 파일에 플러그인 한 줄. 그다음은 화면에서 끝납니다.</p>
+    </div>
+
+    <ol class="steps">
+      <li>
+        <h3>설치하고 빌드 설정에 추가</h3>
+        <div class="body">
+          <pre class="code"><code>npm i -D react-code-locator</code></pre>
+          <p>Vite라면 <code>vitePlugin()</code> 하나로 소스 변환과 클라이언트 런타임 주입이 모두 처리됩니다.</p>
+          <pre class="code"><code><span class="cm">// vite.config.ts</span>
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
+import { <span class="hl">vitePlugin</span> } from "react-code-locator";
+
+export default defineConfig({
+  plugins: [react(), <span class="hl">vitePlugin()</span>],
+});</code></pre>
+        </div>
+      </li>
+
+      <li>
+        <h3>트리거 키를 누른 채 화면에 올려보기</h3>
+        <div class="body">
+          <p><code>Shift</code>(기본값)를 누른 채 요소 위에 커서를 올리면, DevTools 인스펙터처럼 <b>파란 하이라이트</b>가 씌워지고 <b>컴포넌트 파일명과 라인 번호</b>가 라벨로 붙습니다.</p>
+          <figure class="shot">
+            <img src="../images/react-code-locator/hover.jpg" alt="로그인 화면 오른쪽의 '어디서나, 무엇이든, 쉽게 리모트콜로 원격지원하세요.' 제목에 파란 테두리 하이라이트가 씌워져 있고, 그 왼쪽 위에 파란 배경의 고정폭 글씨로 index.tsx:29 라벨이 붙어 있다. 왼쪽에는 아이디·비밀번호 입력창과 로그인 버튼이 있는 실제 서비스 로그인 폼이 보인다.">
+            <figcaption><b>Shift 호버</b> 실제 서비스 화면에서 제목 요소에 커서를 올린 모습입니다. 하이라이트 위에 <code>index.tsx:29</code>가 붙었는데, 이 제목은 <code>styled.h1</code>으로 만든 컴포넌트입니다. <b>정의된 <code>styled.tsx</code>가 아니라 그것을 갖다 쓴 자리를 가리킵니다</b> — 「어떻게 만들었나」 4번에서 다루는 문제입니다.</figcaption>
+          </figure>
+        </div>
+      </li>
+
+      <li>
+        <h3>우클릭해서 에디터로 점프</h3>
+        <div class="body">
+          <p>트리거 키를 누른 채 <b>우클릭</b>하면 전용 메뉴가 열립니다. 브라우저 기본 우클릭 메뉴는 자동으로 억제됩니다.</p>
+          <div class="tbl-wrap">
+            <table class="kv">
+              <thead><tr><th>메뉴</th><th>동작</th></tr></thead>
+              <tbody>
+                <tr><td>Open in editor</td><td>소스 파일을 에디터에서 열고 <b>해당 라인으로 점프</b> (<code>openInEditor: true</code>일 때 표시)</td></tr>
+                <tr><td>Copy path</td><td>소스 경로를 <code>file:line:col</code> 형식으로 클립보드에 복사</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <figure class="shot" style="margin-top:16px;">
+            <img src="../images/react-code-locator/menu.jpg" alt="로그인 화면의 '어디서나, 무엇이든, 쉽게 리모트콜로 원격지원하세요.' 제목 위에 어두운 배경의 작은 메뉴가 떠 있다. 메뉴 항목은 위에서부터 Open in editor, Copy path 두 개뿐이고, 브라우저 기본 우클릭 메뉴는 보이지 않는다.">
+            <figcaption><b>전용 우클릭 메뉴</b> 브라우저 기본 메뉴 대신 이 두 항목만 뜹니다. <code>Open in editor</code>는 에디터를 그 줄로 열고, <code>Copy path</code>는 <code>파일:줄:칸</code>을 클립보드에 넣습니다. <b>항목을 두 개로 제한한 건 의도한 것입니다</b> — 트리거 키를 누른 채로만 열리는 메뉴라, 고를 게 많으면 오히려 느려집니다.</figcaption>
+          </figure>
+        </div>
+      </li>
+
+      <li>
+        <h3>단축키로 더 빠르게</h3>
+        <div class="body">
+          <div class="tbl-wrap">
+            <table class="kv">
+              <thead><tr><th>키</th><th>동작</th></tr></thead>
+              <tbody>
+                <tr><td>Shift + Click</td><td>소스 위치를 콘솔에 출력</td></tr>
+                <tr><td>Alt + 1</td><td><b>화면 모드</b> — 화면에 보이는 컴포넌트 기준 (기본값)</td></tr>
+                <tr><td>Alt + 2</td><td><b>구현 모드</b> — 실제 구현 위치 기준</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p style="margin-top:14px;">화면 모드와 구현 모드를 나눈 이유는, 공통 컴포넌트를 클릭했을 때 <b>“이 자리에 이걸 쓴 곳”</b>을 보고 싶을 때와 <b>“이 컴포넌트 자체의 정의”</b>를 보고 싶을 때가 다르기 때문입니다.</p>
+        </div>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<section id="features">
+  <div class="wrap">
+    <div class="sec-title">
+      <span class="eb">Features</span>
+      <h2>기능</h2>
+    </div>
+    <div class="fgroups">
+      <div class="fgroup">
+        <h3>탐색</h3>
+        <ul>
+          <li>호버 <b>하이라이트</b> + 파일명·라인 라벨</li>
+          <li>우클릭 → <b>에디터에서 열기</b></li>
+          <li>경로 <code>file:line:col</code> 복사</li>
+          <li>화면 모드 / 구현 모드 전환</li>
+        </ul>
+      </div>
+      <div class="fgroup">
+        <h3>지원 범위</h3>
+        <ul>
+          <li>함수형·<b>클래스 컴포넌트</b></li>
+          <li><b>HOC</b>·styled-components·중첩 컴포넌트</li>
+          <li><code>.js</code>·<code>.jsx</code>·<code>.ts</code>·<code>.tsx</code></li>
+          <li>React 16 ~ <b>19</b></li>
+        </ul>
+      </div>
+      <div class="fgroup">
+        <h3>빌드 툴</h3>
+        <ul>
+          <li>Vite · Webpack · Rollup</li>
+          <li>esbuild · Rspack</li>
+          <li>Next.js(webpack) · CRA 설정 가이드 제공</li>
+        </ul>
+      </div>
+      <div class="fgroup">
+        <h3>설정</h3>
+        <ul>
+          <li><code>enabled</code> — 활성 조건 (기본: dev)</li>
+          <li><code>triggerKey</code> — alt·meta·ctrl·shift·none</li>
+          <li><code>editor</code> — 열 에디터 명령</li>
+          <li><code>onLocate</code>·<code>onError</code> 콜백</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="how" class="alt">
+  <div class="wrap">
+    <div class="sec-title">
+      <span class="eb">How it works</span>
+      <h2>어떻게 만들었나</h2>
+      <p class="sub">런타임에 위치를 알아내려 하지 않고, 빌드할 때 미리 심어둡니다.</p>
+    </div>
+
+    <div class="prose">
+      <pre class="code"><code><span class="cm">// 내가 쓴 코드</span>
+&lt;Button&gt;저장&lt;/Button&gt;
+
+        │  빌드 타임 — <span class="hl">@babel/parser로 AST 파싱 → 소스 위치 주입</span>
+        ▼
+
+<span class="cm">// 번들에 들어가는 코드 (개발 빌드에서만)</span>
+&lt;Button <span class="hl">__componentSourceLoc</span>={{ file: "src/App.tsx", line: 42, column: 6 }}&gt;저장&lt;/Button&gt;
+
+        │  런타임 — 클릭한 DOM에서 위쪽으로 올라가며 주입된 위치를 찾음
+        ▼
+
+  <span class="hl">vscode://file/…/src/App.tsx:42:6</span> 로 에디터 열기</code></pre>
+
+      <div class="dec">
+        <h3>1. React 19에서 소스 위치를 어떻게 알아내나</h3>
+        <div class="row problem">
+          <div class="lbl">문제</div>
+          <div class="txt">기존 도구들이 쓰던 <code>fiber._debugSource</code>가 <b>React 19에서 제거</b>됐습니다. 런타임에 React 내부 구조를 뒤지는 방식은 버전이 바뀔 때마다 깨질 수밖에 없습니다.</div>
+        </div>
+        <div class="row">
+          <div class="lbl">선택</div>
+          <div class="txt">React에 묻지 않기로 했습니다. <b>빌드 타임에 @babel/parser로 AST를 파싱</b>해 각 JSX 요소가 원래 있던 파일·라인·컬럼을 기록해 둡니다. 프롭에 끼워 넣으면 사용자 컴포넌트에 없던 프롭이 생기므로, <b>전역 WeakMap</b>에 넣고 런타임이 그것만 읽습니다. React 내부 API에 대한 의존이 <b>0</b>이 됩니다.</div>
+        </div>
+        <div class="row result">
+          <div class="lbl">결과</div>
+          <div class="txt">React 버전과 <b>무관하게</b> 동작합니다. 다음에 내부 구조가 또 바뀌어도 영향받지 않습니다.</div>
+        </div>
+      </div>
+
+      <div class="dec">
+        <h3>2. 빌드 툴마다 따로 만들지 않으려면</h3>
+        <div class="row problem">
+          <div class="lbl">문제</div>
+          <div class="txt">Vite·Webpack·Rollup·esbuild·Rspack은 플러그인 인터페이스가 제각각입니다. 그대로 대응하면 <b>같은 로직을 다섯 번</b> 쓰고 다섯 번 유지보수해야 합니다.</div>
+        </div>
+        <div class="row">
+          <div class="lbl">선택</div>
+          <div class="txt">변환 로직을 <b>하나의 코어</b>로 두고, <b>unplugin</b>으로 각 빌드 툴 어댑터를 씌웠습니다. 툴별 차이는 어댑터 경계 안에만 두었습니다.</div>
+        </div>
+        <div class="row result">
+          <div class="lbl">결과</div>
+          <div class="txt">단일 코드베이스로 <b>5종 빌드 툴</b>을 지원합니다. 기능을 하나 고치면 다섯 군데에 동시에 반영됩니다.</div>
+        </div>
+      </div>
+
+      <div class="dec">
+        <h3>3. 프로덕션 번들에 영향을 주지 않으려면</h3>
+        <div class="row problem">
+          <div class="lbl">문제</div>
+          <div class="txt">디버깅 편의를 위해 넣은 도구가 <b>사용자에게 나가는 번들</b>을 키우면 쓸 이유가 없습니다.</div>
+        </div>
+        <div class="row">
+          <div class="lbl">선택</div>
+          <div class="txt">기본 활성 조건을 <code>NODE_ENV === "development"</code>로 두어 <b>개발 빌드에서만</b> 변환·주입이 일어나게 했습니다. 외부 의존성도 두지 않았습니다(<b>zero dependencies</b>).</div>
+        </div>
+        <div class="row result">
+          <div class="lbl">결과</div>
+          <div class="txt">프로덕션 번들에는 <b>흔적이 남지 않습니다.</b> 설치해도 배포 산출물은 그대로입니다.</div>
+        </div>
+      </div>
+
+      <div class="dec">
+        <h3>4. styled 컴포넌트가 전부 <code>styled.tsx</code>로 빠지는 문제</h3>
+        <div class="row problem">
+          <div class="lbl">문제</div>
+          <div class="txt">실무 코드베이스에 붙여보니 <b>거의 모든 클릭이 <code>styled.tsx</code>로 떨어졌습니다.</b> <code>styled.h1</code>으로 만든 컴포넌트는 태그드 템플릿이라 <b>그 안에 JSX가 없습니다.</b> 그래서 소스 위치를 못 찾고 <b>정의된 자리</b>로 되돌아갔습니다. 정작 보고 싶은 건 <b>그걸 갖다 쓴 화면</b>인데, 스타일 정의 파일만 열리니 쓸모가 없었습니다.</div>
+        </div>
+        <div class="row">
+          <div class="lbl">선택</div>
+          <div class="txt">위로 훑어 올라가면서 <b>프로젝트 안에 있는 가장 가까운 JSX 위치</b>를 먼저 찾도록 순서를 바꿨습니다. 컴포넌트 정의 위치는 <b>그마저 없을 때의 최후 수단</b>으로 내렸습니다.</div>
+        </div>
+        <div class="row result">
+          <div class="lbl">결과</div>
+          <div class="txt">위 스크린샷이 그 결과입니다. <code>WelcomeTitle</code>은 <code>styled.tsx</code>에 정의돼 있지만 라벨은 <b>그걸 쓴 <code>index.tsx:29</code></b>를 가리킵니다.</div>
+        </div>
+      </div>
+
+      <div class="dec">
+        <h3>5. 편의 기능이 앱을 죽이면 안 된다</h3>
+        <div class="row problem">
+          <div class="lbl">문제</div>
+          <div class="txt">소스 위치를 컴포넌트에 속성으로 붙이는데, <b>얼려둔(frozen) 컴포넌트</b>에 붙이려다 앱 전체가 죽었습니다. ESM은 strict mode라 실패한 대입이 그냥 넘어가지 않고 <b>예외를 던집니다.</b> 디자인 시스템 export나 SVG 변환 결과물이 이런 경우입니다.</div>
+        </div>
+        <div class="row">
+          <div class="lbl">선택</div>
+          <div class="txt">주입 코드를 <code>Object.isExtensible(...)&nbsp;&amp;&amp;&nbsp;(...)</code>로 감쌌습니다. 붙일 수 없으면 <b>조용히 넘어갑니다.</b> 그 컴포넌트만 점프가 안 되고 나머지는 그대로 동작합니다.</div>
+        </div>
+        <div class="row result">
+          <div class="lbl">결과</div>
+          <div class="txt">실무 앱 빌드 산출물에서 <b>주입 1,773곳 전부에 가드가 붙었고, 가드 없는 대입은 0건</b>임을 확인했습니다. <b>소스로 점프하는 건 편의 기능입니다. 그게 앱을 죽이는 건 어떤 이유로도 정당화되지 않습니다.</b></div>
+        </div>
+      </div>
+
+      <div class="note">
+        <b>알려진 한계 — Turbopack 미지원.</b> Turbopack에서는 Next.js가 <code>next.config.js</code>의 <code>webpack()</code> 훅을 아예 호출하지 않아, 플러그인이 <b>로드되지도 실행되지도 않습니다.</b> 오류도 경고도 없이 클릭만 조용히 안 먹습니다. 원인은 상류에 있습니다 — unplugin에 Turbopack 어댑터가 없고, Turbopack 쪽에 소스 변환용 공개 플러그인 API가 아직 없기 때문입니다. 우회는 <code>next dev --webpack</code>. 이 함정을 문서에 <b>눈에 띄게 명시</b>해, 쓰는 사람이 원인 모를 디버깅에 시간을 쓰지 않도록 했습니다.
+      </div>
+
+      <div style="margin-top:22px;">
+        <div class="p-tech">
+          <span class="tech">TypeScript</span><span class="tech">@babel/parser AST</span><span class="tech">unplugin</span><span class="tech">Vite</span><span class="tech">Webpack</span><span class="tech">Rollup</span><span class="tech">esbuild</span><span class="tech">Rspack</span><span class="tech">npm 배포</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="result">
+  <div class="wrap">
+    <div class="sec-title">
+      <span class="eb">Result</span>
+      <h2>결과</h2>
+    </div>
+    <div class="prose">
+      <ul>
+        <li>빌드 플러그인 한 줄만 추가하면 되는 형태로 <b>npm에 배포(v0.4.7)</b>.</li>
+        <li>단일 코어 + 어댑터 구조로 <b>빌드 툴 5종</b>을 하나의 코드베이스에서 지원.</li>
+        <li>함수형뿐 아니라 <b>클래스·HOC·styled·중첩 컴포넌트</b>까지 감지 범위를 넓히고, 변환·런타임 회귀 테스트로 보호.</li>
+        <li>동작하지 않는 조건(Turbopack)을 숨기지 않고 <b>문서에 먼저 밝혔습니다.</b></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="fnav">
+      <a href="../index.html">← 포트폴리오로 돌아가기</a>
+      <a href="stock-price-widget.html">stock-price-widget →</a>
+    </div>
+    <div class="fn">유창헌 · Frontend Developer</div>
+  </div>
+</footer>
+
+<script>
+  (function () {
+    var root = document.documentElement;
+    document.getElementById('tg').addEventListener('click', function () {
+      var cur = root.getAttribute('data-theme');
+      if (!cur) cur = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      root.setAttribute('data-theme', cur === 'dark' ? 'light' : 'dark');
+    });
+  })();
+</script>
+</body>
+</html>
