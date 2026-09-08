@@ -137,6 +137,56 @@ figure.shot figcaption b:first-child { display: block; margin-bottom: var(--s1);
   .shot-grid > figure.shot img { align-self: end; }
 }
 
+/* 스크린샷은 2880px 로 찍어 본문 글줄 폭(≈700px)에 눌러 넣는다.
+   차트 축 숫자·팝업 라벨은 그 폭에서 읽히지 않으므로 원본 픽셀로 볼 길을 준다. */
+/* 좁은 컷(.narrow, 380px)도 대상이다 — 오히려 더 작게 눌려 있다 */
+figure.shot img { cursor: zoom-in; }
+
+dialog.zoom {
+  padding: 0; border: 0; max-width: 100vw; max-height: 100vh;
+  width: 100vw; height: 100vh; background: transparent; overflow: auto;
+  /* 오버레이 안은 항상 어두운 매트 — 라이트 테마에서도 사진에 시선이 가야 한다 */
+  color-scheme: dark;
+}
+dialog.zoom::backdrop { background: rgba(0,0,0,.88); }
+dialog.zoom .stage {
+  min-width: 100%; min-height: 100%;
+  display: flex; align-items: center; justify-content: center;
+  padding: var(--s5); box-sizing: border-box;
+}
+dialog.zoom img {
+  display: block; border: 1px solid rgba(255,255,255,.14);
+  /* 처음엔 화면에 맞춰 전체를 보여준다 */
+  max-width: 100%; max-height: calc(100vh - 2 * var(--s5));
+  width: auto; height: auto; cursor: zoom-in;
+}
+/* 1:1 — 원본 픽셀. 넘치는 만큼 dialog 가 스크롤된다 */
+dialog.zoom.actual img {
+  max-width: none; max-height: none; cursor: zoom-out;
+  width: var(--zw); height: auto;
+}
+dialog.zoom .close {
+  position: fixed; top: var(--s4); right: var(--s4); z-index: 1;
+  font-family: var(--mono); font-size: 12.5px; line-height: 1;
+  color: rgba(255,255,255,.72); background: rgba(0,0,0,.55);
+  border: 1px solid rgba(255,255,255,.18); border-radius: 3px;
+  padding: 8px 11px; cursor: pointer;
+}
+dialog.zoom .close:hover { color: #fff; border-color: rgba(255,255,255,.4); }
+dialog.zoom .hint {
+  position: fixed; bottom: var(--s4); left: 50%; transform: translateX(-50%);
+  font-family: var(--mono); font-size: 11.5px; color: rgba(255,255,255,.5);
+  background: rgba(0,0,0,.55); padding: 7px 12px; border-radius: 3px;
+  pointer-events: none;
+}
+/* 확대 중에는 본문이 스크롤되지 않게 */
+html.zoom-open, html.zoom-open body { overflow: hidden; }
+
+@media (prefers-reduced-motion: no-preference) {
+  dialog.zoom[open] { animation: zoom-in .16s ease-out; }
+  @keyframes zoom-in { from { opacity: 0; } to { opacity: 1; } }
+}
+
 /* 촬영 대기 자리표시자 */
 .shot-todo {
   border: 1px dashed var(--rule); padding: var(--s7) var(--s5);
