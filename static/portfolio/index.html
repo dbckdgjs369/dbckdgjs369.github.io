@@ -4,7 +4,12 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="유창헌 · Frontend Developer — 직접 만들어 배포한 개인 프로젝트 3선 (실시간 시세 위젯 · React 코드 로케이터 · 커스텀 터널)">
-<meta name="color-scheme" content="light dark">
+<meta name="color-scheme" content="light">
+<script>
+  /* 저장된 선택을 그리기 전에 적용 — 라이트로 그렸다가 다크로 튀는 깜빡임 방지.
+     값이 없으면 라이트. OS 설정(prefers-color-scheme)은 일부러 보지 않는다. */
+  try { var t = localStorage.getItem("pf-theme"); if (t === "dark") document.documentElement.setAttribute("data-theme", "dark"); } catch (e) {}
+</script>
 <meta property="og:title" content="유창헌 · Frontend Developer">
 <meta property="og:description" content="직접 만들어 배포한 개인 프로젝트 3선">
 <meta property="og:type" content="website">
@@ -33,242 +38,177 @@
 </nav>
 
 <header id="top" class="hero">
-  <div class="wrap split">
-    <div class="rail">
-      <span class="tag">Portfolio</span>
-      <span class="tag dim">2026</span>
+  <div class="wrap">
+    <p class="eyebrow">Frontend Developer · 4년차</p>
+    <h1>불편을 발견하면,<br>도구로 만들어 <em>배포</em>합니다.</h1>
+    <p class="lede"><b>실시간 통신</b>과 <b>개발자 도구</b>에 관심이 많은 프론트엔드 개발자입니다. React가 주 무대지만, 원인이 있는 곳이면 화면 아래 <b>프로토콜·서버 레이어까지</b> 내려가 해결합니다. 아래 세 개는 개발하며 겪은 불편을 직접 도구로 만들어 <b>실제로 배포해 운영 중인</b> 것들입니다.</p>
+
+    <div class="hero-act">
+      <a class="btn" href="#projects">프로젝트 보기</a>
+      <a class="btn ghost" href="mailto:dbckdgjs1130@naver.com">메일 보내기</a>
     </div>
-    <div class="col">
-      <p class="kicker">Frontend Developer · 4년차</p>
-      <h1>불편을 발견하면,<br>도구로 만들어 <em>배포</em>합니다.</h1>
-      <div class="lede">
-        <p><b>실시간 통신</b>과 <b>개발자 도구</b>에 관심이 많은 프론트엔드 개발자입니다. React가 주 무대지만, 원인이 있는 곳이면 화면 아래 <b>프로토콜·서버 레이어까지</b> 내려가 해결합니다.</p>
-        <p>아래 세 개는 개발하거나 쓰다가 겪은 불편을 직접 도구로 만든 것들입니다. 셋 다 <b>실제로 배포해 운영 중</b>이며, 둘은 직접 설계한 Node.js·WebSocket 중계 서버 위에서, 하나는 빌드타임 AST 변환 위에서 돌아갑니다.</p>
-      </div>
-      <dl class="facts">
-        <div><dt>배포</dt><dd>Chrome 웹스토어 · npm · VSCode 확장</dd></div>
-        <div><dt>주력</dt><dd>React · TypeScript · Node.js · WebSocket</dd></div>
-      </dl>
-      <div class="contact">
-        <a href="https://github.com/dbckdgjs369" target="_blank" rel="noopener">
-          <span class="ic" aria-hidden="true"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg></span>github.com/dbckdgjs369</a>
-        <a href="mailto:dbckdgjs1130@naver.com">
-          <span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="1.5"/><path d="m22 7-9.4 6.3a2 2 0 0 1-2.2 0L1 7"/></svg></span>dbckdgjs1130@naver.com</a>
-        <span class="plain">010-2809-6995</span>
-      </div>
+
+    <ul class="proof">
+      <li><b>3</b><span>직접 배포·운영 중인 제품<br>웹스토어 · npm · VSCode</span></li>
+      <li><b>367<i>회</i></b><span>시세 위젯 누적 다운로드<br>사용자 53명 · 평점 5.0</span></li>
+      <li><b>5<i>종</i></b><span>단일 코어로 지원하는<br>빌드 툴 어댑터</span></li>
+      <li><b>120<i>초 → 0</i></b><span>터널로 없앤<br>모바일 확인 대기</span></li>
+    </ul>
+
+    <div class="contact hero-contact">
+      <a href="https://github.com/dbckdgjs369" target="_blank" rel="noopener"><span class="ic" aria-hidden="true"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg></span>github.com/dbckdgjs369</a>
+      <a href="mailto:dbckdgjs1130@naver.com"><span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="1.5"/><path d="m22 7-9.4 6.3a2 2 0 0 1-2.2 0L1 7"/></svg></span>dbckdgjs1130@naver.com</a>
+      <span class="plain">010-2809-6995</span>
     </div>
   </div>
 </header>
 
 <section id="projects">
-  <div class="wrap split">
-    <div class="rail">
+  <div class="wrap">
+    <div class="sec-head">
       <span class="num">01</span>
       <h2>개인 프로젝트</h2>
-      <p class="rail-note">직접 만들어 배포하고, 지금도 고치고 있는 것들. 항목을 누르면 문제 정의부터 결과까지 펼쳐집니다.</p>
+      <p>직접 만들어 배포하고, 지금도 고치고 있는 것들. 각 항목마다 문제 정의부터 결과까지 정리한 상세 페이지가 있습니다.</p>
     </div>
-    <div class="col">
 
-      <details class="entry" open>
-        <summary>
-          <div class="e-meta"><span class="idx">P1</span><span>Chrome Extension + Node.js 중계 서버</span><span class="dot">·</span><span>2026.03 — 진행중 · v4.0.0</span></div>
-          <h3>stock-price-extension</h3>
-          <p class="e-line">어떤 웹페이지 위에서든 주식·암호화폐 시세를 실시간으로 띄우는 위젯 오버레이.</p>
-          <div class="e-stats">
-            <span class="stat on">실사용자 30명+</span>
-            <span class="stat on">스토어 평점 5.0</span>
-            <span class="stat">자체 캔들 차트 엔진</span>
-            <span class="stat">봉 전환 지연 0</span>
-          </div>
-          <span class="e-more" aria-hidden="true"></span>
-        </summary>
-        <div class="e-body">
-          <div class="beat problem">
-            <h4>불편했던 점</h4>
-            <p>주식·코인 시세가 수시로 궁금한데, 확인하려면 그때마다 보던 화면을 벗어나 증권사 앱이나 거래소 탭을 따로 열어야 했다. <b>“지금 보고 있는 이 페이지 위에 시세가 그냥 떠 있으면 좋겠다”</b>는 생각에서 시작했다.</p>
-          </div>
-          <div class="beat">
-            <h4>해결</h4>
-            <ul>
-              <li>API를 감싸는 <b>Node.js RESTful 시세 중계 서버</b>를 직접 설계·구현해 키를 서버 뒤로 숨김</li>
-              <li>WebSocket 실시간 스트리밍을 기본으로, 장애 시 <b>REST 폴링으로 자동 전환</b>하는 폴백 구성</li>
-              <li><b>Shadow DOM</b>으로 CSS를 격리하고, <code>pointer-events</code>로 아래 페이지가 그대로 클릭되게 함</li>
-              <li>오버레이 환경에 맞춰 <b>캔들 차트 엔진을 직접 구현</b> — 지표(MA·볼린저밴드), 드로잉(추세선·피보나치)</li>
-              <li>차트 <b>2단 캐시(LRU+storage)·주기 프리페치</b>로 봉 전환 지연 제거, 드래그 시 과거 데이터 자동 조회</li>
-            </ul>
-          </div>
-          <div class="beat result">
-            <h4>결과</h4>
-            <p>기획·프론트·중계 서버·배포·운영까지 혼자 끌고 가 스토어에 출시. <b>실사용자 30명+, 평점 5.0</b>을 유지하며 운영 중.</p>
-          </div>
-          <ul class="chips">
-            <li>JavaScript</li><li>Node.js</li><li>WebSocket</li><li>SSE</li><li>Chrome Extension (MV3)</li><li>Shadow DOM</li><li>Canvas</li>
+    <div class="cards">
+
+      <article class="card">
+        <a class="shot" href="projects/stock-price-widget.html" tabindex="-1" aria-hidden="true">
+          <img src="images/stock-price-widget/widgets-on-page.png" alt="" loading="lazy" width="2880" height="1800">
+        </a>
+        <div class="card-body">
+          <div class="e-meta"><span class="idx">P1</span><span>Chrome Extension + Node.js 중계 서버</span><span class="dot">·</span><span>2026.03 — 진행중 · v4.0.2</span></div>
+          <h3><a href="projects/stock-price-widget.html">stock-price-extension</a></h3>
+          <p class="e-line">어떤 웹페이지 위에서든 주식·암호화폐 시세를 실시간으로 띄우는 위젯 오버레이. 시세 중계 서버부터 캔들 차트 엔진까지 직접 만들었습니다.</p>
+          <ul class="hits">
+            <li><b>누적 다운로드 367회 · 사용자 53명</b> · 스토어 평점 5.0으로 운영 중</li>
+            <li>프로덕션에서만 WS 압축이 죽는 문제 — Cloudflare가 <code>permessage-deflate</code> 헤더를 제거. 압축 4개 안을 실측한 뒤 <b>프로토콜을 재설계해 평균 275B → 65B(-76%)</b></li>
+            <li>오버레이 환경에 맞춘 <b>캔들 차트 엔진 자체 구현</b> — 지표·드로잉·2단 캐시</li>
           </ul>
+          <ul class="chips"><li>JavaScript</li><li>Node.js</li><li>WebSocket</li><li>Chrome Extension (MV3)</li><li>Shadow DOM</li><li>Canvas</li></ul>
           <div class="e-links">
-            <a class="go" href="projects/stock-price-widget.html">사용법 · 기능 자세히 보기</a>
+            <a class="go" href="projects/stock-price-widget.html">문제 정의부터 결과까지 보기</a>
             <a href="https://chromewebstore.google.com/detail/stock-price-widget/niofpnhhdeaneajeemfpnclammllkhfg" target="_blank" rel="noopener">Chrome 웹스토어 ↗</a>
           </div>
         </div>
-      </details>
+      </article>
 
-      <details class="entry">
-        <summary>
+      <article class="card">
+        <a class="shot" href="projects/react-code-locator.html" tabindex="-1" aria-hidden="true">
+          <img src="images/react-code-locator/hover.jpg" alt="" loading="lazy" width="1999" height="898">
+        </a>
+        <div class="card-body">
           <div class="e-meta"><span class="idx">P2</span><span>npm package · 빌드 플러그인</span><span class="dot">·</span><span>2026.03 — 진행중 · v0.4.7</span></div>
-          <h3>react-code-locator</h3>
-          <p class="e-line">개발 중 React 화면의 UI를 클릭하면 그 컴포넌트의 소스 파일·라인으로 에디터가 바로 열린다.</p>
-          <div class="e-stats">
-            <span class="stat on">npm 배포 v0.4.7</span>
-            <span class="stat">빌드툴 5종 지원</span>
-            <span class="stat">Zero dependencies</span>
-          </div>
-          <span class="e-more" aria-hidden="true"></span>
-        </summary>
-        <div class="e-body">
-          <div class="beat problem">
-            <h4>불편했던 점</h4>
-            <p>화면에서 고칠 부분은 눈에 보이는데, 그게 <b>어느 컴포넌트·어느 파일에서 그려지는지</b> 찾는 게 매번 번거로웠다. 규모가 큰 프로젝트나 남이 짠 코드에서는 텍스트로 검색해가며 한참 헤맸다. <b>화면을 클릭하면 바로 그 소스로 갔으면</b> 했다.</p>
-          </div>
-          <div class="beat">
-            <h4>해결</h4>
-            <ul>
-              <li>기존 도구가 의존하던 <b>fiber._debugSource가 React 19에서 사라진</b> 뒤에도 동작하도록, <b>빌드타임 AST 변환(@babel/parser)</b>으로 소스 위치를 직접 주입 → React 버전과 무관하게 동작</li>
-              <li><b>unplugin</b> 기반으로 Vite·Webpack·Rollup·esbuild·Rspack <b>5종 빌드 툴</b>을 단일 코드베이스로 지원</li>
-              <li>Zero dependencies, dev 전용 — 프로덕션 번들에는 전혀 영향이 없도록 설계</li>
-            </ul>
-          </div>
-          <div class="beat result">
-            <h4>결과</h4>
-            <p>빌드 플러그인 하나만 추가하면 되는 형태로 <b>npm에 배포(v0.4.7)</b>. 클래스·HOC·styled·중첩 컴포넌트까지 감지 범위를 넓혔고, 동작하지 않는 조건(Turbopack)은 문서에 먼저 밝혔습니다.</p>
-          </div>
-          <ul class="chips">
-            <li>TypeScript</li><li>@babel/parser AST</li><li>unplugin</li><li>Vite</li><li>Webpack</li><li>npm</li>
+          <h3><a href="projects/react-code-locator.html">react-code-locator</a></h3>
+          <p class="e-line">개발 중 React 화면의 UI를 클릭하면 그 컴포넌트의 소스 파일·라인으로 에디터가 바로 열립니다.</p>
+          <ul class="hits">
+            <li>React 19에서 <code>fiber._debugSource</code>가 사라진 뒤에도 동작하도록 <b>빌드타임 AST 변환</b>으로 소스 위치를 직접 주입</li>
+            <li><b>Vite · Webpack · Rollup · esbuild · Rspack</b> 5종을 단일 코어로 지원</li>
+            <li><b>Zero dependencies</b> — 설치하면 이 패키지만 들어오도록 의존성을 dist에 직접 번들</li>
           </ul>
+          <ul class="chips"><li>TypeScript</li><li>@babel/parser AST</li><li>unplugin</li><li>Vite</li><li>Webpack</li><li>npm</li></ul>
           <div class="e-links">
-            <a class="go" href="projects/react-code-locator.html">사용법 · 기능 자세히 보기</a>
+            <a class="go" href="projects/react-code-locator.html">문제 정의부터 결과까지 보기</a>
             <a href="https://www.npmjs.com/package/react-code-locator" target="_blank" rel="noopener">npm ↗</a>
             <a href="https://github.com/dbckdgjs369/web-element-code-locator" target="_blank" rel="noopener">GitHub ↗</a>
           </div>
         </div>
-      </details>
+      </article>
 
-      <details class="entry">
-        <summary>
-          <div class="e-meta"><span class="idx">P3</span><span>VSCode Extension + Node.js 릴레이 서버</span><span class="dot">·</span><span>2025.12 · v2.1.0</span></div>
-          <h3>custom-tunnel</h3>
-          <p class="e-line">로컬 개발 서버를 공개 URL로 즉시 열어, 모바일 등 외부 기기에서 빌드·배포 없이 확인한다.</p>
-          <div class="e-stats">
-            <span class="stat on">빌드·배포 120초 → 0</span>
-            <span class="stat on">실무 적용</span>
-          </div>
-          <span class="e-more" aria-hidden="true"></span>
-        </summary>
-        <div class="e-body">
-          <div class="beat problem">
-            <h4>불편했던 점</h4>
-            <p>로컬에서 만든 화면을 실제 폰에서 확인하고 싶은데, 그때마다 빌드하고 배포 서버에 올려(<b>약 120초</b>) 폰으로 접속해야 했다. 작은 수정 하나 보려고 2분씩 기다리는 게 반복되니 개발 흐름이 자꾸 끊겼다.</p>
-          </div>
-          <div class="beat">
-            <h4>해결</h4>
-            <ul>
-              <li><b>WebSocket 기반 리버스 프록시 릴레이 서버</b>를 설계해 HTTP 요청·응답을 중계</li>
-              <li>모바일 디버깅용 <b>원격 콘솔 로그 전송</b>(로그 레벨 필터)과 <b>QR 접속</b>, HTTPS 터널 지원</li>
-              <li>VSCode 사이드바 대시보드에서 터널 상태를 한눈에 관리</li>
-            </ul>
-          </div>
-          <div class="beat result">
-            <h4>결과</h4>
-            <p>실무에 직접 적용해 <b>빌드·배포 120초 과정을 제거</b>하고 즉시 검증 환경을 구축. VSCode 확장 v2.1.0로 배포.</p>
-          </div>
-          <ul class="chips">
-            <li>TypeScript</li><li>Node.js</li><li>WebSocket</li><li>VSCode Extension</li><li>Render</li>
+      <article class="card">
+        <a class="shot" href="projects/custom-tunnel.html" tabindex="-1" aria-hidden="true">
+          <img src="images/custom-tunnel/active-tunnel.png" alt="" loading="lazy" width="471" height="668">
+        </a>
+        <div class="card-body">
+          <div class="e-meta"><span class="idx">P3</span><span>VSCode Extension + Node.js 릴레이 서버</span><span class="dot">·</span><span>2025.12 — 2026.09 · v2.1.6</span></div>
+          <h3><a href="projects/custom-tunnel.html">custom-tunnel</a></h3>
+          <p class="e-line">로컬 개발 서버를 공개 URL로 즉시 열어, 모바일 등 외부 기기에서 빌드·배포 없이 확인합니다.</p>
+          <ul class="hits">
+            <li>실무에 적용해 <b>빌드·배포 120초 대기를 제거</b></li>
+            <li><b>WebSocket 리버스 프록시 릴레이 서버</b>를 직접 설계해 HTTP 요청·응답과 <b>앱 WebSocket까지 중계</b>(서브프로토콜 협상·바이너리·양방향 종료 포함)</li>
+            <li>모바일 디버깅용 <b>원격 콘솔 로그 전송</b>과 QR 접속, HTTPS 터널 지원</li>
           </ul>
+          <ul class="chips"><li>TypeScript</li><li>Node.js</li><li>WebSocket</li><li>VSCode Extension</li><li>Render</li></ul>
           <div class="e-links">
-            <a class="go" href="projects/custom-tunnel.html">사용법 · 기능 자세히 보기</a>
+            <a class="go" href="projects/custom-tunnel.html">문제 정의부터 결과까지 보기</a>
             <a href="https://github.com/dbckdgjs369/debug_tool" target="_blank" rel="noopener">GitHub ↗</a>
           </div>
         </div>
-      </details>
+      </article>
 
     </div>
   </div>
 </section>
 
 <section id="ways">
-  <div class="wrap split">
-    <div class="rail">
+  <div class="wrap">
+    <div class="sec-head">
       <span class="num">02</span>
       <h2>일하는 방식</h2>
-      <p class="rail-note">세 프로젝트에서 반복적으로 지킨 원칙들입니다.</p>
+      <p>세 프로젝트에서 반복적으로 지킨 원칙들입니다.</p>
     </div>
-    <div class="col">
-      <ol class="ways">
-        <li>
-          <h3>원인 레이어까지 내려간다</h3>
-          <p>화면에서 시작해도 원인이 프로토콜·서버·빌드 단계에 있으면 그곳까지 내려가 고칩니다. 시세 위젯의 키 노출은 중계 서버로, 소스 탐색은 빌드타임 AST로 해결했습니다.</p>
-        </li>
-        <li>
-          <h3>재사용 가능한 구조로 남긴다</h3>
-          <p>한 번 고친 문제는 일회성 패치가 아니라 모듈로 남깁니다. react-code-locator는 하나의 코어를 5종 빌드 툴 어댑터로 확장했습니다.</p>
-        </li>
-        <li>
-          <h3>배포·운영까지 직접 끌고 간다</h3>
-          <p>프로토타입에서 멈추지 않습니다. 셋 다 스토어·npm에 실제 배포했고, 시세 위젯은 실사용자와 평점까지 관리하며 운영 중입니다.</p>
-        </li>
-        <li>
-          <h3>도구는 쓰는 사람 자리에 둔다</h3>
-          <p>기능이 아무리 좋아도 쓰러 가야 하면 안 씁니다. 시세는 보던 페이지 위에, 소스 점프는 화면 우클릭에, 터널은 에디터 사이드바에 뒀습니다. 하던 일을 멈추지 않는 게 기준이었습니다.</p>
-        </li>
-      </ol>
-    </div>
+    <ol class="ways">
+      <li>
+        <h3>원인 레이어까지 내려간다</h3>
+        <p>화면에서 시작해도 원인이 프로토콜·서버·빌드 단계에 있으면 그곳까지 내려가 고칩니다. 시세 위젯의 대역폭 문제는 프론트가 아니라 프록시가 압축 헤더를 걷어낸 탓이어서 <b>WS 프로토콜을 다시 설계</b>했고, 소스 탐색은 런타임 대신 <b>빌드타임 AST</b>로 옮겨 해결했습니다.</p>
+      </li>
+      <li>
+        <h3>재사용 가능한 구조로 남긴다</h3>
+        <p>한 번 고친 문제는 일회성 패치가 아니라 모듈로 남깁니다. react-code-locator는 하나의 코어를 5종 빌드 툴 어댑터로 확장했습니다.</p>
+      </li>
+      <li>
+        <h3>배포·운영까지 직접 끌고 간다</h3>
+        <p>프로토타입에서 멈추지 않습니다. 셋 다 스토어·npm에 실제 배포했고, 시세 위젯은 실사용자와 평점까지 관리하며 운영 중입니다.</p>
+      </li>
+      <li>
+        <h3>도구는 쓰는 사람 자리에 둔다</h3>
+        <p>기능이 아무리 좋아도 쓰러 가야 하면 안 씁니다. 시세는 보던 페이지 위에, 소스 점프는 화면 우클릭에, 터널은 에디터 사이드바에 뒀습니다. 하던 일을 멈추지 않는 게 기준이었습니다.</p>
+      </li>
+    </ol>
   </div>
 </section>
 
 <section id="skills">
-  <div class="wrap split">
-    <div class="rail">
+  <div class="wrap">
+    <div class="sec-head">
       <span class="num">03</span>
       <h2>스킬</h2>
+      <p>실제 프로젝트에서 써 본 것만 적었습니다.</p>
     </div>
-    <div class="col">
-      <dl class="skills">
-        <div>
-          <dt>Frontend</dt>
-          <dd>React · TypeScript · JavaScript · Webpack · Vite · Chrome Extension (MV3)</dd>
-        </div>
-        <div>
-          <dt>실시간 · 프로토콜</dt>
-          <dd>WebSocket · SSE · 리버스 프록시</dd>
-        </div>
-        <div>
-          <dt>Backend · Infra</dt>
-          <dd>Node.js · RESTful API 설계 · Render</dd>
-        </div>
-        <div>
-          <dt>Tooling</dt>
-          <dd>@babel/parser AST · unplugin · npm 패키징 · VSCode Extension API</dd>
-        </div>
-      </dl>
+    <div class="skillset">
+      <div class="sk">
+        <h3>Frontend</h3>
+        <ul><li>React</li><li>TypeScript</li><li>JavaScript</li><li>Webpack</li><li>Vite</li><li>Chrome Extension (MV3)</li></ul>
+      </div>
+      <div class="sk">
+        <h3>실시간 · 프로토콜</h3>
+        <ul><li>WebSocket</li><li>SSE</li><li>리버스 프록시</li></ul>
+      </div>
+      <div class="sk">
+        <h3>Backend · Infra</h3>
+        <ul><li>Node.js</li><li>RESTful API 설계</li><li>Render</li></ul>
+      </div>
+      <div class="sk">
+        <h3>Tooling</h3>
+        <ul><li>@babel/parser AST</li><li>unplugin</li><li>npm 패키징</li><li>VSCode Extension API</li></ul>
+      </div>
     </div>
   </div>
 </section>
 
 <footer id="contact">
-  <div class="wrap split">
-    <div class="rail">
-      <span class="num">04</span>
-      <h2>연락처</h2>
-    </div>
-    <div class="col">
+  <div class="wrap">
+    <div class="closing-box">
       <p class="closing">스택을 가리지 않고<br>원인까지 내려가는 사람을<br>찾고 계신다면.</p>
       <a class="cta" href="mailto:dbckdgjs1130@naver.com">메일 보내기</a>
       <div class="contact">
-        <a href="https://github.com/dbckdgjs369" target="_blank" rel="noopener">
-          <span class="ic" aria-hidden="true"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg></span>github.com/dbckdgjs369</a>
+        <a href="https://github.com/dbckdgjs369" target="_blank" rel="noopener"><span class="ic" aria-hidden="true"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg></span>github.com/dbckdgjs369</a>
         <span class="plain">dbckdgjs1130@naver.com</span>
         <span class="plain">010-2809-6995</span>
       </div>
-      <p class="sig">유창헌 · Frontend Developer · Personal Projects</p>
     </div>
+    <p class="sig">유창헌 · Frontend Developer · Personal Projects</p>
   </div>
 </footer>
 
@@ -276,9 +216,9 @@
   (function () {
     var root = document.documentElement;
     document.getElementById('tg').addEventListener('click', function () {
-      var cur = root.getAttribute('data-theme');
-      if (!cur) cur = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-      root.setAttribute('data-theme', cur === 'dark' ? 'light' : 'dark');
+      var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try { localStorage.setItem('pf-theme', next); } catch (e) {}
     });
   })();
 </script>
