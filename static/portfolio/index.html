@@ -78,13 +78,15 @@
           <img src="images/stock-price-widget/widgets-on-page.png" alt="" loading="lazy" width="2880" height="1800">
         </a>
         <div class="card-body">
-          <div class="e-meta"><span class="idx">P1</span><span>Chrome Extension + Node.js 중계 서버</span><span class="dot">·</span><span>2026.03 — 진행중 · v4.0.2</span></div>
+          <!-- 버전 표기: 현재 상태 — 스토어 통과 시 갱신 -->
+          <div class="e-meta"><span class="idx">P1</span><span>Chrome Extension + Node.js 중계 서버</span><span class="dot">·</span><span>2026.03 — 진행중 · v4.1.1</span></div>
           <h3><a href="projects/stock-price-widget.html">stock-price-extension</a></h3>
           <p class="e-line">어떤 웹페이지 위에서든 주식·암호화폐 시세를 실시간으로 띄우는 위젯 오버레이. 시세 중계 서버부터 캔들 차트 엔진까지 직접 만들었습니다.</p>
           <ul class="hits">
             <li><b>누적 다운로드 367회 · 사용자 53명</b> · 스토어 평점 5.0으로 운영 중</li>
             <li>프로덕션에서만 WS 압축이 죽는 문제 — Cloudflare가 <code>permessage-deflate</code> 헤더를 제거. 압축 4개 안을 실측한 뒤 <b>프로토콜을 재설계해 평균 275B → 65B(-76%)</b></li>
             <li>오버레이 환경에 맞춘 <b>캔들 차트 엔진 자체 구현</b> — 지표·드로잉·2단 캐시</li>
+            <li>설치 직후 이탈 — 스토어 페이지엔 확장 스크립트가 주입되지 않아 <b>안내를 띄울 화면 자체가 없었음.</b> 확장 소유 페이지를 착륙 지점으로 만들어 <b>3막 온보딩</b>으로 연결</li>
           </ul>
           <ul class="chips"><li>JavaScript</li><li>Node.js</li><li>WebSocket</li><li>Chrome Extension (MV3)</li><li>Shadow DOM</li><li>Canvas</li></ul>
           <div class="e-links">
