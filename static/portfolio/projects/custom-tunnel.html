@@ -4,7 +4,12 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="Custom Tunnel — 로컬 개발 서버를 공개 URL로 즉시 여는 VSCode 확장. WebSocket 리버스 프록시 릴레이 서버 직접 구현.">
-<meta name="color-scheme" content="light dark">
+<meta name="color-scheme" content="light">
+<script>
+  /* 저장된 선택을 그리기 전에 적용 — 라이트로 그렸다가 다크로 튀는 깜빡임 방지.
+     값이 없으면 라이트. OS 설정(prefers-color-scheme)은 일부러 보지 않는다. */
+  try { var t = localStorage.getItem("pf-theme"); if (t === "dark") document.documentElement.setAttribute("data-theme", "dark"); } catch (e) {}
+</script>
 <meta property="og:title" content="Custom Tunnel · 유창헌">
 <meta property="og:description" content="빌드·배포 120초를 없앤 VSCode 터널링 확장">
 <meta property="og:type" content="article">
@@ -32,13 +37,13 @@
 
 <header class="phero">
   <div class="wrap">
-    <div class="cat">VSCode Extension + Node.js 릴레이 서버 · 2025.12 · v2.1.0</div>
+    <div class="cat">VSCode Extension + Node.js 릴레이 서버 · 2025.12 — 2026.09 · v2.1.6</div>
     <h1>Custom Tunnel</h1>
     <p class="lede">로컬 개발 서버를 <b>공개 URL로 즉시</b> 열어, 모바일 등 외부 기기에서 빌드·배포 없이 확인하는 VSCode 확장입니다. 터널 생성부터 QR 접속, 모바일 브라우저의 콘솔 로그 확인까지 <b>에디터 사이드바 안에서</b> 끝납니다.</p>
     <div class="p-badges">
       <span class="kpi good">빌드·배포 120초 → 0</span>
       <span class="kpi good">실무 적용</span>
-      <span class="kpi">VSCode 확장 v2.1.0</span>
+      <span class="kpi">VSCode 확장 v2.1.6</span>
     </div>
     <div class="p-links">
       <a class="primary" href="https://github.com/dbckdgjs369/debug_tool" target="_blank" rel="noopener">GitHub ↗</a>
@@ -152,7 +157,7 @@
         <ul>
           <li>로컬 포트를 <b>공개 URL로 즉시 공유</b></li>
           <li><b>HTTPS 로컬 서버</b>도 터널링 지원</li>
-          <li>텍스트·바이너리 응답 모두 중계 (Base64 처리)</li>
+          <li>텍스트·바이너리 응답 모두 중계 (<b>바이너리 프레임</b>)</li>
           <li>Wake-up 진행 상황 단계별 표시</li>
         </ul>
       </div>
@@ -239,11 +244,19 @@
         </div>
         <div class="row">
           <div class="lbl">선택</div>
-          <div class="txt">Content-Type을 보고 텍스트와 바이너리를 갈라, 바이너리와 SVG는 <b>Base64로 인코딩</b>해 중계하고 <code>isBase64</code> 플래그를 함께 실어 반대편에서 원본으로 복원하도록 했습니다.</div>
+          <div class="txt">처음에는 Content-Type을 보고 텍스트와 바이너리를 갈라, 바이너리와 SVG를 <b>Base64로 인코딩</b>해 중계했습니다. 문자열 채널 하나로 모든 응답을 실을 수 있어 구현이 단순했습니다.</div>
+        </div>
+        <div class="row problem">
+          <div class="lbl">재측정</div>
+          <div class="txt">동작은 했지만 Base64는 <b>3바이트를 4글자로 바꾸는 인코딩</b>이라 전송량이 원본의 4/3입니다. 터널은 로컬 → Render → 브라우저를 왕복하는 경로여서 이 <b>33% 가 그대로 지연</b>이 됩니다. 이미지·폰트가 많은 페이지에서 더 커집니다.</div>
+        </div>
+        <div class="row">
+          <div class="lbl">교체</div>
+          <div class="txt">WebSocket 은 원래 바이너리 프레임을 보낼 수 있으니, 응답 본문을 <b>인코딩 없이 그대로</b> 실어 보내도록 바꿨습니다. 대신 <b>프레임 앞에 종류·식별자를 붙였습니다</b> — <code>[1B 종류][4B id][페이로드]</code>. HTTP 응답 본문과 WS 메시지가 같은 채널을 공유하므로 구분이 필요했고, 이게 <b>프로토콜 v3</b> 입니다.</div>
         </div>
         <div class="row result">
           <div class="lbl">결과</div>
-          <div class="txt">이미지·폰트·아이콘이 포함된 실제 페이지가 <b>그대로</b> 렌더링됩니다.</div>
+          <div class="txt">이미지·폰트·아이콘이 포함된 실제 페이지가 <b>그대로</b> 렌더링되고, <b>Base64 오버헤드 33%가 사라졌습니다.</b> 반대 방향(브라우저 → 로컬)의 요청 본문은 아직 Base64 입니다 — 업로드가 아니면 대개 작아서 우선순위를 뒤로 뒀습니다.</div>
         </div>
       </div>
     </div>
@@ -284,9 +297,9 @@
     </div>
     <div class="prose">
       <ul>
-        <li>실무에 직접 적용해 <b>빌드·배포 120초 과정을 제거</b>. 저장하고 폰을 새로고침하면 끝입니다.</li>
+        <li>실무에 직접 적용해 <b>빌드·배포 120초 과정을 제거</b>. 저장하면 폰 화면이 <b>새로고침 없이 바뀝니다</b> — HMR 소켓까지 터널을 통과하도록 만든 뒤로는 저장에서 반영까지 <b>0~16ms</b>입니다.</li>
         <li>모바일 전용 버그를 <code>alert()</code> 없이 <b>로그를 보면서</b> 잡게 됐습니다.</li>
-        <li>VSCode 확장 <b>v2.1.0</b>까지 배포. 2.0에서 사이드바 대시보드 UI로 전면 개편했습니다.</li>
+        <li>VSCode 확장 <b>v2.1.6</b>까지 배포. 2.0에서 사이드바 대시보드 UI로 전면 개편했습니다.</li>
       </ul>
     </div>
   </div>
@@ -306,9 +319,9 @@
   (function () {
     var root = document.documentElement;
     document.getElementById('tg').addEventListener('click', function () {
-      var cur = root.getAttribute('data-theme');
-      if (!cur) cur = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-      root.setAttribute('data-theme', cur === 'dark' ? 'light' : 'dark');
+      var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try { localStorage.setItem('pf-theme', next); } catch (e) {}
     });
   })();
 </script>
