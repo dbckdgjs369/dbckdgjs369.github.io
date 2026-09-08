@@ -4,7 +4,12 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="react-code-locator — 개발 중 화면의 UI를 우클릭하면 그 컴포넌트의 소스 파일·라인으로 에디터가 열리는 빌드 플러그인. React 19 대응, 빌드툴 5종 지원.">
-<meta name="color-scheme" content="light dark">
+<meta name="color-scheme" content="light">
+<script>
+  /* 저장된 선택을 그리기 전에 적용 — 라이트로 그렸다가 다크로 튀는 깜빡임 방지.
+     값이 없으면 라이트. OS 설정(prefers-color-scheme)은 일부러 보지 않는다. */
+  try { var t = localStorage.getItem("pf-theme"); if (t === "dark") document.documentElement.setAttribute("data-theme", "dark"); } catch (e) {}
+</script>
 <meta property="og:title" content="react-code-locator · 유창헌">
 <meta property="og:description" content="화면을 클릭하면 소스로 점프하는 빌드 플러그인">
 <meta property="og:type" content="article">
@@ -330,9 +335,9 @@ export default defineConfig({
   (function () {
     var root = document.documentElement;
     document.getElementById('tg').addEventListener('click', function () {
-      var cur = root.getAttribute('data-theme');
-      if (!cur) cur = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-      root.setAttribute('data-theme', cur === 'dark' ? 'light' : 'dark');
+      var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try { localStorage.setItem('pf-theme', next); } catch (e) {}
     });
   })();
 </script>
