@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="react-code-locator — 개발 중 화면의 UI를 우클릭하면 그 컴포넌트의 소스 파일·라인으로 에디터가 열리는 빌드 플러그인. React 19 대응, 빌드툴 5종 지원.">
+<meta name="description" content="react-code-locator — 개발 중 화면의 UI를 Shift+우클릭하면 그 컴포넌트의 소스 파일·라인으로 에디터가 열리는 빌드 플러그인. 소스 재파싱 없이 컴파일러가 계산해둔 위치를 가로챈다. Next.js(webpack·Turbopack)·서버 컴포넌트 포함 번들러 6종 실측.">
 <meta name="color-scheme" content="light">
 <script>
   /* 저장된 선택을 그리기 전에 적용 — 라이트로 그렸다가 다크로 튀는 깜빡임 방지.
@@ -37,14 +37,15 @@
 
 <header class="phero">
   <div class="wrap">
-    <div class="cat">npm package · 빌드 플러그인 · 2026.03 — 진행중 · v0.4.7</div>
+    <div class="cat">npm package · 빌드 플러그인 · 2026.03 — 진행중 · v1.0.2</div>
     <h1>react-code-locator</h1>
-    <p class="lede">개발 중 React 화면에서 UI를 <b>우클릭하면 그 컴포넌트의 소스 파일·라인으로 에디터가 바로 열립니다.</b> Babel 설정도, 브라우저 확장도, React DevTools도 필요 없이 <b>빌드 플러그인 하나만</b> 추가하면 됩니다.</p>
+    <p class="lede">개발 중 React 화면에서 UI를 <b>Shift를 누른 채 우클릭하면 그 컴포넌트의 소스 파일·라인으로 에디터가 바로 열립니다.</b> Babel 설정도, 브라우저 확장도, React DevTools도 필요 없이 <b>빌드 플러그인 하나만</b> 추가하면 됩니다(Vite는 이것만으로 끝, Next·단독 번들러는 클라이언트에서 <code>enableLocator()</code> 한 줄 추가). v1은 소스를 다시 파싱했지만, v2는 <b>컴파일러가 이미 계산해둔 위치를 가로챕니다</b> — 재파싱 경로가 아예 없습니다.</p>
     <div class="p-badges">
-      <span class="kpi">npm v0.4.7</span>
-      <span class="kpi">빌드툴 5종 지원</span>
+      <span class="kpi">npm v1.0.2</span>
+      <span class="kpi">번들러 6종 실측</span>
+      <span class="kpi good">Turbopack · 서버 컴포넌트 지원</span>
       <span class="kpi good">Zero dependencies</span>
-      <span class="kpi good">React 19 대응</span>
+      <span class="kpi good">React 17–19 실측</span>
     </div>
     <div class="p-links">
       <a class="primary" href="https://www.npmjs.com/package/react-code-locator" target="_blank" rel="noopener">npm ↗</a>
@@ -71,7 +72,7 @@
     <div class="sec-title">
       <span class="eb">How to use</span>
       <h2>어떻게 쓰나</h2>
-      <p class="sub">설정 파일에 플러그인 한 줄. 그다음은 화면에서 끝납니다.</p>
+      <p class="sub">Vite는 플러그인 한 줄로 끝. Next·단독 번들러는 클라이언트에서 <code>enableLocator()</code> 한 줄을 더 부릅니다.</p>
     </div>
 
     <ol class="steps">
@@ -79,15 +80,16 @@
         <h3>설치하고 빌드 설정에 추가</h3>
         <div class="body">
           <pre class="code"><code>npm i -D react-code-locator</code></pre>
-          <p>Vite라면 <code>vitePlugin()</code> 하나로 소스 변환과 클라이언트 런타임 주입이 모두 처리됩니다.</p>
+          <p>Vite라면 플러그인 하나로 위치 가로채기와 클라이언트 런타임 주입이 모두 처리됩니다. tsconfig도, <code>react()</code> 옵션도 건드리지 않습니다.</p>
           <pre class="code"><code><span class="cm">// vite.config.ts</span>
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
-import { <span class="hl">vitePlugin</span> } from "react-code-locator";
+import { <span class="hl">reactCodeLocator</span> } from "react-code-locator";
 
 export default defineConfig({
-  plugins: [react(), <span class="hl">vitePlugin()</span>],
+  plugins: [<span class="hl">reactCodeLocator()</span>, react()],
 });</code></pre>
+          <p>Next.js는 <code>react-code-locator/next</code>의 <code>withReactCodeLocator(nextConfig)</code> 래퍼 하나로 <b>webpack·Turbopack 양쪽</b>에 동시에 걸립니다. webpack·rspack 단독은 <code>ReactCodeLocatorPlugin</code>, rollup·esbuild용 플러그인도 각각 제공합니다. Vite가 아닌 환경은 클라이언트에서 <code>enableLocator({ openInEditor: true })</code>를 직접 한 번 호출합니다 (Vite는 플러그인이 대신 해줍니다). "Open in editor"에 필요한 dev 서버 엔드포인트는 환경마다 다릅니다 — <b>Next.js는 자체 에러 오버레이용 엔드포인트를 그대로 재사용하므로 추가 설정이 없고</b>, webpack·rspack·rollup·esbuild 단독만 <code>openInEditorMiddleware</code>를 마운트해야 합니다. 안 하면 메뉴에 "Copy path"만 남습니다.</p>
         </div>
       </li>
 
@@ -96,8 +98,8 @@ export default defineConfig({
         <div class="body">
           <p><code>Shift</code>(기본값)를 누른 채 요소 위에 커서를 올리면, DevTools 인스펙터처럼 <b>파란 하이라이트</b>가 씌워지고 <b>컴포넌트 파일명과 라인 번호</b>가 라벨로 붙습니다.</p>
           <figure class="shot">
-            <img src="../images/react-code-locator/hover.jpg" alt="로그인 화면 오른쪽의 '어디서나, 무엇이든, 쉽게 리모트콜로 원격지원하세요.' 제목에 파란 테두리 하이라이트가 씌워져 있고, 그 왼쪽 위에 파란 배경의 고정폭 글씨로 index.tsx:29 라벨이 붙어 있다. 왼쪽에는 아이디·비밀번호 입력창과 로그인 버튼이 있는 실제 서비스 로그인 폼이 보인다.">
-            <figcaption><b>Shift 호버</b> 실제 서비스 화면에서 제목 요소에 커서를 올린 모습입니다. 하이라이트 위에 <code>index.tsx:29</code>가 붙었는데, 이 제목은 <code>styled.h1</code>으로 만든 컴포넌트입니다. <b>정의된 <code>styled.tsx</code>가 아니라 그것을 갖다 쓴 자리를 가리킵니다</b> — 「어떻게 만들었나」 4번에서 다루는 문제입니다.</figcaption>
+            <img src="../images/react-code-locator/hover.jpg" alt="로그인 화면 오른쪽의 '어디서나, 무엇이든, 쉽게 리모트콜로 원격지원하세요.' 제목에 파란 테두리 하이라이트가 씌워져 있고, 그 왼쪽 위에 파란 배경의 고정폭 글씨로 index.tsx:29 라벨이 붙어 있다. 왼쪽에는 아이디·비밀번호 입력창과 로그인 버튼이 있는 실제 서비스 로그인 폼이 보인다." loading="lazy" width="1999" height="898">
+            <figcaption><b>Shift 호버</b> 실제 서비스 화면에서 제목 요소에 커서를 올린 모습입니다.</figcaption>
           </figure>
         </div>
       </li>
@@ -116,8 +118,8 @@ export default defineConfig({
             </table>
           </div>
           <figure class="shot" style="margin-top:16px;">
-            <img src="../images/react-code-locator/menu.jpg" alt="로그인 화면의 '어디서나, 무엇이든, 쉽게 리모트콜로 원격지원하세요.' 제목 위에 어두운 배경의 작은 메뉴가 떠 있다. 메뉴 항목은 위에서부터 Open in editor, Copy path 두 개뿐이고, 브라우저 기본 우클릭 메뉴는 보이지 않는다.">
-            <figcaption><b>전용 우클릭 메뉴</b> 브라우저 기본 메뉴 대신 이 두 항목만 뜹니다. <code>Open in editor</code>는 에디터를 그 줄로 열고, <code>Copy path</code>는 <code>파일:줄:칸</code>을 클립보드에 넣습니다. <b>항목을 두 개로 제한한 건 의도한 것입니다</b> — 트리거 키를 누른 채로만 열리는 메뉴라, 고를 게 많으면 오히려 느려집니다.</figcaption>
+            <img src="../images/react-code-locator/menu.jpg" alt="로그인 화면의 '어디서나, 무엇이든, 쉽게 리모트콜로 원격지원하세요.' 제목 위에 어두운 배경의 작은 메뉴가 떠 있다. 맨 위에 찾아낸 파일 경로가 헤더로 표시되고, 그 아래 실행 항목은 Open in editor, Copy path 두 개이며, 브라우저 기본 우클릭 메뉴는 보이지 않는다." loading="lazy" width="1999" height="806">
+            <figcaption><b>전용 우클릭 메뉴</b> 브라우저 기본 메뉴 대신 이 두 항목만 뜹니다. <code>Open in editor</code>는 에디터를 그 줄로 열고, <code>Copy path</code>는 <code>파일:줄:칸</code>을 클립보드에 넣습니다.</figcaption>
           </figure>
         </div>
       </li>
@@ -131,11 +133,11 @@ export default defineConfig({
               <tbody>
                 <tr><td>Shift + Click</td><td>소스 위치를 콘솔에 출력</td></tr>
                 <tr><td>Alt + 1</td><td><b>화면 모드</b> — 화면에 보이는 컴포넌트 기준 (기본값)</td></tr>
-                <tr><td>Alt + 2</td><td><b>구현 모드</b> — 실제 구현 위치 기준</td></tr>
+                <tr><td>Alt + 2</td><td><b>구현 모드</b> — 실제 구현 위치 기준 (Babel이 있는 <b>Vite에서만</b> 자기 값을 가짐)</td></tr>
               </tbody>
             </table>
           </div>
-          <p style="margin-top:14px;">화면 모드와 구현 모드를 나눈 이유는, 공통 컴포넌트를 클릭했을 때 <b>“이 자리에 이걸 쓴 곳”</b>을 보고 싶을 때와 <b>“이 컴포넌트 자체의 정의”</b>를 보고 싶을 때가 다르기 때문입니다.</p>
+          <p style="margin-top:14px;">화면 모드와 구현 모드를 나눈 이유는, 공통 컴포넌트를 클릭했을 때 <b>“이 자리에 이걸 쓴 곳”</b>을 보고 싶을 때와 <b>“이 컴포넌트 자체의 정의”</b>를 보고 싶을 때가 다르기 때문입니다. 요청한 모드에 줄 게 없으면 다른 모드 값을 보여주되 메뉴에 <code>(no distinct … location)</code>이라고 밝힙니다 — 조용히 다른 걸 보여주는 것보다 낫습니다.</p>
         </div>
       </li>
     </ol>
@@ -152,10 +154,11 @@ export default defineConfig({
       <div class="fgroup">
         <h3>탐색</h3>
         <ul>
-          <li>호버 <b>하이라이트</b> + 파일명·라인 라벨</li>
-          <li>우클릭 → <b>에디터에서 열기</b></li>
+          <li>호버 <b>하이라이트</b> + 파일명·라인 라벨<span class="tiny">(rAF로 프레임당 1회)</span></li>
+          <li>우클릭 → <b>에디터에서 열기</b> · 결과 토스트</li>
           <li>경로 <code>file:line:col</code> 복사</li>
-          <li>화면 모드 / 구현 모드 전환</li>
+          <li>화면 모드 / 구현 모드 전환 (구현 모드는 Vite 한정)</li>
+          <li>오버레이는 <b>자기 자신을 탐지하지 않음</b></li>
         </ul>
       </div>
       <div class="fgroup">
@@ -163,25 +166,26 @@ export default defineConfig({
         <ul>
           <li>함수형·<b>클래스 컴포넌트</b></li>
           <li><b>HOC</b>·styled-components·중첩 컴포넌트</li>
-          <li><code>.js</code>·<code>.jsx</code>·<code>.ts</code>·<code>.tsx</code></li>
-          <li>React 16 ~ <b>19</b></li>
+          <li><b>서버 컴포넌트</b>(App Router)</li>
+          <li>React 17 ~ <b>19</b><span class="tiny">(18·19 테스트 레포, 17 실서비스)</span></li>
         </ul>
       </div>
       <div class="fgroup">
         <h3>빌드 툴</h3>
         <ul>
-          <li>Vite · Webpack · Rollup</li>
-          <li>esbuild · Rspack</li>
-          <li>Next.js(webpack) · CRA 설정 가이드 제공</li>
+          <li>Vite · Webpack · Rollup<span class="tiny">(commonjs 플러그인 필요)</span></li>
+          <li>esbuild<span class="tiny">(<code>jsxDev: true</code> 필요)</span> · Rspack</li>
+          <li>Next.js — webpack · <b>Turbopack</b></li>
+          <li>CRA — eject 앱은 그대로, 비-eject는 craco 경유</li>
         </ul>
       </div>
       <div class="fgroup">
         <h3>설정</h3>
         <ul>
-          <li><code>enabled</code> — 활성 조건 (기본: dev)</li>
           <li><code>triggerKey</code> — alt·meta·ctrl·shift·none</li>
-          <li><code>editor</code> — 열 에디터 명령</li>
-          <li><code>onLocate</code>·<code>onError</code> 콜백</li>
+          <li><code>openInEditor</code> — 우클릭 메뉴에 에디터 열기 노출</li>
+          <li>에디터 <b>4단계 폴백</b> + <code>REACT_CODE_LOCATOR_EDITOR</code>로 지정</li>
+          <li>프로덕션 번들 <b>0바이트</b> (dev 전용 경로에만 훅)</li>
         </ul>
       </div>
     </div>
@@ -193,74 +197,106 @@ export default defineConfig({
     <div class="sec-title">
       <span class="eb">How it works</span>
       <h2>어떻게 만들었나</h2>
-      <p class="sub">런타임에 위치를 알아내려 하지 않고, 빌드할 때 미리 심어둡니다.</p>
+      <p class="sub">위치를 새로 계산하지 않습니다. 컴파일러가 이미 계산해둔 것을 React가 버리기 전에 가로챕니다.</p>
     </div>
 
     <div class="prose">
       <pre class="code"><code><span class="cm">// 내가 쓴 코드</span>
 &lt;Button&gt;저장&lt;/Button&gt;
 
-        │  빌드 타임 — <span class="hl">@babel/parser로 AST 파싱 → 소스 위치 주입</span>
+        │  컴파일러 dev 변환 — <span class="hl">이미 위치를 계산해서 넘기고 있다</span> (모든 번들러 공통)
         ▼
 
-<span class="cm">// 번들에 들어가는 코드 (개발 빌드에서만)</span>
-&lt;Button <span class="hl">__componentSourceLoc</span>={{ file: "src/App.tsx", line: 42, column: 6 }}&gt;저장&lt;/Button&gt;
+import { jsxDEV } from "react/jsx-dev-runtime";
+jsxDEV(Button, {…}, key, false, <span class="hl">{ fileName: "src/App.tsx", lineNumber: 42, columnNumber: 6 }</span>)
 
-        │  런타임 — 클릭한 DOM에서 위쪽으로 올라가며 주입된 위치를 찾음
+        │  이 import를 래퍼 모듈로 리다이렉트 — React가 버리기 전에 <span class="hl">WeakMap에 복사</span>
         ▼
 
-  <span class="hl">vscode://file/…/src/App.tsx:42:6</span> 로 에디터 열기</code></pre>
+  클릭한 DOM → fiber를 타고 올라가며 WeakMap 조회
+        ▼
+  <span class="hl">/__open-in-editor?file=src/App.tsx:42:6</span> → 에디터가 그 줄을 연다
+        <span class="cm">└ Vite·webpack 계열은 이 경로, Next.js는 자체 오버레이용
+          /__nextjs_launch-editor — 감지한 dev 서버에 따라 갈린다</span></code></pre>
 
       <div class="dec">
-        <h3>1. React 19에서 소스 위치를 어떻게 알아내나</h3>
+        <h3>1. 소스를 다시 파싱하지 않는다 — v2의 핵심 결정</h3>
         <div class="row problem">
           <div class="lbl">문제</div>
-          <div class="txt">기존 도구들이 쓰던 <code>fiber._debugSource</code>가 <b>React 19에서 제거</b>됐습니다. 런타임에 React 내부 구조를 뒤지는 방식은 버전이 바뀔 때마다 깨질 수밖에 없습니다.</div>
+          <div class="txt">v1 아키텍처(npm 0.3.x)는 번들러의 transform 훅에서 <b>@babel/parser로 소스를 재파싱</b>해 위치를 주입했습니다. 동작은 했지만 모든 파일을 두 번 파싱하는 비용을 내고, 번들러마다 transform 훅 형태가 달라 어댑터가 무거웠습니다. 그런데 알고 보니 <b>그 위치는 컴파일러가 dev 모드에서 이미 계산하고 있었습니다</b> — JSX를 <code>jsxDEV()</code> 호출로 바꾸며 5번째 인자로 파일·줄·칸을 넘기고, React는 받자마자 버립니다.</div>
         </div>
         <div class="row">
           <div class="lbl">선택</div>
-          <div class="txt">React에 묻지 않기로 했습니다. <b>빌드 타임에 @babel/parser로 AST를 파싱</b>해 각 JSX 요소가 원래 있던 파일·라인·컬럼을 기록해 둡니다. 프롭에 끼워 넣으면 사용자 컴포넌트에 없던 프롭이 생기므로, <b>전역 WeakMap</b>에 넣고 런타임이 그것만 읽습니다. React 내부 API에 대한 의존이 <b>0</b>이 됩니다.</div>
+          <div class="txt">재파싱 경로를 <b>전부 삭제</b>했습니다. 대신 <code>react/jsx-dev-runtime</code> import를 얇은 래퍼로 <b>리다이렉트</b>해, React가 버리기 직전의 <code>__source</code>를 <b>WeakMap</b>에 복사해 둡니다. 핵심 기능(JSX 호출 위치)은 이 훅 하나로 끝나고, 이 경로에서는 사용자 코드도 프롭도 건드리지 않습니다. React 19가 <code>fiber._debugSource</code>를 제거한 것과도 무관합니다 — 내부 필드가 아니라 모듈 경계에서 가로채기 때문입니다.</div>
+        </div>
+        <div class="row">
+          <div class="lbl">그런데</div>
+          <div class="txt">"컴파일러가 계산한 값이니 정확하다"는 전제가 <b>한 환경에서 깨졌습니다.</b> Vite의 <code>@vitejs/plugin-react</code>는 JSX 변환을 esbuild에 넘기는데, 그 전에 fast-refresh 프리앰블을 파일 앞에 붙입니다. esbuild는 <b>이미 밀려난 텍스트</b>를 기준으로 위치를 계산하므로, Vite에서 받는 줄 번호는 실측해보니 정확히 <b>19줄씩</b> 틀렸습니다. 전제의 정확한 조건은 "파싱과 JSX 변환 사이에 코드가 움직이지 않을 것"이었고, Next의 SWC는 한 패스라 이걸 만족합니다. 그래서 <b>Vite에서만</b> 이미 돌고 있는 Babel 패스에 얹혀(재파싱은 여전히 0회) AST 원본 좌표로 덮어씁니다. 두 값이 같은 WeakMap에 쓰이고 정확한 쪽이 바깥에서 실행되므로, 별도 분기 없이 정확한 값이 남습니다.</div>
         </div>
         <div class="row result">
           <div class="lbl">결과</div>
-          <div class="txt">React 버전과 <b>무관하게</b> 동작합니다. 다음에 내부 구조가 또 바뀌어도 영향받지 않습니다.</div>
+          <div class="txt">파싱 비용 0, React 내부 API 의존 0. React 18·19는 환경별 테스트 레포로, 17은 실서비스 앱으로 실측했습니다.</div>
         </div>
       </div>
 
       <div class="dec">
-        <h3>2. 빌드 툴마다 따로 만들지 않으려면</h3>
+        <h3>2. 훅이 하나면 어댑터는 변주일 뿐이다 — Turbopack까지</h3>
         <div class="row problem">
           <div class="lbl">문제</div>
-          <div class="txt">Vite·Webpack·Rollup·esbuild·Rspack은 플러그인 인터페이스가 제각각입니다. 그대로 대응하면 <b>같은 로직을 다섯 번</b> 쓰고 다섯 번 유지보수해야 합니다.</div>
+          <div class="txt">v1은 unplugin 어댑터 5종을 유지보수했고, 그래도 <b>Turbopack은 불가능</b>했습니다. transform 훅을 꽂을 공개 API가 Turbopack에 없었기 때문입니다. 오류도 경고도 없이 클릭만 조용히 안 먹혔습니다.</div>
         </div>
         <div class="row">
           <div class="lbl">선택</div>
-          <div class="txt">변환 로직을 <b>하나의 코어</b>로 두고, <b>unplugin</b>으로 각 빌드 툴 어댑터를 씌웠습니다. 툴별 차이는 어댑터 경계 안에만 두었습니다.</div>
+          <div class="txt">v2의 훅은 "모듈 하나를 다른 모듈로 바꿔치기"라서, 각 번들러의 <b>모듈 해석 지점</b>만 찾으면 됩니다. Vite는 <code>resolveId</code>, rollup·esbuild도 각자의 resolve 훅, 그리고 Next.js는 <code>turbopack.resolveAlias</code>라는 <b>공개 설정</b>으로 같은 일을 해줍니다 — transform API는 없어도 alias는 있었습니다.</div>
+        </div>
+        <div class="row">
+          <div class="lbl">함정</div>
+          <div class="txt">단순 alias로는 <b>순환 참조</b>가 생깁니다. Vite의 <code>resolveId</code>는 importer가 누구인지 받아서 우리 래퍼 자신의 import만 예외로 둘 수 있지만, webpack·rspack·Turbopack·esbuild는 <b>스펙 문자열만 보고</b> 치환하기 때문에 래퍼가 부르는 <code>react/jsx-dev-runtime</code>까지 다시 래퍼로 바뀝니다. 그래서 설정 시점에 Node로 React의 실제 경로를 해석해, <b>절대 경로로 require하는 CJS 심(shim)을 생성</b>했습니다 — alias가 자기 자신을 가리킬 수 없는 구조가 됩니다. 이 심에는 <code>projectRoot</code>도 빌드 타임에 구워 넣습니다. SWC는 <code>__source</code>에 절대 경로를 박고 브라우저는 프로젝트 위치를 알 방법이 없어서, 이게 없으면 "Copy path" 결과가 빌드한 기계에서만 유효해집니다. 레지스트리 자체는 <code>globalThis</code>의 심볼 키에 매답니다 — pnpm이나 모노레포에서 패키지 복사본이 둘 생겨도 <b>하나의 WeakMap으로 수렴</b>해야 하기 때문입니다.</div>
+        </div>
+        <div class="row">
+          <div class="lbl">Turbopack</div>
+          <div class="txt">공개 설정은 있었지만 제약이 세 겹이었습니다. Turbopack은 <b>절대 경로를 거부</b>하고(alias 값도, 심 내부 <code>require()</code>도 — <i>"server relative imports are not implemented yet"</i>), <b>프로젝트 루트 밖 참조도 거부</b>해서 래퍼를 심 옆으로 복사해야 했습니다. 결정적으로 Next는 <code>next/dist/compiled/react</code>를 <b>벤더링</b>하기 때문에, 평범한 <code>react</code>를 감싸면 React 내부 상태가 두 인스턴스로 갈려 첫 렌더에서 앱이 죽습니다. webpack 모드에도 별개 함정이 있었습니다 — App Router는 top-level <code>resolve.alias</code>가 아니라 <b>module rule 레이어별 alias</b>로 React를 해석하고 그 rule이 top-level을 이겨서, <code>module.rules</code>를 재귀로 훑어 각 rule에도 같은 alias를 넣어야 했습니다.</div>
         </div>
         <div class="row result">
           <div class="lbl">결과</div>
-          <div class="txt">단일 코드베이스로 <b>5종 빌드 툴</b>을 지원합니다. 기능을 하나 고치면 다섯 군데에 동시에 반영됩니다.</div>
+          <div class="txt">v1의 최대 한계였던 <b>Turbopack이 지원 목록에 들어왔습니다.</b> <code>react-code-locator/next</code>의 <code>withReactCodeLocator()</code> 래퍼 하나로 <code>next dev</code>와 <code>next dev --turbopack</code> 양쪽에 동시에 걸리고, 둘 다 Chromium E2E로 실측했습니다.</div>
         </div>
       </div>
 
       <div class="dec">
-        <h3>3. 프로덕션 번들에 영향을 주지 않으려면</h3>
+        <h3>3. 서버 컴포넌트 — 위치가 서버에만 있는 문제</h3>
+        <div class="row problem">
+          <div class="lbl">문제</div>
+          <div class="txt">App Router의 기본값인 서버 컴포넌트는 <code>jsxDEV</code>가 <b>Node에서 실행</b>됩니다. 위치는 서버 쪽 WeakMap에 쌓이고, 브라우저로 오는 직렬화된 페이로드에는 <code>__source</code>가 없습니다. 이대로면 App Router 화면 대부분이 조회 불가입니다.</div>
+        </div>
+        <div class="row">
+          <div class="lbl">선택</div>
+          <div class="txt">React 19가 RSC 엘리먼트마다 <b>owner stack</b>을 실어 보내고 클라이언트가 <code>fiber._debugStack</code>에 남겨두는 걸 이용했습니다. 다만 좌표가 컴파일된 서버 모듈 기준이라, Next가 자기 에러 오버레이용으로 열어둔 소스맵 서비스(<code>/__nextjs_original-stack-frames</code>)에 <b>동일 출처 POST 한 번</b>으로 원본 좌표로 되돌립니다. 이 경로는 비동기라 <code>locateAsync()</code>로 분리하고, 한 번 받은 답은 메모이즈합니다. 첫 왕복이 끝나기 전에는 하이라이트를 지우는 대신 <b>직전 상태를 유지</b>해 깜빡임을 없애고, 답이 왔을 때 커서가 이미 다른 요소로 떠났으면 그리지 않습니다.</div>
+        </div>
+        <div class="row result">
+          <div class="lbl">결과</div>
+          <div class="txt">서버 컴포넌트도 <b>webpack·Turbopack 양쪽에서</b> 원본 <code>app/page.tsx</code> 좌표로 점프합니다. 크롬 익스텐션도 CDP도 없이요.</div>
+        </div>
+      </div>
+
+      <div class="dec">
+        <h3>4. 프로덕션 번들에 영향을 주지 않으려면</h3>
         <div class="row problem">
           <div class="lbl">문제</div>
           <div class="txt">디버깅 편의를 위해 넣은 도구가 <b>사용자에게 나가는 번들</b>을 키우면 쓸 이유가 없습니다.</div>
         </div>
         <div class="row">
           <div class="lbl">선택</div>
-          <div class="txt">기본 활성 조건을 <code>NODE_ENV === "development"</code>로 두어 <b>개발 빌드에서만</b> 변환·주입이 일어나게 했습니다. 외부 의존성도 두지 않았습니다(<b>zero dependencies</b>).</div>
+          <div class="txt">가로채는 대상이 <code>react/jsx-dev-runtime</code> — 이름 그대로 <b>dev 빌드에서만 import되는 모듈</b>입니다. 프로덕션 빌드는 <code>jsx-runtime</code>을 쓰므로 훅이 걸릴 자리 자체가 없습니다. 외부 의존성도 0개입니다.</div>
         </div>
         <div class="row result">
           <div class="lbl">결과</div>
-          <div class="txt">프로덕션 번들에는 <b>흔적이 남지 않습니다.</b> 설치해도 배포 산출물은 그대로입니다.</div>
+          <div class="txt">프로덕션 번들 <b>0바이트</b> — 노력해서 지운 게 아니라, 프로덕션에는 훅이 걸릴 자리가 애초에 없습니다. Vite 플러그인은 <code>apply: "serve"</code>로 dev 서버에만 붙고, webpack·Next 통합은 프로덕션 모드에서 스스로 비활성됩니다.</div>
         </div>
       </div>
 
       <div class="dec">
-        <h3>4. styled 컴포넌트가 전부 <code>styled.tsx</code>로 빠지는 문제</h3>
+        <h3>5. styled 컴포넌트가 전부 <code>styled.tsx</code>로 빠지는 문제</h3>
         <div class="row problem">
           <div class="lbl">문제</div>
           <div class="txt">실무 코드베이스에 붙여보니 <b>거의 모든 클릭이 <code>styled.tsx</code>로 떨어졌습니다.</b> <code>styled.h1</code>으로 만든 컴포넌트는 태그드 템플릿이라 <b>그 안에 JSX가 없습니다.</b> 그래서 소스 위치를 못 찾고 <b>정의된 자리</b>로 되돌아갔습니다. 정작 보고 싶은 건 <b>그걸 갖다 쓴 화면</b>인데, 스타일 정의 파일만 열리니 쓸모가 없었습니다.</div>
@@ -276,28 +312,64 @@ export default defineConfig({
       </div>
 
       <div class="dec">
-        <h3>5. 편의 기능이 앱을 죽이면 안 된다</h3>
+        <h3>6. 편의 기능이 앱을 죽이면 안 된다</h3>
         <div class="row problem">
           <div class="lbl">문제</div>
-          <div class="txt">소스 위치를 컴포넌트에 속성으로 붙이는데, <b>얼려둔(frozen) 컴포넌트</b>에 붙이려다 앱 전체가 죽었습니다. ESM은 strict mode라 실패한 대입이 그냥 넘어가지 않고 <b>예외를 던집니다.</b> 디자인 시스템 export나 SVG 변환 결과물이 이런 경우입니다.</div>
+          <div class="txt">소스 위치를 컴포넌트에 <b>속성으로 대입</b>하다가, <b>얼려둔(frozen) 컴포넌트</b>에 붙이려는 순간 앱 전체가 죽은 적이 있습니다. ESM은 strict mode라 실패한 대입이 그냥 넘어가지 않고 <b>예외를 던집니다.</b> 디자인 시스템 export나 SVG 변환 결과물이 이런 경우입니다.</div>
         </div>
         <div class="row">
           <div class="lbl">선택</div>
-          <div class="txt">주입 코드를 <code>Object.isExtensible(...)&nbsp;&amp;&amp;&nbsp;(...)</code>로 감쌌습니다. 붙일 수 없으면 <b>조용히 넘어갑니다.</b> 그 컴포넌트만 점프가 안 되고 나머지는 그대로 동작합니다.</div>
+          <div class="txt">두 겹으로 접근했습니다. 핵심 경로(JSX 호출 위치)는 <b>대입 자체가 없는 구조</b>로 — 위치는 엘리먼트의 props 객체를 키로 하는 <b>WeakMap</b>에만 있어 frozen이든 sealed든 관계없습니다. 여전히 속성 대입이 필요한 부가 경로(Vite 한정 구현 모드)는 <code>Object.isExtensible</code> 가드로 감싸 <b>붙일 수 없으면 조용히 건너뜁니다</b> — 그 컴포넌트만 구현 모드가 빠지고 나머지는 전부 동작합니다. 이 가드 덕분에 판단 방향도 뒤집을 수 있었습니다. 처음에는 HOC 이름 allow-list로 컴포넌트를 골라냈는데 프로젝트 로컬 HOC를 전부 놓쳤고, 그래서 <b>모든 호출 표현식을 후보로 받고 위험은 가드가 흡수</b>하도록 바꿨습니다. 반환값이 객체·함수가 아닌 경우까지 같은 자리에서 걸러집니다.</div>
         </div>
         <div class="row result">
           <div class="lbl">결과</div>
-          <div class="txt">실무 앱 빌드 산출물에서 <b>주입 1,773곳 전부에 가드가 붙었고, 가드 없는 대입은 0건</b>임을 확인했습니다. <b>소스로 점프하는 건 편의 기능입니다. 그게 앱을 죽이는 건 어떤 이유로도 정당화되지 않습니다.</b></div>
+          <div class="txt">실서비스 앱(React 17 + webpack 5 + styled-components)에 붙여 페이지 에러 0건으로 실측했습니다. <b>소스로 점프하는 건 편의 기능입니다. 그게 앱을 죽이는 건 어떤 이유로도 정당화되지 않습니다.</b></div>
+        </div>
+      </div>
+
+      <div class="dec">
+        <h3>7. 실서비스 앱에 붙이자 번들러가 세 번 막았다</h3>
+        <div class="row problem">
+          <div class="lbl">문제</div>
+          <div class="txt">playground에서 전부 통과한 패키지를 실서비스 CRA(eject) 앱에 붙였더니 <b>빌드부터 서지 않았습니다.</b> ① CRA의 <code>ModuleScopePlugin</code>이 <code>src/</code> 밖을 가리키는 import를 차단해 <i>"falls outside of the project src/ directory"</i> 에러가 <b>86건</b> ② 심을 <code>.cjs</code>로 내보냈더니 CRA의 catch-all <code>file-loader</code>가 그걸 <b>정적 에셋으로 번들</b>해서, 모든 <code>import { jsxDEV }</code>가 URL 문자열에 바인딩되며 undefined가 됐습니다 ③ 심을 <code>module.exports = wrap(...)</code> 형태로 쓰니 webpack의 CJS 파서가 named export를 추적하지 못해 <i>"only default export is available"</i> 경고가 JSX 파일마다 <b>3,025번</b> 찍혔습니다.</div>
+        </div>
+        <div class="row">
+          <div class="lbl">선택</div>
+          <div class="txt">세 개 다 <b>사용자가 설정을 고치지 않는 방향</b>으로 해결했습니다. ①은 플러그인 클래스 이름에 의존하지 않고 구조로 감지해 allow-list에 심과 래퍼를 추가 ②는 확장자를 <code>.js</code>로 바꾸고 심 디렉터리에 <code>{"type":"commonjs"}</code>를 함께 써서 상위 <code>"type": "module"</code>에 오염되지 않게 ③은 정적 <code>exports.x =</code> 형태로 바꿔 파서가 추적할 수 있게 만들었습니다.</div>
+        </div>
+        <div class="row result">
+          <div class="lbl">결과</div>
+          <div class="txt">테스트 레포에서는 <b>하나도 재현되지 않던 문제들</b>입니다. 실서비스에 붙여보지 않았다면 "지원한다"고 적어둔 채로 남았을 것들이라, 이후 지원 매트릭스에 실서비스 검증 칸을 따로 두었습니다.</div>
+        </div>
+      </div>
+
+      <div class="dec">
+        <h3>8. 조용히 실패하지 않는다</h3>
+        <div class="row problem">
+          <div class="lbl">문제</div>
+          <div class="txt">메뉴에서 "Open in editor"를 눌렀는데 <b>아무 일도 일어나지 않는</b> 제보를 받았습니다. 엔드포인트는 200을 돌려주고 있었습니다. 원인은 dev 서버 프로세스의 <code>$EDITOR</code>가 <code>vi</code>였던 것 — 터미널 에디터를 <b>detached로 띄우면 붙을 TTY가 없어</b> 뜨지도, 죽지도 않고 사라집니다.</div>
+        </div>
+        <div class="row">
+          <div class="lbl">선택</div>
+          <div class="txt">에디터 결정을 <b>4단계 폴백</b>으로 바꿨습니다. <code>REACT_CODE_LOCATOR_EDITOR</code> → <code>$VISUAL</code>/<code>$EDITOR</code>(단 vi·vim·nano 같은 <b>터미널 에디터는 의도적으로 건너뜀</b>) → <b>실행 중인 GUI 에디터 자동 탐지</b>(프로세스 목록에서 VS Code 계열·JetBrains 전 제품군·Sublime·Zed를 찾습니다) → <code>code</code>. 그리고 고른 결과를 서버 콘솔에 한 줄 남깁니다.</div>
+        </div>
+        <div class="row">
+          <div class="lbl">원칙</div>
+          <div class="txt">이건 이 프로젝트에서 반복해서 물린 지점입니다. v1의 최악의 버그도 <b>삼켜진 404</b>였고, 겉으로는 무동작과 구별되지 않았습니다. 그래서 실패하는 자리마다 말을 하게 만들었습니다 — 엔드포인트가 실패하면 상태 코드·감지한 dev 서버·URL을 함께 보고하고, 에디터 실행 파일이 없으면(<code>ENOENT</code>는 예외가 아니라 비동기 이벤트라 리스너가 없으면 <b>출력조차 없습니다</b>) 해결 방법까지 붙여 알리고, 심 해석이 실패하면 빌드를 세우는 대신 경고 후 기능만 내려놓습니다.</div>
+        </div>
+        <div class="row result">
+          <div class="lbl">결과</div>
+          <div class="txt">VS Code를 쓰지 않는 환경에서도 <b>설정 없이</b> 열리고, 안 열릴 때는 왜 안 열렸는지가 콘솔에 남습니다. 1.0.2로 배포했습니다.</div>
         </div>
       </div>
 
       <div class="note">
-        <b>알려진 한계 — Turbopack 미지원.</b> Turbopack에서는 Next.js가 <code>next.config.js</code>의 <code>webpack()</code> 훅을 아예 호출하지 않아, 플러그인이 <b>로드되지도 실행되지도 않습니다.</b> 오류도 경고도 없이 클릭만 조용히 안 먹습니다. 원인은 상류에 있습니다 — unplugin에 Turbopack 어댑터가 없고, Turbopack 쪽에 소스 변환용 공개 플러그인 API가 아직 없기 때문입니다. 우회는 <code>next dev --webpack</code>. 이 함정을 문서에 <b>눈에 띄게 명시</b>해, 쓰는 사람이 원인 모를 디버깅에 시간을 쓰지 않도록 했습니다.
+        <b>알려진 한계 — classic JSX transform + React 19.</b> classic transform(구식 <code>React.createElement</code> 출력)은 <code>jsx-dev-runtime</code>을 아예 import하지 않아 가로챌 지점이 없습니다. React 18까지는 <code>fiber._debugSource</code> 폴백으로 커버되지만(실측 — 단 이 경로는 좌표가 절대 경로로 나옵니다), 그 필드를 삭제한 <b>React 19 + classic 조합만 조용히 null</b>을 돌려줍니다 — 앱은 멀쩡합니다. 하나 더, Turbopack은 <b>프로젝트 루트 밖으로 나가는 심볼릭 링크</b>를 해석하지 못해 <code>npm link</code>나 모노레포 호이스팅 환경에서는 걸릴 수 있습니다(정상 설치는 무관). 지원 매트릭스의 모든 칸은 추론이 아니라 실측한 값이며, 이 구멍들도 문서에 먼저 밝혀 두었습니다.
       </div>
 
       <div style="margin-top:22px;">
         <div class="p-tech">
-          <span class="tech">TypeScript</span><span class="tech">@babel/parser AST</span><span class="tech">unplugin</span><span class="tech">Vite</span><span class="tech">Webpack</span><span class="tech">Rollup</span><span class="tech">esbuild</span><span class="tech">Rspack</span><span class="tech">npm 배포</span>
+          <span class="tech">TypeScript</span><span class="tech">jsx-dev-runtime 가로채기</span><span class="tech">Vite</span><span class="tech">Webpack</span><span class="tech">Rollup</span><span class="tech">esbuild</span><span class="tech">Rspack</span><span class="tech">Next.js · Turbopack</span><span class="tech">RSC</span><span class="tech">npm 배포</span>
         </div>
       </div>
     </div>
@@ -312,10 +384,11 @@ export default defineConfig({
     </div>
     <div class="prose">
       <ul>
-        <li>빌드 플러그인 한 줄만 추가하면 되는 형태로 <b>npm에 배포(v0.4.7)</b>.</li>
-        <li>단일 코어 + 어댑터 구조로 <b>빌드 툴 5종</b>을 하나의 코드베이스에서 지원.</li>
-        <li>함수형뿐 아니라 <b>클래스·HOC·styled·중첩 컴포넌트</b>까지 감지 범위를 넓히고, 변환·런타임 회귀 테스트로 보호.</li>
-        <li>동작하지 않는 조건(Turbopack)을 숨기지 않고 <b>문서에 먼저 밝혔습니다.</b></li>
+        <li>재파싱 아키텍처(npm 0.3.x)를 버리고 <b>jsx-dev-runtime 가로채기 단일 훅으로 전면 재설계</b> — 1.0.0으로 메이저 승격 후 <b>1.0.2 배포</b>.</li>
+        <li>훅 하나를 각 번들러의 모듈 해석 지점에 꽂는 방식으로 <b>Vite·webpack·rspack·rollup·esbuild + Next.js(webpack·Turbopack)</b> 지원 — v1에서 불가능하던 <b>Turbopack과 서버 컴포넌트</b>가 들어왔습니다.</li>
+        <li>지원 매트릭스 전 칸을 실측 — Vite·Next(webpack·Turbopack·서버 컴포넌트)는 <b>Chromium 실제 렌더 E2E</b>로, webpack·rspack·rollup·esbuild 단독은 <b>각 번들러 산출물을 실행해 좌표를 대조</b>하는 방식으로. 추론으로 적은 칸이 없습니다.</li>
+        <li>실서비스 앱(React 17 + webpack 5 + styled-components)에 붙여 <b>탐지 정확도와 에디터 점프까지 검증</b> — 테스트 레포에서 재현되지 않던 번들러 함정 3종을 여기서 잡았습니다.</li>
+        <li>동작하지 않는 조건(classic + React 19)을 숨기지 않고 <b>문서에 먼저 밝혔습니다.</b></li>
       </ul>
     </div>
   </div>
@@ -341,5 +414,6 @@ export default defineConfig({
     });
   })();
 </script>
+<script src="zoom.js" defer></script>
 </body>
 </html>

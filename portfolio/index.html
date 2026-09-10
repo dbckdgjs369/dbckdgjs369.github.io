@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="유창헌 · Frontend Developer — 직접 만들어 배포한 개인 프로젝트 3선 (실시간 시세 위젯 · React 코드 로케이터 · 커스텀 터널)">
+<meta name="description" content="유창헌 · Frontend Developer — 직접 만들어 배포·운영하는 개인 프로젝트 (실시간 시세 위젯 · React 코드 로케이터 · 커스텀 터널 · cc-talk)">
 <meta name="color-scheme" content="light">
 <script>
   /* 저장된 선택을 그리기 전에 적용 — 라이트로 그렸다가 다크로 튀는 깜빡임 방지.
@@ -11,7 +11,7 @@
   try { var t = localStorage.getItem("pf-theme"); if (t === "dark") document.documentElement.setAttribute("data-theme", "dark"); } catch (e) {}
 </script>
 <meta property="og:title" content="유창헌 · Frontend Developer">
-<meta property="og:description" content="직접 만들어 배포한 개인 프로젝트 3선">
+<meta property="og:description" content="직접 만들어 배포·운영하는 개인 프로젝트 4개">
 <meta property="og:type" content="website">
 <title>유창헌 · Frontend Developer</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -40,19 +40,24 @@
 <header id="top" class="hero">
   <div class="wrap">
     <p class="eyebrow">Frontend Developer · 4년차</p>
-    <h1>불편을 발견하면,<br>도구로 만들어 <em>배포</em>합니다.</h1>
-    <p class="lede"><b>실시간 통신</b>과 <b>개발자 도구</b>에 관심이 많은 프론트엔드 개발자입니다. React가 주 무대지만, 원인이 있는 곳이면 화면 아래 <b>프로토콜·서버 레이어까지</b> 내려가 해결합니다. 아래 세 개는 개발하며 겪은 불편을 직접 도구로 만들어 <b>실제로 배포해 운영 중인</b> 것들입니다.</p>
+    <p class="badge-pill">
+      <svg class="spark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.94 15.5A2 2 0 0 0 8.5 14.06l-6.14-1.58a.5.5 0 0 1 0-.96L8.5 9.94A2 2 0 0 0 9.94 8.5l1.58-6.14a.5.5 0 0 1 .96 0l1.58 6.14A2 2 0 0 0 15.5 9.94l6.14 1.58a.5.5 0 0 1 0 .96l-6.14 1.58a2 2 0 0 0-1.44 1.44l-1.58 6.14a.5.5 0 0 1-.96 0z"/><path d="M20 3v4M22 5h-4M4 17v2M5 18H3"/></svg>
+      <span>가장 최근에 만든 것 — CC Talk</span>
+      <a href="projects/cc-talk.html">보러 가기 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+    </p>
+    <h1 class="grad">불편을 발견하면,<br><span>직접 <em>해결</em>합니다.</span></h1>
+    <p class="lede"><b>실시간 통신</b>과 <b>개발자 도구</b>에 관심이 많은 프론트엔드 개발자입니다.<br>React, JavaScript, TypeScript를 주로 다루지만, 해결이 필요한 곳이라면 <b>기술 스택에 국한되지 않고</b> 해결합니다. 최근 AI를 적극적으로 사용하여 익숙한 스택의 경계에 <b>덜 갇히고</b>, 필요하면 새로 배워가며 만듭니다. 아래 프로젝트는 제가 직접 겪은 불편을 도구로 만든 것들입니다.</p>
 
     <div class="hero-act">
-      <a class="btn" href="#projects">프로젝트 보기</a>
+      <a class="btn" href="#projects">프로젝트 보기 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16" aria-hidden="true" style="margin-left:8px"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      <a class="btn ghost" href="https://github.com/dbckdgjs369" target="_blank" rel="noopener">
+        <svg viewBox="0 0 16 16" fill="currentColor" width="16" height="16" aria-hidden="true" style="margin-right:8px"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg>GitHub</a>
       <a class="btn ghost" href="mailto:dbckdgjs1130@naver.com">메일 보내기</a>
     </div>
 
     <ul class="proof">
-      <li><b>3</b><span>직접 배포·운영 중인 제품<br>웹스토어 · npm · VSCode</span></li>
+      <li><b>3</b><span>직접 배포·운영 중인 제품<br>웹스토어 · npm · vsix</span></li>
       <li><b>367<i>회</i></b><span>시세 위젯 누적 다운로드<br>사용자 53명 · 평점 5.0</span></li>
-      <li><b>5<i>종</i></b><span>단일 코어로 지원하는<br>빌드 툴 어댑터</span></li>
-      <li><b>120<i>초 → 0</i></b><span>터널로 없앤<br>모바일 확인 대기</span></li>
     </ul>
 
     <div class="contact hero-contact">
@@ -78,13 +83,15 @@
           <img src="images/stock-price-widget/widgets-on-page.png" alt="" loading="lazy" width="2880" height="1800">
         </a>
         <div class="card-body">
-          <div class="e-meta"><span class="idx">P1</span><span>Chrome Extension + Node.js 중계 서버</span><span class="dot">·</span><span>2026.03 — 진행중 · v4.0.2</span></div>
+          <!-- 버전 표기: 현재 상태 — 스토어 통과 시 갱신 -->
+          <div class="e-meta"><span class="idx">P1</span><span>Chrome Extension + Node.js 중계 서버</span><span class="dot">·</span><span>2026.03 — 진행중 · v4.1.1</span></div>
           <h3><a href="projects/stock-price-widget.html">stock-price-extension</a></h3>
           <p class="e-line">어떤 웹페이지 위에서든 주식·암호화폐 시세를 실시간으로 띄우는 위젯 오버레이. 시세 중계 서버부터 캔들 차트 엔진까지 직접 만들었습니다.</p>
           <ul class="hits">
             <li><b>누적 다운로드 367회 · 사용자 53명</b> · 스토어 평점 5.0으로 운영 중</li>
             <li>프로덕션에서만 WS 압축이 죽는 문제 — Cloudflare가 <code>permessage-deflate</code> 헤더를 제거. 압축 4개 안을 실측한 뒤 <b>프로토콜을 재설계해 평균 275B → 65B(-76%)</b></li>
             <li>오버레이 환경에 맞춘 <b>캔들 차트 엔진 자체 구현</b> — 지표·드로잉·2단 캐시</li>
+            <li>설치 직후 이탈 — 스토어 페이지엔 확장 스크립트가 주입되지 않아 <b>안내를 띄울 화면 자체가 없었음.</b> 확장 소유 페이지를 착륙 지점으로 만들어 <b>3막 온보딩</b>으로 연결</li>
           </ul>
           <ul class="chips"><li>JavaScript</li><li>Node.js</li><li>WebSocket</li><li>Chrome Extension (MV3)</li><li>Shadow DOM</li><li>Canvas</li></ul>
           <div class="e-links">
@@ -99,15 +106,15 @@
           <img src="images/react-code-locator/hover.jpg" alt="" loading="lazy" width="1999" height="898">
         </a>
         <div class="card-body">
-          <div class="e-meta"><span class="idx">P2</span><span>npm package · 빌드 플러그인</span><span class="dot">·</span><span>2026.03 — 진행중 · v0.4.7</span></div>
+          <div class="e-meta"><span class="idx">P2</span><span>npm package · 빌드 플러그인</span><span class="dot">·</span><span>2026.03 — 진행중 · v1.0.2</span></div>
           <h3><a href="projects/react-code-locator.html">react-code-locator</a></h3>
-          <p class="e-line">개발 중 React 화면의 UI를 클릭하면 그 컴포넌트의 소스 파일·라인으로 에디터가 바로 열립니다.</p>
+          <p class="e-line">개발 중 React 화면의 UI를 Shift+우클릭하면 그 컴포넌트의 소스 파일·라인으로 에디터가 바로 열립니다.</p>
           <ul class="hits">
-            <li>React 19에서 <code>fiber._debugSource</code>가 사라진 뒤에도 동작하도록 <b>빌드타임 AST 변환</b>으로 소스 위치를 직접 주입</li>
-            <li><b>Vite · Webpack · Rollup · esbuild · Rspack</b> 5종을 단일 코어로 지원</li>
-            <li><b>Zero dependencies</b> — 설치하면 이 패키지만 들어오도록 의존성을 dist에 직접 번들</li>
+            <li>소스를 재파싱하던 v1을 버리고, <b>컴파일러가 이미 계산해둔 위치를 <code>jsx-dev-runtime</code> 경계에서 가로채는 단일 훅</b>으로 전면 재설계</li>
+            <li><b>Vite · Webpack · Rollup · esbuild · Rspack + Next.js(webpack·Turbopack)</b> — 서버 컴포넌트 포함, 전 조합을 실측(Vite·Next은 Chromium E2E)</li>
+            <li><b>Zero dependencies · 프로덕션 0바이트</b> — dev 전용 모듈에만 훅이 걸려 배포 산출물에 흔적이 없음</li>
           </ul>
-          <ul class="chips"><li>TypeScript</li><li>@babel/parser AST</li><li>unplugin</li><li>Vite</li><li>Webpack</li><li>npm</li></ul>
+          <ul class="chips"><li>TypeScript</li><li>jsx-dev-runtime</li><li>Vite</li><li>Webpack</li><li>Next.js · Turbopack</li><li>npm</li></ul>
           <div class="e-links">
             <a class="go" href="projects/react-code-locator.html">문제 정의부터 결과까지 보기</a>
             <a href="https://www.npmjs.com/package/react-code-locator" target="_blank" rel="noopener">npm ↗</a>
@@ -137,6 +144,28 @@
         </div>
       </article>
 
+      <article class="card">
+        <a class="shot" href="projects/cc-talk.html" tabindex="-1" aria-hidden="true">
+          <img src="images/cc-talk/room-list.png" alt="" loading="lazy" width="760" height="1240">
+        </a>
+        <div class="card-body">
+          <div class="e-meta"><span class="idx">P4</span><span>Electron 데스크탑 앱 (macOS · Windows)</span><span class="dot">·</span><span>2026.08 — 진행중 · v0.1.0</span></div>
+          <h3><a href="projects/cc-talk.html">cc-talk</a></h3>
+          <p class="e-line">여러 Claude Code 세션을 PC 카카오톡처럼 관리하는 데스크탑 앱. 세션 하나 = 채팅방 하나 = 창 하나입니다.</p>
+          <ul class="hits">
+            <li>터미널 화면을 읽던 구조를 <b>헤드리스 stream-json</b> 으로 다시 세워, <b>화면을 잘못 읽는 오류가 생길 자리 자체를 제거</b></li>
+            <li>요청당 평균 컨텍스트 <b>89만 · 캐시 읽기가 하루 비용의 78%</b> 를 실측해 압축 정책을 재설계. <b>압축 기록 37건으로 제 첫 수정을 다시 뒤집음</b></li>
+            <li>기록 파일 하나 = 방 하나로 맞춰 터미널 <code>claude --resume</code> 목록과 <b>1:1 동기</b> — 앱 안에서만 맞는 상태를 만들지 않음</li>
+            <li>가만히 둔 창이 CPU 약 10% 를 먹던 원인은 <code>content</code> 를 애니메이션한 점 세 개 — <b>문서 전체가 초당 3~4회 재배치</b></li>
+          </ul>
+          <ul class="chips"><li>JavaScript</li><li>Electron</li><li>Node.js</li><li>자식 프로세스</li><li>stream-json</li><li>electron-builder</li></ul>
+          <div class="e-links">
+            <a class="go" href="projects/cc-talk.html">문제 정의부터 결과까지 보기</a>
+            <a href="https://github.com/dbckdgjs369/claude-talk" target="_blank" rel="noopener">GitHub ↗</a>
+          </div>
+        </div>
+      </article>
+
     </div>
   </div>
 </section>
@@ -146,20 +175,21 @@
     <div class="sec-head">
       <span class="num">02</span>
       <h2>일하는 방식</h2>
-      <p>세 프로젝트에서 반복적으로 지킨 원칙들입니다.</p>
+      <p>네 프로젝트에서 반복적으로 지킨 원칙들입니다.</p>
     </div>
     <ol class="ways">
       <li>
         <h3>원인 레이어까지 내려간다</h3>
-        <p>화면에서 시작해도 원인이 프로토콜·서버·빌드 단계에 있으면 그곳까지 내려가 고칩니다. 시세 위젯의 대역폭 문제는 프론트가 아니라 프록시가 압축 헤더를 걷어낸 탓이어서 <b>WS 프로토콜을 다시 설계</b>했고, 소스 탐색은 런타임 대신 <b>빌드타임 AST</b>로 옮겨 해결했습니다.</p>
+        <p>화면에서 시작해도 원인이 프로토콜·서버·빌드 단계에 있으면 그곳까지 내려가 고칩니다. 시세 위젯의 대역폭 문제는 프론트가 아니라 프록시가 압축 헤더를 걷어낸 탓이어서 <b>WS 프로토콜을 다시 설계</b>했고, 소스 탐색은 재파싱 대신 <b>컴파일러가 이미 계산한 위치를 가로채는 쪽</b>으로 내려가 해결했습니다.</p>
+        <p class="nw">터널로 꺼낸 화면이 <b>뜨기는 하는데 일부 기능만 조용히 죽던</b> 문제도 그랬습니다. 제 중계 코드를 의심했지만 원인은 <b>dev 서버가 클라이언트 번들에 자기 주소를 문자열로 구워 넣는</b> 것이어서, 브라우저가 마지막에 실제로 다이얼하는 지점(<code>WebSocket</code>·<code>fetch</code> 등)을 감싸 <b>주소를 런타임에 교정</b>했습니다. Next.js dev 서버의 origin 허용 설정 한 줄을 빼면, 사용자 프로젝트는 건드리지 않습니다.</p>
       </li>
       <li>
         <h3>재사용 가능한 구조로 남긴다</h3>
-        <p>한 번 고친 문제는 일회성 패치가 아니라 모듈로 남깁니다. react-code-locator는 하나의 코어를 5종 빌드 툴 어댑터로 확장했습니다.</p>
+        <p>한 번 고친 문제는 일회성 패치가 아니라 모듈로 남깁니다. react-code-locator는 훅 하나를 Turbopack까지 6종 번들러의 모듈 해석 지점에 꽂는 구조로 확장했습니다.</p>
       </li>
       <li>
         <h3>배포·운영까지 직접 끌고 간다</h3>
-        <p>프로토타입에서 멈추지 않습니다. 셋 다 스토어·npm에 실제 배포했고, 시세 위젯은 실사용자와 평점까지 관리하며 운영 중입니다.</p>
+        <p>프로토타입에서 멈추지 않습니다. 시세 위젯은 크롬 웹스토어에, 로케이터는 npm에, 터널은 vsix 패키지로 실제 배포했고, 시세 위젯은 실사용자와 평점까지 관리하며 운영 중입니다.</p>
       </li>
       <li>
         <h3>도구는 쓰는 사람 자리에 둔다</h3>
@@ -191,7 +221,7 @@
       </div>
       <div class="sk">
         <h3>Tooling</h3>
-        <ul><li>@babel/parser AST</li><li>unplugin</li><li>npm 패키징</li><li>VSCode Extension API</li></ul>
+        <ul><li>번들러 플러그인 (Vite·webpack·Turbopack)</li><li>Babel·AST</li><li>npm 패키징</li><li>VSCode Extension API</li></ul>
       </div>
     </div>
   </div>
