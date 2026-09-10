@@ -13,10 +13,22 @@ const projects = [
     hue: 200,
     tagline:
       "브라우저에서 컴포넌트를 클릭하면 소스 코드 위치로 바로 이동. 개발 중 '이 UI가 대체 어느 파일이지?'를 없앤 빌드 플러그인.",
-    tech: ["TypeScript", "Vite", "Webpack", "Rollup"],
+    tech: ["TypeScript", "Vite", "Webpack", "Next.js · Turbopack"],
     links: {
       npm: "https://www.npmjs.com/package/react-code-locator",
       github: "https://github.com/dbckdgjs369/web-element-code-locator",
+    },
+  },
+  {
+    name: "cc-talk",
+    slug: "cc-talk",
+    emoji: "💬",
+    hue: 45,
+    tagline:
+      "여러 Claude Code 세션을 PC 카카오톡처럼 관리하는 데스크탑 앱. 세션 하나 = 채팅방 하나 = 창 하나.",
+    tech: ["JavaScript", "Electron", "stream-json"],
+    links: {
+      github: "https://github.com/dbckdgjs369/claude-talk",
     },
   },
   {
@@ -53,7 +65,7 @@ const projects = [
     hue: 265,
     tagline:
       "로컬 개발 서버를 공개 URL로 즉시 공유하는 VSCode 확장. QR 코드·원격 콘솔 로그·HTTPS까지 지원해, 모바일 확인과 협업 공유의 번거로움을 없앴어요.",
-    tech: ["JavaScript", "VSCode Extension"],
+    tech: ["TypeScript", "VSCode Extension", "WebSocket"],
     links: {
       github: "https://github.com/dbckdgjs369/debug_tool",
     },
