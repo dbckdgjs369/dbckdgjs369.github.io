@@ -1,0 +1,386 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="유창헌, Frontend Developer: 일상에서 문제를 찾고 직접 만들어 해결합니다.">
+<meta name="color-scheme" content="light">
+<meta property="og:title" content="유창헌, Frontend Developer">
+<meta property="og:description" content="일상에서 문제를 찾고 직접 만들어 해결합니다.">
+<title>유창헌, Frontend Developer</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+/* ============================================================
+   유창헌 포트폴리오
+   축: "실시간 데이터를 늦지 않게, 틀리지 않게 그린다"
+   데이터 층, 전송 층, 빌드 층 순으로 같은 문제를 세 번 보여준다.
+   ============================================================ */
+:root{
+  --bg:#ffffff; --bg-2:#f5f6f8; --bg-3:#eef0f4;
+  --ink:#14161a; --ink-2:#4b5259; --ink-3:#868b94;
+  --line:#e3e6eb; --line-2:#d3d8e0;
+  --blue:#1b64da; --blue-soft:#e8f0fd;
+  --up:#d6173a; --down:#1e6bd6;
+  --warn:#8a6100; --warn-bg:#fdf3dd;
+  --sans:"Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+  --wrap:800px;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font-family:var(--sans); font-size:16px; line-height:1.75;
+  letter-spacing:-0.011em; word-break:keep-all; overflow-wrap:anywhere;
+}
+.wrap{max-width:var(--wrap); margin:0 auto; padding:0 24px}
+a{color:inherit}
+b,strong{font-weight:700; color:var(--ink)}
+code{
+  font-family:var(--mono); font-size:0.87em; background:var(--bg-3);
+  padding:2px 5px; border-radius:4px; color:var(--ink-2);
+}
+
+/* ---------- 상단 ---------- */
+nav{
+  position:sticky; top:0; z-index:10; background:rgba(255,255,255,.86);
+  backdrop-filter:saturate(160%) blur(12px); border-bottom:1px solid var(--line);
+}
+nav .wrap{display:flex; align-items:center; justify-content:space-between; height:56px}
+nav .me{font-weight:700; font-size:15px}
+nav .links{display:flex; gap:18px; font-size:13.5px; color:var(--ink-3)}
+nav .links a{text-decoration:none}
+nav .links a:hover{color:var(--blue)}
+@media (max-width:640px){ nav .links a.hide-sm{display:none} }
+
+/* ---------- 히어로 ---------- */
+header.hero{padding:76px 0 56px}
+h1{
+  margin:0; font-size:40px; line-height:1.32; font-weight:800;
+  letter-spacing:-0.035em;
+}
+h1 em{font-style:normal; color:var(--blue)}
+@media (max-width:640px){ h1{font-size:29px} header.hero{padding:52px 0 40px} }
+.lede{margin:20px 0 0; font-size:17px; color:var(--ink-2); max-width:60ch}
+
+.facts{
+  display:grid; grid-template-columns:repeat(3,1fr); gap:1px;
+  margin:28px 0 0; background:var(--line); border:1px solid var(--line); border-radius:12px; overflow:hidden;
+}
+.facts div{background:var(--bg); padding:13px 14px}
+.facts b{display:block; font-size:19px; font-weight:800; letter-spacing:-0.03em; line-height:1.2}
+.facts b i{font-style:normal; font-size:11.5px; font-weight:600; color:var(--ink-3); margin-left:2px}
+.facts span{display:block; margin-top:4px; font-size:11.5px; line-height:1.5; color:var(--ink-3)}
+@media (max-width:640px){ .facts{grid-template-columns:repeat(2,1fr)} }
+
+.actions{display:flex; flex-wrap:wrap; gap:10px; margin:28px 0 0}
+.btn{
+  display:inline-block; text-decoration:none; font-size:14.5px; font-weight:600;
+  padding:12px 20px; border-radius:10px; background:var(--blue); color:#fff;
+}
+.btn.ghost{background:var(--bg-3); color:var(--ink)}
+
+/* ---------- 섹션 ---------- */
+section{padding:64px 0; border-bottom:1px solid var(--line)}
+section.tint{background:var(--bg-2)}
+.eb{
+  display:block; font-family:var(--mono); font-size:14px; font-weight:600; letter-spacing:.1em;
+  text-transform:uppercase; color:var(--blue);
+  padding-bottom:10px; border-bottom:1px solid var(--line);
+}
+h2{margin:10px 0 0; font-size:26px; font-weight:800; letter-spacing:-0.03em; line-height:1.4}
+.h2sub{margin:10px 0 0; font-size:15px; color:var(--ink-3); max-width:62ch}
+.body{margin-top:28px}
+p{margin:0 0 16px}
+
+
+/* ---------- 프로젝트 ---------- */
+.proj{display:flex; flex-direction:column; padding:30px 0 0; margin-top:30px; border-top:1px solid var(--line-2)}
+/* 사진을 설명 위로 — 먼저 무엇인지 보이고 나서 설명을 읽는다 */
+.proj .proj-head{order:1}
+.proj .badges{order:2}
+.proj figure.shot{order:3}
+.proj .desc{order:4}
+.proj:first-child{border-top:0; margin-top:0; padding-top:0}
+.proj-head{display:flex; align-items:baseline; gap:18px; flex-wrap:wrap}
+.body{counter-reset:proj}
+.proj h3{margin:0; font-size:20px; font-weight:800; letter-spacing:-0.025em}
+.proj h3::before{counter-increment:proj; content:counter(proj) ". "}
+.proj .role{font-family:var(--mono); font-size:11.5px; letter-spacing:.04em; color:var(--ink-3)}
+.proj .lk{
+  margin-left:auto; font-size:12.5px; font-weight:600; color:var(--blue);
+  text-decoration:none; white-space:nowrap;
+}
+.proj .lk::after{content:"\2197"; margin-left:3px; font-size:.9em}
+.proj .lk:hover{text-decoration:underline}
+.proj .lk2{margin-left:14px}
+@media (max-width:640px){ .proj .lk{margin-left:0; flex-basis:100%} .proj .lk2{margin-left:0} }
+.badges{display:flex; flex-wrap:wrap; gap:6px; margin:18px 0 0}
+.badge{
+  font-family:var(--mono); font-size:11px; letter-spacing:.02em;
+  color:var(--blue); background:var(--blue-soft); padding:4px 9px; border-radius:6px;
+}
+
+figure.shot{
+  margin:20px 0 0; padding:0; background:var(--bg-3);
+  border:1px solid var(--line); border-radius:12px; overflow:hidden;
+}
+figure.shot img{display:block; width:100%; height:auto}
+figure.shot figcaption{
+  padding:11px 14px; font-size:12.5px; line-height:1.6; color:var(--ink-3);
+  background:var(--bg); border-top:1px solid var(--line);
+}
+figure.shot figcaption b{color:var(--ink-2); font-weight:600}
+
+.proj .desc{margin:16px 0 0; font-size:14.5px; line-height:1.78; color:var(--ink-2)}
+
+/* ---------- 스킬 ---------- */
+dl.skills{
+  margin:22px 0 0; display:grid; grid-template-columns:auto 1fr;
+  gap:9px 28px; align-items:baseline;
+}
+dl.skills dt{font-size:14.5px; font-weight:700; white-space:nowrap}
+dl.skills dd{margin:0; font-size:14.5px; color:var(--ink-2)}
+@media (max-width:640px){
+  dl.skills{grid-template-columns:1fr; gap:2px 0}
+  dl.skills dt{margin-top:12px}
+  dl.skills dt:first-child{margin-top:0}
+}
+
+
+/* ---------- 인쇄 / PDF ----------
+   화면은 스크롤 한 덩어리지만 PDF는 A4로 잘린다.
+   잘리면 안 되는 최소 단위는 "케이스 하나"와 "요건 한 줄"이다. */
+@media print{
+  :root{--wrap:100%}
+  html,body{background:#fff}
+  body{font-size:10.5pt; line-height:1.6}
+  *{-webkit-print-color-adjust:exact; print-color-adjust:exact}
+  nav{display:none}
+  .wrap{padding:0}
+  .actions{display:none}
+  header.hero{padding:0 0 18pt}
+  h1{font-size:24pt; line-height:1.3}
+  .lede{font-size:11pt}
+  section{padding:20pt 0; border-bottom:0}
+  section.tint{background:#fff}
+  h2{font-size:15pt}
+  .h2sub{font-size:9.5pt}
+  .body{margin-top:14pt}
+  /* 잘림 방지: 프로젝트 헤더와 이미지는 한 덩어리로 */
+  .proj-head, figure.shot{break-inside:avoid; page-break-inside:avoid}
+  .proj figure.shot{margin-top:12pt}
+  figure.shot{max-width:100%}
+  figure.shot figcaption{font-size:8.5pt}
+  .proj{break-inside:auto}
+  .proj-head{break-after:avoid; page-break-after:avoid}
+  h2, .eb{break-after:avoid; page-break-after:avoid}
+  /* 강제 개장은 프로젝트 앞 한 번만.
+     섹션마다 끊으면 하단이 비는 장이 늘어 분량만 길어진다.
+     나머지 섹션은 제목이 혼자 떨어지지 않게만 막고 흘려보낸다. */
+  .eb{break-after:avoid; page-break-after:avoid}
+  .facts{margin-top:14pt}
+  .facts b{font-size:13pt}
+  /* 프로젝트마다 장을 새로 시작. 구분선은 장이 나뉘므로 필요 없다. */
+  .proj{padding-top:0; margin-top:0; border-top:0}
+  /* 1번 프로젝트는 1장 안에 들어가고, 2·3번만 새 장에서 시작한다 */
+  .proj + .proj{break-before:page; page-break-before:always}
+  .proj .desc{font-size:9.5pt}
+  a{text-decoration:none}
+  /* 링크는 제목 옆이 아니라 제목 아래 한 줄씩. 주소가 길어도 제목을 밀지 않는다. */
+  /* 인쇄에서는 링크가 아랫줄로 내려가므로 제목줄 오른쪽이 비어 있다. 역할을 그리로 붙인다. */
+  .proj-head{row-gap:0}
+  .proj .role{margin-left:auto}
+  .proj .lk{
+    margin-left:0; flex-basis:100%; margin-top:13pt;
+    font-weight:700; color:var(--ink); font-size:8.5pt; white-space:normal;
+  }
+  .proj .lk2{margin-left:0; margin-top:3pt}
+  .proj .lk::after{
+    content:"  |  " attr(data-url); margin-left:0;
+    font-family:var(--mono); font-size:.95em; font-weight:400;
+    color:var(--ink-3); word-break:break-all; white-space:pre-wrap;
+  }
+  /* 연락처가 혼자 새 장으로 떨어지지 않게 앞 내용과 붙인다.
+     화면용 footer{padding:56px 0 72px}가 이 블록 뒤에 있어 id로 우선순위를 올린다. */
+  footer#contact{padding:18pt 0 0; break-before:avoid; page-break-before:avoid; break-inside:avoid; page-break-inside:avoid}
+  /* 화면용 .contact 규칙이 이 블록 뒤에 있어, 선택자를 길게 써서 우선순위를 올린다. */
+  .eb{padding-bottom:6pt}
+  footer#contact .contact{margin-top:7pt; font-size:10pt; gap:5pt}
+  footer#contact .contact a{color:var(--ink); gap:7pt}
+  footer#contact .contact .ico{width:11pt; height:11pt}
+  /* 8줄을 세로로 늘어놓으면 마지막 장을 혼자 다 쓴다.
+     짝(항목-내용)을 2열로 접어 4줄로 줄인다. */
+  dl.skills{grid-template-columns:auto 1fr auto 1fr; gap:6pt 20pt; margin-top:6pt}
+  dl.skills dt, dl.skills dd{font-size:9.5pt}
+  /* 화면은 1열이라 "프론트엔드→상태관리→스타일링→실시간 통신→백엔드…" 순서가 자연스럽다.
+     인쇄는 2열이므로 이력서와 같은 자리에 오도록 순서만 바꾼다. */
+  dl.skills .c1{order:1}
+  dl.skills .c2{order:2}
+  dl.skills .c3{order:3}
+  dl.skills .c4{order:4}
+  dl.skills .c5{order:5}
+  dl.skills .c6{order:6}
+  dl.skills .c7{order:7}
+  dl.skills .c8{order:8}
+  section#skills{padding:20pt 0 0; break-inside:avoid; page-break-inside:avoid}
+  /* 구분선을 넣은 만큼 다음 섹션 윗여백에서 뺀다. 1장 높이가 늘면 4장이 된다. */
+  section#work{padding-top:8pt}
+}
+
+/* ---------- 연락처 (히어로 우상단) ---------- */
+/* ---------- 푸터 ---------- */
+footer{padding:56px 0 72px}
+.contact{display:flex; flex-direction:column; align-items:flex-start; gap:9px; margin-top:16px; font-size:14.5px}
+.contact a{
+  display:inline-flex; align-items:center; gap:9px;
+  color:var(--ink-2); text-decoration:none; font-weight:600; transition:color .15s;
+}
+.contact a:hover{color:var(--blue)}
+.contact .ico{width:17px; height:17px; flex:0 0 auto}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <span class="me">유창헌</span>
+    <span class="links">
+      <a href="#work">프로젝트</a>
+      <a href="#contact">연락처</a>
+    </span>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <h1>일상에서 문제를 찾고<br><em>직접 만들어</em> 해결합니다.</h1>
+    <p class="lede"><b>4년차 프론트엔드 개발자 유창헌</b>입니다.<br>현업에서는 원격제어 제품의 웹 프론트엔드를 <b>React, TypeScript</b>로 개발, 운영해 왔습니다.<br>일상과 업무에서 불편했던 것을 그냥 넘기지 않고 <b>저만의 방법으로 해결했습니다.</b></p>
+
+    <div class="actions">
+      <a class="btn" href="#work">프로젝트 보기</a>
+      <a class="btn ghost" href="https://github.com/dbckdgjs369" target="_blank" rel="noopener">GitHub</a>
+    </div>
+  </div>
+</header>
+
+
+<!-- ========== 3. 스킬 ========== -->
+<section id="skills">
+  <div class="wrap">
+    <span class="eb">Skills</span>
+
+    <dl class="skills">
+      <dt class="c1">프론트엔드</dt><dd class="c1">React · JavaScript · TypeScript</dd>
+      <dt class="c3">상태관리</dt><dd class="c3">Jotai · React Query</dd>
+      <dt class="c5">스타일링</dt><dd class="c5">styled-components · Emotion · Sass</dd>
+      <dt class="c7">실시간 통신</dt><dd class="c7">WebRTC · WebSocket · STOMP · MQTT</dd>
+      <dt class="c2">백엔드</dt><dd class="c2">Node.js · Rust · Python · Docker</dd>
+      <dt class="c4">빌드</dt><dd class="c4">Webpack · Vite</dd>
+      <dt class="c6">AI</dt><dd class="c6">Claude · Kimi · Gemini · Codex</dd>
+      <dt class="c8">협업</dt><dd class="c8">GitHub · Figma · Notion · Slack</dd>
+    </dl>
+
+  </div>
+</section>
+
+<!-- ========== 2. 프로젝트 ========== -->
+<section id="work" class="tint">
+  <div class="wrap">
+    <span class="eb">Work</span>
+
+    <div class="body">
+
+      <!-- 1 -->
+      <div class="proj">
+        <div class="proj-head">
+          <h3>실시간 시세 위젯</h3>
+          <span class="role">Chrome Extension</span>
+          <a class="lk" href="https://chromewebstore.google.com/detail/stock-price-widget/niofpnhhdeaneajeemfpnclammllkhfg" data-url="chromewebstore.google.com/detail/stock-price-widget/niofpnhhdeaneajeemfpnclammllkhfg" target="_blank" rel="noopener">Chrome 웹스토어</a>
+        </div>
+        <div class="badges">
+          <span class="badge">JavaScript</span><span class="badge">Chrome Extension MV3</span><span class="badge">WebSocket</span><span class="badge">Canvas 2D</span><span class="badge">Node.js</span>
+        </div>
+
+        <p class="desc"><b>문제</b>: 주식이나 코인 시세를 보기 위해 작업 중이던 페이지를 떠나 거래소 탭으로 옮기거나 휴대폰으로 증권 앱을 확인하는 것이 번거로웠습니다.</p>
+
+        <p class="desc"><b>해결</b>: 보던 페이지 위에 위젯을 얹어, 거래소에서 <b>WebSocket으로 받은 시세</b>를 그대로 그립니다. 차트를 열면 이동평균과 볼린저밴드, 거래량을 겹쳐 보고 1분에서 1달까지 구간을 바꿉니다. 전송량을 줄이려고 <b>전송 포맷을 직접 설계</b>했고, 구간을 빠르게 바꿔도 멈칫하거나 틀린 값이 남지 않게 <b>캐시, 프리페치, 렌더 가드</b>를 나눠 붙였습니다.</p>
+
+        <p class="desc"><b>결과</b>: Chrome 웹스토어에 배포해 <b>누적 400회 이상 설치, 사용자 60명, 평점 5.0</b>. 심사와 버전 관리, 사용자 문의를 직접 받고 있습니다.</p>
+
+        <figure class="shot">
+          <img src="images/chart.png" alt="구글 검색 페이지 위에 삼성전자(005930) 캔들 차트 위젯이 얹혀 있고, 위쪽 줄에는 SK하이닉스와 BTC/USDT 시세가 나란히 떠 있다. 오른쪽 Stock Widgets 패널에서 주식과 코인을 검색해 위젯을 만들고, 지금 올라가 있는 위젯 목록을 관리한다." loading="lazy">
+        </figure>
+      </div>
+
+      <!-- 2 -->
+      <div class="proj">
+        <div class="proj-head">
+          <h3>모바일 웹뷰 디버깅 터널</h3>
+          <span class="role">VSCode Extension</span>
+          <a class="lk" href="https://github.com/dbckdgjs369/debug_tool" data-url="github.com/dbckdgjs369/debug_tool" target="_blank" rel="noopener">GitHub</a>
+        </div>
+        <div class="badges">
+          <span class="badge">TypeScript</span><span class="badge">Node.js</span><span class="badge">VSCode Extension</span><span class="badge">WebSocket</span><span class="badge">SSE</span>
+        </div>
+
+        <p class="desc"><b>문제</b>: 웹뷰에서만 재현되는 버그를 볼 때마다 빌드하고 배포해서 폰으로 확인해야 했습니다. 한 번에 2분씩 걸렸고, 콘솔도 안 보여 <code>alert()</code>로 매번 값을 찍어 봐야 했습니다.</p>
+
+        <p class="desc"><b>해결</b>: 에디터에서 포트 번호만 넣으면 로컬 개발 서버가 <b>공개 URL로 열립니다.</b> 폰에서 그 주소로 들어가면 지금 이 순간의 로컬 화면이 뜨고, <b>폰 브라우저의 콘솔 출력이 에디터 사이드바로</b> 실시간으로 들어옵니다. 빌드 툴이 번들에 박아 넣은 로컬 주소는 런타임에 교정해서, 앱 코드를 고치지 않아도 실시간 통신까지 그대로 동작합니다.</p>
+
+        <p class="desc"><b>결과</b>: 실무에 적용해 <b>빌드, 배포 120초 과정을 없앴습니다.</b> <b>특정 기기에서만 나던 이슈</b>를 그 기기에서 바로 로그를 보며 잡을 수 있게 됐고, 기획자나 디자이너에게 <b>주소 하나만 보내 지금 작업 중인 화면을 확인</b>받으니 피드백이 훨씬 빨리 돌아왔습니다.</p>
+
+        <figure class="shot">
+          <img src="images/remote-console.png" alt="에디터 사이드바에 펼쳐진 원격 콘솔 패널. 로그 레벨 드롭다운이 열려 ALL, LOG, INFO, WARN, ERROR 항목이 색상 점과 함께 나열되고 우측에 검색창과 지우기 아이콘이 있다." loading="lazy">
+          <figcaption>폰에서 뜬 로그가 에디터로. 케이블도, 기기별 설정도 필요 없습니다.</figcaption>
+        </figure>
+      </div>
+
+      <!-- 3 -->
+      <div class="proj">
+        <div class="proj-head">
+          <h3>화면에서 소스로 점프</h3>
+          <span class="role">npm Package</span>
+          <a class="lk" href="https://www.npmjs.com/package/react-code-locator" data-url="npmjs.com/package/react-code-locator" target="_blank" rel="noopener">npm</a>
+          <a class="lk lk2" href="https://github.com/dbckdgjs369/web-element-code-locator" data-url="github.com/dbckdgjs369/web-element-code-locator" target="_blank" rel="noopener">GitHub</a>
+        </div>
+        <div class="badges">
+          <span class="badge">TypeScript</span><span class="badge">JSX dev runtime</span><span class="badge">Babel Plugin</span>
+        </div>
+
+        <p class="desc"><b>문제</b>: 매번 코드베이스에서 "화면의 이 버튼이 어느 파일에 있지"를 찾느라 시간을 많이 썼습니다.</p>
+
+        <p class="desc"><b>해결</b>: 화면의 요소를 우클릭하면 <b>그 코드가 있는 파일과 줄</b>이 메뉴에 뜨고, 누르면 에디터가 그 위치로 열립니다. 위치를 새로 계산하지 않고, <b>컴파일러가 이미 계산해 두고 버리는 값을 가로채서</b> 씁니다. 런타임 비용이 없고 개발 빌드에서만 켭니다.</p>
+
+        <p class="desc"><b>결과</b>: npm에 <code>react-code-locator</code>로 배포해 <b>누적 다운로드 8,700회 이상을 기록했습니다.</b> <b>Vite, webpack, rspack, rollup, esbuild, Next.js</b>를 지원하고, 규격이 달라도 하는 일은 같아서 <b>코어 하나에 어댑터 5개</b>를 붙이는 구조로 정리했습니다.</p>
+
+        <figure class="shot">
+          <img src="images/locator.jpg" alt="로그인 화면 위에서 제목 문구에 파란 테두리가 씌워지고, 그 위에 index.tsx:29 라는 파일 경로와 줄 번호 라벨이 떠 있다." loading="lazy">
+          <figcaption>화면의 요소를 짚으면 그 자리를 그린 파일과 줄이 바로 뜹니다.</figcaption>
+        </figure>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ========== 4. 연락처 ========== -->
+<footer id="contact">
+  <div class="wrap">
+    <span class="eb">Contact</span>
+    <div class="contact">
+      <a href="mailto:dbckdgjs1130@naver.com">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="4.5" width="19" height="15" rx="2.5"/><path d="m3.2 7.2 7.9 5.8a1.5 1.5 0 0 0 1.8 0l7.9-5.8"/></svg>
+        dbckdgjs1130@naver.com
+      </a>
+      <a href="https://github.com/dbckdgjs369" target="_blank" rel="noopener">
+        <svg class="ico" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg>
+        github.com/dbckdgjs369
+      </a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
