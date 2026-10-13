@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "io.github.dbckdgjs369.ieum",
+      "sha256_cert_fingerprints": [
+        "4C:01:BD:BC:FC:47:E2:F8:48:C6:2C:B5:12:04:CB:53:2F:03:06:3C:EA:4B:AF:42:D3:37:26:D4:D3:7C:2A:1B"
+      ]
+    }
+  }
+]

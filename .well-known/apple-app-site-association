@@ -1,0 +1,13 @@
+{
+  "applinks": {
+    "details": [
+      {
+        "appIDs": ["6WC25AUT2M.io.github.dbckdgjs369.ieum"],
+        "components": [
+          { "/": "/listen_together", "comment": "이음 초대 링크 (#방코드)" },
+          { "/": "/listen_together/*" }
+        ]
+      }
+    ]
+  }
+}
