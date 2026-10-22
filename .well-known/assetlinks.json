@@ -5,6 +5,8 @@
       "namespace": "android_app",
       "package_name": "app.ieum",
       "sha256_cert_fingerprints": [
+        "9B:09:3E:92:46:BB:48:93:99:05:9B:A6:89:E3:57:9A:19:B8:F3:5E:C2:2C:81:E5:85:FE:5F:34:5C:A9:A3:69",
+        "F2:8F:95:2D:29:8E:93:BE:77:8E:D5:7E:DA:3B:E7:AF:5C:BD:AB:8E:A6:8D:D7:EC:F0:96:F2:C3:3F:BF:82:7C",
         "4C:01:BD:BC:FC:47:E2:F8:48:C6:2C:B5:12:04:CB:53:2F:03:06:3C:EA:4B:AF:42:D3:37:26:D4:D3:7C:2A:1B"
       ]
     }
